@@ -1,5 +1,6 @@
 ---
   title: "Lectures"
+  output: html_document
 ---
 
 [01-Introduction and Basic Concepts](https://deanadams.github.io/BioStats/Lectures/01-Intro-Basics.html)

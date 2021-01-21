@@ -1,32 +1,36 @@
 ---
   title: "Lab Tutorials and Data"
+  output: html_document
 ---
-
-### Day 1 Tutorials
-- [Tutorial 1.1: Digitizing in StereoMorph](https://deanadams.github.io/2019-Glasgow/Labs/01.1-Digitizing-StereoMorph.html)
-- [Tutorial 1.2: Reading Data](https://deanadams.github.io/2019-Glasgow/Labs/01.2-ReadData.html)
-- [Tutorial 1.3: Data Pre-Processing](https://deanadams.github.io/2019-Glasgow/Labs/01.3-DataPreProcessing.html)
-- [Tutorial 1.4: Superimposition (GPA)](https://deanadams.github.io/2019-Glasgow/Labs/01.4-GPA.html)
-    - [Day 1 R-script](https://deanadams.github.io/2019-Glasgow/Labs/Day01-RCode.R)
-
-### Day 2 Tutorials
-- [Tutorial 2.1: GPA with Semilandmarks](https://deanadams.github.io/2019-Glasgow/Labs/02.1-GPA-Semilandmarks.html)
-- [Tutorial 2.2: Visualizing Shape Differences and PCA](https://deanadams.github.io/2019-Glasgow/Labs/02.2-VisShapeDiff_PCA.html)
-- [Tutorial 2.3: Covariation & Regression](https://deanadams.github.io/2019-Glasgow/Labs/02.3-Regression_Covariation.html)
-    - [Day 2 R-script](https://deanadams.github.io/2019-Glasgow/Labs/Day02-RCode.R)
-
-### Day 3 Tutorials
-- [Tutorial 3.1: ANOVA and Pairwise Comparisons](https://deanadams.github.io/2019-Glasgow/Labs/03.1-ANOVA_PW.html)
-- [Tutorial 3.2: Trajectory Analysis](https://deanadams.github.io/2019-Glasgow/Labs/03.2-TrajectoryAnalysis.html)
-- [Tutorial 3.3: Phylogenetic Comparative Methods](https://deanadams.github.io/2019-Glasgow/Labs/03.3-PhyCompMethods.html)
-- [Tutorial 3.4: Allometry](https://deanadams.github.io/2019-Glasgow/Labs/03.4-Allometry.html)
-    - [Day 3 R-script](https://deanadams.github.io/2019-Glasgow/Labs/Day03-RCode.R)
-
-### Day 4 Tutorials
-- [Tutorial 4.1: Asymmetry](https://deanadams.github.io/2019-Glasgow/Labs/04.1-Asymmetry.html)
-- [Tutorial 4.2: Integration and Modularity](https://deanadams.github.io/2019-Glasgow/Labs/04.2-IntegrationModularity.html)
-- [Tutorial 4.3: Morphological Disparity](https://deanadams.github.io/2019-Glasgow/Labs/04.3-Disparity.html)
-    - [Day 4 R-script](https://deanadams.github.io/2019-Glasgow/Labs/Day04-RCode.R)
-
-### Example data for Workshop (can be cloned, pulled, or files downloaded)
+#### Example data (can be cloned, pulled, or files downloaded)
 [Link to Data Repository](https://github.com/deanadams/GM-WorkshopData)
+
+#### Lab Tutorials
+
+[01-Introduction and Basic Concepts](https://deanadams.github.io/BioStats/LabData/01-RIntro-Lab.html) | [Week 1 R-script](https://deanadams.github.io/BioStats/LabData/01-RIntro.r)
+
+[02-Resampling Methods](https://deanadams.github.io/BioStats/LabData/02-Resampling-Lab.html) | [Week 2 R-script](https://deanadams.github.io/BioStats/LabData/02-Resampling.r)
+
+[03-ANOVA Models](https://deanadams.github.io/BioStats/LabData/03-ANOVA-Lab.html) | [Week 3 R-script](https://deanadams.github.io/BioStats/LabData/03-ANOVA.r)
+
+[04-Regression Models](https://deanadams.github.io/BioStats/LabData/04-Regression-Lab.html) | [Week 4 R-script](https://deanadams.github.io/BioStats/LabData/04-Regression.r)
+
+[05-Matrix Algebra and Linear Models](https://deanadams.github.io/BioStats/LabData/05-Matrices-LM-Lab.html) | [Week 5 R-script1](https://deanadams.github.io/BioStats/LabData/05-Matrices.r) | [Week 5 R-script2](https://deanadams.github.io/BioStats/LabData/05-CompCompare-LMImplementations.r)
+
+[06-Multivariate Data and the GLM](https://deanadams.github.io/BioStats/LabData/06-LM-Multivariate-Lab.html) | [Week 6 R-script](https://deanadams.github.io/BioStats/LabData/06-LM-multivariate.r)
+
+[07-Interactions and Patterns of Change]
+
+[08-Ordination Methods]
+
+[09-Clustering Methods]
+
+[10-Multivariate Association and Canonical Ordination]
+
+[11-Model Comparison]
+
+[12-Phylogenetic Comparative Methods]
+
+[13-Spatial Statistics]
+
+[14-Meta-Analysis]
