@@ -1,10 +1,8 @@
 ---
-  title: "Advanced Biostatistics (EEB 590C)"
+  title: "Welcome to Advanced Biostatistics!"
   output: html_document
 ---
 
-# Welcome to Advanced Biostatistics!
-  
 This course presents a survey of the biostatistical methods commonly used in evolutionary and ecological research. It explores the conceptual and logical foundations of biological statistics for ecological and evolutionary research, and provides perspective on how one can match analytical approaches with biological hypotheses and data type. 
 
 The goal is to provide a working knowledge of statistical methods common to E&E research, so that one may better determine which analytical approaches are most appropriate for different types of data. The course therefore follows a: *‘Think first, implement methods second’* perspective. The mathematical and conceptual relationships among methods will also be discussed. 
