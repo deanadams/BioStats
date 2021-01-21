@@ -1,0 +1,32 @@
+---
+  title: "Lab Tutorials and Data"
+---
+
+### Day 1 Tutorials
+- [Tutorial 1.1: Digitizing in StereoMorph](https://deanadams.github.io/2019-Glasgow/Labs/01.1-Digitizing-StereoMorph.html)
+- [Tutorial 1.2: Reading Data](https://deanadams.github.io/2019-Glasgow/Labs/01.2-ReadData.html)
+- [Tutorial 1.3: Data Pre-Processing](https://deanadams.github.io/2019-Glasgow/Labs/01.3-DataPreProcessing.html)
+- [Tutorial 1.4: Superimposition (GPA)](https://deanadams.github.io/2019-Glasgow/Labs/01.4-GPA.html)
+    - [Day 1 R-script](https://deanadams.github.io/2019-Glasgow/Labs/Day01-RCode.R)
+
+### Day 2 Tutorials
+- [Tutorial 2.1: GPA with Semilandmarks](https://deanadams.github.io/2019-Glasgow/Labs/02.1-GPA-Semilandmarks.html)
+- [Tutorial 2.2: Visualizing Shape Differences and PCA](https://deanadams.github.io/2019-Glasgow/Labs/02.2-VisShapeDiff_PCA.html)
+- [Tutorial 2.3: Covariation & Regression](https://deanadams.github.io/2019-Glasgow/Labs/02.3-Regression_Covariation.html)
+    - [Day 2 R-script](https://deanadams.github.io/2019-Glasgow/Labs/Day02-RCode.R)
+
+### Day 3 Tutorials
+- [Tutorial 3.1: ANOVA and Pairwise Comparisons](https://deanadams.github.io/2019-Glasgow/Labs/03.1-ANOVA_PW.html)
+- [Tutorial 3.2: Trajectory Analysis](https://deanadams.github.io/2019-Glasgow/Labs/03.2-TrajectoryAnalysis.html)
+- [Tutorial 3.3: Phylogenetic Comparative Methods](https://deanadams.github.io/2019-Glasgow/Labs/03.3-PhyCompMethods.html)
+- [Tutorial 3.4: Allometry](https://deanadams.github.io/2019-Glasgow/Labs/03.4-Allometry.html)
+    - [Day 3 R-script](https://deanadams.github.io/2019-Glasgow/Labs/Day03-RCode.R)
+
+### Day 4 Tutorials
+- [Tutorial 4.1: Asymmetry](https://deanadams.github.io/2019-Glasgow/Labs/04.1-Asymmetry.html)
+- [Tutorial 4.2: Integration and Modularity](https://deanadams.github.io/2019-Glasgow/Labs/04.2-IntegrationModularity.html)
+- [Tutorial 4.3: Morphological Disparity](https://deanadams.github.io/2019-Glasgow/Labs/04.3-Disparity.html)
+    - [Day 4 R-script](https://deanadams.github.io/2019-Glasgow/Labs/Day04-RCode.R)
+
+### Example data for Workshop (can be cloned, pulled, or files downloaded)
+[Link to Data Repository](https://github.com/deanadams/GM-WorkshopData)

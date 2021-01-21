@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Advanced Biostatistics: Syllabus</title>
+
+<script src="site_libs/header-attrs-2.6.4/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"></a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="schedule.html">Schedule</a>
+</li>
+<li>
+  <a href="lectures.html">Lectures</a>
+</li>
+<li>
+  <a href="labs.html">Lab Tutorials</a>
+</li>
+<li>
+  <a href="syllabus.html">Syllabus</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Advanced Biostatistics: Syllabus</h1>
+
+</div>
+
+
+<p><strong>Instructor</strong></p>
+<p>Dr. Dean Adams <br> 315 Bessey Hall <br> 294-3834 <br> <a href="mailto:dcadams@iastate.edu" class="email">dcadams@iastate.edu</a> <br></p>
+<p><strong>Office Hours</strong></p>
+<p>Anytime by appointment</p>
+<p><strong>Prerequisites</strong></p>
+<p>Stat 401 or other introductory statistics course</p>
+<p><strong>Class Meetings</strong></p>
+<p>Lecture: Tuesday 11:00 – 12:30 (Zoom) <br> Lab: Thursday 11:00 – 12:30 (Zoom) <br></p>
+<p><strong>Course Format</strong></p>
+<p>There will be one lecture each week, followed by a computer laboratory. In laboratory we will implement the methods discussed in lecture to provide ‘hands on’ experiences designed to reinforce the statistical concepts learned that day. The laboratory exercises will be performed in R.</p>
+<p><strong>Preliminaries and Course Preparation</strong></p>
+<p>Students should bring their laptops to class. Prior to the first class period, please download and install the latest version of R on your laptop (<a href="http://cran.r-project.org/" class="uri">http://cran.r-project.org/</a> ). One may also wish to install the latest version of RStudio (<a href="https://rstudio.com/" class="uri">https://rstudio.com/</a>). All lecture notes and lab materials will be made available before class on this website.</p>
+<p><strong>A Note on Tutorial Sessions</strong></p>
+<p>Tutorial sessions are intended to provide you with hands-on experience applying the techniques learned during lecture. I will walk you through the tutorial material and provide additional context. <strong>However, it is not possible for one to become proficient in R simply by attending the tutorial sessions alone!</strong> Only by going through the material on your own and applying the material to your own (or other) data, will you gain a deeper understanding of R-based statistical analyses. Thus students are strongly encouraged to go through the R-scripts prior to lab, and again after the lab (on another dataset) to get the most out of the applied portions of the course.</p>
+<p><strong>Grading</strong></p>
+<p>This course is P/NP. There are no exams for this course. However, there will be several homework assignments which must be completed (details for each assignment are specified in each homework exercise description).</p>
+<p><strong>Recommended Readings</strong></p>
+<p>There is no formal text for this seminar course. The sequence of topics does not follow a particular textbook, but rather is one that I have found to be successful in teaching biologists the basics of biological statistics. However, there are several textbooks that students may borrow from me at any time. These are books that I keep on my shelf, and have found to be useful reference material. They are:</p>
+<ul>
+<li><p>Borcard, D., F. Gillet, and P. Legendre. 2018. Numerical Ecology with R.</p></li>
+<li><p>Legendre, P., and L. Legendre. 2012. Numerical Ecology. 4th Edition. Elsevier Science, Amsterdam.</p></li>
+<li><p>Manly, B. F. J., and J.A. Navarro Alberto. 2017. Multivariate Statistical Methods: A Primer. 4th Edition. Chapman &amp; Hall, London.</p></li>
+<li><p>Sokal, R. R. and F. J. Rohlf. 2012. Biometry. 4th Edition. Freeman Associates, San Francisco.</p></li>
+</ul>
+<p><strong>Course Description and Objectives</strong></p>
+<p>All biological research requires the use of statistics to determine whether or not the data collected in an experiment deviate significantly from null expectations. Unfortunately, biology students spend far too little time investigating what statistical tools they have at their disposal, and instead invest their limited time in learning more biology. While it is certainly necessary to learn as much biology as possible, an undesirable consequence of this choice is that a student’s rudimentary knowledge of statistics relegates their hypothesis testing to methods that they already know: if a student only knows a t-test, the design of their experiments begins to resemble that of a t-test! This is extremely limiting, as the range of biological questions they wish to investigate becomes hindered by a lack of tools, not lack of biological knowledge, intuition, or creativity. This course is designed as the first-step in alleviating this difficulty.</p>
+<p>This course presents a survey of many univariate and multivariate statistical methods commonly used in evolutionary and ecological research. It motivates this topic from the conceptual and logical foundations of matching one’s data and hypotheses with analytical techniques, so that biological patterns can be properly assessed. The goal is to provide a working knowledge of statistical methods, so that one may better determine which analytical approaches are most appropriate for different types of data. While this seminar is NOT intended to be a substitute for multivariate courses in statistics, it IS intended to provide sufficient detail so that students may pick up a recent issue of <em>Evolution</em>, <em>American Naturalist</em>, or <em>Ecology</em> and be able to understand the statistical methods used in the articles. This way, students may more critically evaluate the literature, and hopefully, be able to use these methods in their own research as the need arises.</p>
+<p>To make the mathematics accessible, I will use a ‘think-first, implement methods second’ approach; beginning with data types and hypotheses, progressing to the choice of statistical method, and finally ending with equations and necessary practical details. We first cover basic statistical concepts and resampling procedures for assessing significance, followed by univariate statistics (ANOVA, regression, correlation), and the ‘jump’ to multivariate general linear models (GLM: MANOVA, MANCOVA, multivariate regression). We then review exploratory methods, including ordination approaches (CVA, PCA, PCoA, MDS), clustering (UPGMA, WPGMA, K-means), and multivariate ‘correlation’ (canonical correlation, and PLS). We will also discuss several more specialized topics, including the phylogenetic comparative method, spatial statistics, meta-analysis, and model selection.</p>
+<p><strong>Free Expression</strong></p>
+<p>Iowa State University supports and upholds the First Amendment protection of freedom of speech and the principle of academic freedom in order to foster a learning environment where open inquiry and the vigorous debate of a diversity of ideas are encouraged. Students will not be penalized for the content or viewpoints of their speech as long as student expression in a class context is germane to the subject matter of the class and conveyed in an appropriate manner.</p>
+<p><strong>Disability Accomodations</strong></p>
+<p>Iowa State University complies with the Americans with Disabilities Act and Sect 504 of the Rehabilitation Act. If you have a disability and anticipate needing accommodations in this course, please contact (instructor name) to set up a meeting within the first two weeks of the semester or as soon as you become aware of your need. Before meeting with (instructor name), you will need to obtain a SAAR form with recommendations for accommodations from the Disability Resources Office, located in Room 1076 on the main floor of the Student Services Building. Their telephone number is 515-294-7220 or email <a href="mailto:disabilityresources@iastate.edu" class="email">disabilityresources@iastate.edu</a>. Retroactive requests for accommodations will not be honored.</p>
+<p><strong>Harrassment and Discrimination Policy</strong></p>
+<p>Iowa State University strives to maintain our campus as a place of work and study for faculty, staff, and students that is free of all forms of prohibited discrimination and harassment based upon race, ethnicity, sex (including sexual assault), pregnancy, color, religion, national origin, physical or mental disability, age, marital status, sexual orientation, gender identity, genetic information, or status as a U.S. veteran. Any student who has concerns about such behavior should contact his/her instructor, Student Assistance at 515-294-1020 or email <a href="mailto:dso-sas@iastate.edu" class="email">dso-sas@iastate.edu</a>, or the Office of Equal Opportunity and Compliance at 515-294-7612.</p>
+<p><strong>Academic Honesty</strong></p>
+<p>The class will follow Iowa State University’s policy on academic dishonesty. Anyone suspected of academic dishonesty will be reported to the Dean of Students Office. <a href="http://www.dso.iastate.edu/ja/academic/misconduct.html" class="uri">http://www.dso.iastate.edu/ja/academic/misconduct.html</a></p>
+<p><strong>Prep Week</strong></p>
+<p>This class follows the Iowa State University Prep Week policy as noted in section 10.6.4 of the Faculty Handbook <a href="http://www.provost.iastate.edu/resources/faculty-handbook" class="uri">http://www.provost.iastate.edu/resources/faculty-handbook</a> .</p>
+<p><strong>Contact Information</strong></p>
+<p>If you are experiencing, or have experienced, a problem with any of the above issues, email <a href="mailto:academicissues@iastate.edu" class="email">academicissues@iastate.edu</a>.</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+---
+  title: "Advanced Biostatistics: Syllabus"
+  output: html_document
+---
+
+**Instructor**		
+
+  Dr. Dean Adams <br>
+	315 Bessey Hall <br>
+	294-3834 <br>
+	dcadams@iastate.edu <br>
+
+**Office Hours**		
+  
+  Anytime by appointment
+
+**Prerequisites** 	
+
+Stat 401 or other introductory statistics course
+
+**Class Meetings**
+
+Lecture: 	Tuesday 11:00 – 12:30 (Zoom) <br>
+Lab:		Thursday 11:00 – 12:30 (Zoom) <br>
+
+**Course Format**
+
+There will be one lecture each week, followed by a computer laboratory. In laboratory we will implement the methods discussed in lecture to provide ‘hands on’ experiences designed to reinforce the statistical concepts learned that day. The laboratory exercises will be performed in R. 
+
+**Preliminaries and Course Preparation**
+
+Students should bring their laptops to class. Prior to the first class period, please download and install the latest version of R on your laptop (http://cran.r-project.org/ ).  One may also wish to install the latest version of RStudio (https://rstudio.com/). All lecture notes and lab materials will be made available before class on this website.
+
+**A Note on Tutorial Sessions**
+
+Tutorial sessions are intended to provide you with hands-on experience applying the techniques learned during lecture. I will walk you through the tutorial material and provide additional context. **However, it is not possible for one to become proficient in R simply by attending the tutorial sessions alone!** Only by going through the material on your own and applying the material to your own (or other) data, will you  gain a deeper understanding of R-based statistical analyses. Thus students are strongly encouraged to go through the R-scripts prior to lab, and again after the lab (on another dataset) to get the most out of the applied portions of the course.
+
+**Grading**
+
+This course is P/NP.   There are no exams for this course. However, there will be several homework assignments which must be completed (details for each assignment are specified in each homework exercise description). 
+
+**Recommended Readings**
+
+There is no formal text for this seminar course. The sequence of topics does not follow a particular textbook, but rather is one that I have found to be successful in teaching biologists the basics of biological statistics. However, there are several textbooks that students may borrow from me at any time. These are books that I keep on my shelf, and have found to be useful reference material. They are: 
+
+- Borcard, D., F. Gillet, and P. Legendre. 2018. Numerical Ecology with R.
+
+- Legendre, P., and L. Legendre. 2012. Numerical Ecology. 4th Edition. Elsevier Science, Amsterdam. 
+
+- Manly, B. F. J., and J.A. Navarro Alberto. 2017. Multivariate Statistical Methods: A Primer. 4th Edition. Chapman & Hall, London. 
+
+- Sokal, R. R. and F. J. Rohlf. 2012. Biometry. 4th Edition. Freeman Associates, San Francisco. 
+ 
+**Course Description and Objectives**
+
+All biological research requires the use of statistics to determine whether or not the data collected in an experiment deviate significantly from null expectations. Unfortunately, biology students spend far too little time investigating what statistical tools they have at their disposal, and instead invest their limited time in learning more biology. While it is certainly necessary to learn as much biology as possible, an undesirable consequence of this choice is that a student's rudimentary knowledge of statistics relegates their hypothesis testing to methods that they already know: if a student only knows a t-test, the design of their experiments begins to resemble that of a t-test! This is extremely limiting, as the range of biological questions they wish to investigate becomes hindered by a lack of tools, not lack of biological knowledge, intuition, or creativity. This course is designed as the first-step in alleviating this difficulty. 
+
+This course presents a survey of many univariate and multivariate statistical methods commonly used in evolutionary and ecological research. It motivates this topic from the conceptual and logical foundations of matching one's data and hypotheses with analytical techniques, so that biological patterns can be properly assessed. The goal is to provide a working knowledge of statistical methods, so that one may better determine which analytical approaches are most appropriate for different types of data. While this seminar is NOT intended to be a substitute for multivariate courses in statistics, it IS intended to provide sufficient detail so that students may pick up a recent issue of *Evolution*, *American Naturalist*, or *Ecology* and be able to understand the statistical methods used in the articles. This way, students may more critically evaluate the literature, and hopefully, be able to use these methods in their own research as the need arises. 
+
+To make the mathematics accessible, I will use a 'think-first, implement methods second' approach; beginning with data types and hypotheses, progressing to the choice of statistical method, and finally ending with equations and necessary practical details. We first cover basic statistical concepts and resampling procedures for assessing significance, followed by univariate statistics (ANOVA, regression, correlation), and the ‘jump’ to multivariate general linear models (GLM: MANOVA, MANCOVA, multivariate regression). We then review exploratory methods, including ordination approaches (CVA, PCA, PCoA, MDS), clustering (UPGMA, WPGMA, K-means), and multivariate 'correlation' (canonical correlation, and PLS). We will also discuss several more specialized topics, including the phylogenetic comparative method, spatial statistics, meta-analysis, and model selection. 
+
+**Free Expression**
+
+Iowa State University supports and upholds the First Amendment protection of freedom of speech and the principle of academic freedom in order to foster a learning environment where open inquiry and the vigorous debate of a diversity of ideas are encouraged. Students will not be penalized for the content or viewpoints of their speech as long as student expression in a class context is germane to the subject matter of the class and conveyed in an appropriate manner.
+
+**Disability Accomodations**
+
+Iowa State University complies with the Americans with Disabilities Act and Sect 504 of the Rehabilitation Act.  If you have a disability and anticipate needing accommodations in this course, please contact (instructor name) to set up a meeting within the first two weeks of the semester or as soon as you become aware of your need.  Before meeting with (instructor name), you will need to obtain a SAAR form with recommendations for accommodations from the Disability Resources Office, located in Room 1076 on the main floor of the Student Services Building. Their telephone number is 515-294-7220 or email disabilityresources@iastate.edu.  Retroactive requests for accommodations will not be honored.
+
+**Harrassment and Discrimination Policy**
+
+Iowa State University strives to maintain our campus as a place of work and study for faculty, staff, and students that is free of all forms of prohibited discrimination and harassment based upon race, ethnicity, sex (including sexual assault), pregnancy, color, religion, national origin, physical or mental disability, age, marital status, sexual orientation, gender identity, genetic information, or status as a U.S. veteran. Any student who has concerns about such behavior should contact his/her instructor, Student Assistance at 515-294-1020 or email dso-sas@iastate.edu, or the Office of Equal Opportunity and Compliance at 515-294-7612.
+
+**Academic Honesty**
+
+The class will follow Iowa State University’s policy on academic dishonesty. Anyone suspected of academic dishonesty will be reported to the Dean of Students Office. 
+http://www.dso.iastate.edu/ja/academic/misconduct.html 
+
+
+**Prep Week**
+
+This class follows the Iowa State University Prep Week policy as noted in section 10.6.4 of the Faculty Handbook http://www.provost.iastate.edu/resources/faculty-handbook .
+
+**Contact Information**
+
+If you are experiencing, or have experienced, a problem with any of the above issues, email academicissues@iastate.edu.
