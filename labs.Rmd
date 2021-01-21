@@ -3,7 +3,7 @@
   output: html_document
 ---
 #### Example data (can be cloned, pulled, or files downloaded)
-[Link to Data Repository](https://github.com/deanadams/GM-WorkshopData)
+[Link to Data Repository](https://github.com/deanadams/Data)
 
 #### Lab Tutorials
 
