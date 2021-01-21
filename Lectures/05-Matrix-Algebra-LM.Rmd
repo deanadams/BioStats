@@ -1,0 +1,578 @@
+---
+title: "05: Matrix Algebra and Linear Models"
+subtitle: "The foundation for all that follows!"
+author: "Dean Adams, Iowa State University"
+
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE, echo = TRUE, tidy = TRUE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Matrices: The Algebra of Statistics
+
+<style type="text/css">
+td {  /* Table  */
+  font-size: 20px;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+pre { /* Code block - determines code spacing between lines */
+    font-size: 12px;
+}
+</style>
+
+Grasping matrix algebra is the KEY for understanding statistics
+
+Compact method of expressing mathematical operations
+
+Generalize from one to many variables (i.e. vectors to matrices)
+
+Matrix operations have geometric interpretations in data spaces
+
+Much of our data (e.g., shape) cannot be measured with a single variable, so multivariate methods are required to properly address our hypotheses (e.g., can evaluate covariance)
+
+# Scalars and Vectors
+
+Scalars: numbers
+ 
+$$\small{a} = 5$$   $$\small{b} = 2$$   $$\small{c} = -3$$
+
+Vectors: an ordered list (array) of numbers ($\small{n}_{rows}\times{1}_{columns}$)
+ 
+$$\small{\mathbf{a}} = \begin{bmatrix}
+ 5 \\ 
+ 3 \\ 
+ -2 
+\end{bmatrix}$$
+
+Vector transpose: exchange the rows and columns
+
+$$\small{\mathbf{a}^T} = \begin{bmatrix}
+ 5 & 3 & -2
+\end{bmatrix}$$
+
+The superscript, $\small^T$, means vector transpose.  Note, $\small{\left(\mathbf{a}^T \right)^T = \mathbf{a}}$
+
+# Vector Addition and Subtraction
+
+Same as in scalar algebra (elementwise)
+
+Vector addition/subtraction (consistent orientation is important)
+
+$$\small{\mathbf{a}^T} = \begin{bmatrix}
+ 5 & 3 & -2
+\end{bmatrix}$$
+
+$$\small\mathbf{b}^T = \begin{bmatrix}
+ -5 & 0 & 1
+\end{bmatrix}$$
+
+$$\small\mathbf{a}^T + \mathbf{b}^T= \begin{bmatrix}
+ 0 & 3 & -1
+\end{bmatrix}$$
+
+$$\small\mathbf{a} - \mathbf{b} = \begin{bmatrix}
+ 10 \\ 3 \\ -3
+\end{bmatrix}$$
+
+# Vector Multiplication
+
+So if addition and subtraction are elementwise, shouldn't multiplication be the same?
+
+$\small{\mathbf{a}}\times{\mathbf{b}}={\mathbf{ab}}$  
+
+$\small\begin{bmatrix} 5 \\  3 \\ -2 \end{bmatrix}$  $\small\times$ $\small \begin{bmatrix}  -5 \\   0 \\   1  \end{bmatrix}$  $\small{=}$ $\small \begin{bmatrix}  -25 \\   0 \\   -2  \end{bmatrix}$
+
+**No!**
+
+###### Actually, this is not always wrong, but is quite unusual. The above is known as the ‘Hadamard’ product (element-wise multiplication), which is a special multiplication procedure that is only possible for vectors/matrices of the same dimension (and only done when specified as Hadamard product).
+
+# Vector Multiplication
+
+Vector multiplication is both multiplication and summation of scalars. Before performing vector multiplication, there has to be consistency with **inner dimensions** of the vectors being multiplied.
+
+Visually this is seen with the following example: $\small{\mathbf{a}^T}\times{\mathbf{b}}$ 
+
+$\tiny\begin{bmatrix} a_{1} & a_{2} & \dots a_{n} \end{bmatrix} \times \begin{bmatrix}  b_{1} \\  b_{2} \\  \dots \\ b_{n}  \end{bmatrix} = a_{1}b_{1}+a_{2}b_{2}+\dots+a_{n}b_{n}=\sum{ab}$ 
+
+  - Here, $\small{\mathbf{a}^T}$ is a $\small{1 \times n}$ vector, and $\small{\mathbf{b}}$ is a $\small{n \times 1}$ vector
+
+    - The **inner** dimensions are $\small\left({n} \times n\right)$. Found by lining up the vector dimensions: $\small{1 \times \color{red}{n} \times  \color{red}{n} \times 1}$ 
+
+    - The **outer** dimensions are $\small\left({1} \times 1\right)$. Found by lining up the vector dimensions:  $\small{\color{red}{1} \times n \times n \times \color{red}{1}}$ 
+
+  - Thus, we are multiplying each of the $\small{n}$ elements in $\small{\mathbf{a}^T}$ times each of the $\small{n}$ elements in $\small{\mathbf{b}}$ and summing them
+
+  - The output is a scalar ($\small{1 \times 1}$ dimensions). This is called an *inner product*
+
+# Vector Multiplication (cont.): Vector Inner-products
+
+- If inner dimensions match, the multiplication is possible.  The product has dimensions equal to the outer dimensions of the match.  There are two types of products:
+
+  - Inner-product: the vector product results is a single scalar, i.e., the outer dimensions are $\small{1} \times 1$
+
+  - Outer-product: the vector product results in a series of scalar products with number and arrangement defined by outer dimensions. This creates a **matrix**
+
+#### Vector Inner-Product
+
+For $\small{n} \times 1$ vectors: $\small\mathbf{a}^T \mathbf{b} = \sum_{i=1}^n a_ib_i$
+
+For example, for the vectors:  $\small\mathbf{a}^T = \begin{bmatrix}  5 & 3 & -2 \end{bmatrix}$  & $\small\mathbf{b} = \begin{bmatrix}  -5 \\ 0 \\ 1 \end{bmatrix}$
+
+$\small\mathbf{a}^T \mathbf{b} = \left(5\times -5 \right) + \left(3 \times 0 \right) + \left(-2 \times 1 \right) = -27$
+
+###### *Helpful mnemonic: "Run Amok Computational Demon!" for row-across and column-down pattern (will be helpful for matrices)*
+
+# Vector Multiplication (cont.): Vector Outer Products
+
+- If inner dimensions match, the multiplication is possible.  The product has dimensions equal to the outer dimensions of the match.  There are two types of products:
+
+  - Inner-product: the vector product results is a single scalar, i.e., the outer dimensions are $\small{1} \times 1$
+
+  - Outer-product: the vector product results in a series of scalar products with number and arrangement defined by outer dimensions. This creates a **matrix**
+
+#### Vector Outer-Product
+
+For $\small{n} \times 1$ vectors
+
+$$\tiny\mathbf{a}\mathbf{b}^T  = \begin{bmatrix}
+a_1b_1 & a_1b_2 & a_1b_3 & \cdots & a_1b_n\\
+a_2b_1 & a_2b_2 & a_2b_3 & \cdots & a_2b_n\\
+a_3b_1 & a_3b_2 & a_3b_3 & \cdots & a_3b_n\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+a_nb_1 & a_nb_2 & a_nb_3 & \cdots & a_nb_n\\
+\end{bmatrix} =
+\mathbf{M}_{n \times n}$$
+
+# Vector Multiplication (cont.): Vector Outer Products
+
+### Important Notes
+
+$$\tiny\mathbf{a}\mathbf{b}^T  = \begin{bmatrix}
+a_1b_1 & a_1b_2 & a_1b_3 & \cdots & a_1b_n\\
+a_2b_1 & a_2b_2 & a_2b_3 & \cdots & a_2b_n\\
+a_3b_1 & a_3b_2 & a_3b_3 & \cdots & a_3b_n\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+a_nb_1 & a_nb_2 & a_nb_3 & \cdots & a_nb_n\\
+\end{bmatrix} =
+\mathbf{M}_{n \times n}$$
+
+- $\small\mathbf{M}$ is called a matrix, with dimensions defined
+- $\small\mathbf{M}$ comprises row vectors and column vectors
+- because $\small\mathbf{M}$ has the same number of rows and columns, it also has a diagonal vector
+- the sum of the diagonal vector, called the **trace**, is the inner-product of $\small\mathbf{a}$ and $\mathbf{b}$
+
+# Matrices
+A matrix is more than a vector outer-product (more precisely, a vector outer-product is merely one type of matrix).  A matrix is a collection of vectors, arranged in a specific way, such that linear algebra operations can be carried out as systematic operations.  For example, the arrangement of vectors in a matrix indicates how to find a series of inner-products and display their results.
+
+The most basic matrices ($\small{n \times p}$) for statistics are **data frames**.  In data frames, the row vectors $\small{n}$ are the observations and the column vectors $\small{p}$ are the variables. We can demonstrate this easily in R with the *data.frame* and *matrix* functions.
+
+```{r, include = TRUE, fig.align='center'}
+y1 <- c(2, 3, 2, 5, 6, 8) # variable 1 with 6 observations
+y2 <- c(-1, -2, 0, 0, 1, -1) # variable 2 with 6 observations
+Y <- data.frame(y1 = y1, y2 = y2)
+rownames (Y) <- paste("obs", 1:6, sep = ".") # giving our observations some names
+Y
+
+```
+
+
+# Matrices (Cont.)
+
+
+```{r, include = TRUE, fig.align='center'}
+Y
+
+```
+Which is R's way of saying,
+
+$$\tiny{\mathbf{Y} = \begin{bmatrix}
+2 & -1 \\
+3 & -2 \\
+2 & 0 \\
+5 & 0 \\
+6 & 1 \\
+8 & -1 \\
+\end{bmatrix}} $$
+
+$\small\mathbf{Y}$ is a matrix and a data frame.  Row vectors are observations for the variables represented as column vectors. The dimensions of $\small\mathbf{Y}$ are $\small n \times p$ for the $\small n$ observations of subjects for $\small p$ variables.
+
+
+# Matrix Addition, Subtraction, Multiplication
+
+### Matrix addition and subtraction
+Matrix addition and subtraction is no different than vector addition and subtraction.  Matrices have to have *commensurate* dimensions (same $\small{n} \times p$).
+
+### Matrix multiplication
+Matrix multiplication is nothing more than systematic calculation of vector inner-products and arrangement of these into precise corresponding elements of a new matrix.  Like vectors, inner dimensions must match and the product is defined by the outer dimensions.  The simplest way to define this is as follows
+
+Let $\small{\mathbf{X}}$ be an $\small{n} \times k$ matrix and let $\small\mathbf{Y}$ by an $\small n \times p$ matrix, such that
+
+$$ \small \mathbf{X} = \begin{bmatrix}
+\mathbf{x}_1 &
+\mathbf{x}_2 &
+\cdots &
+\mathbf{x}_k 
+\end{bmatrix} $$
+and 
+
+$$ \small\mathbf{Y} = \begin{bmatrix}
+\mathbf{y}_1 &
+\mathbf{y}_2 &
+\cdots & 
+\mathbf{y}_p
+\end{bmatrix} $$
+Note that each $\small\mathbf{x}_i$ column vector is $\small n \times 1$ in dimension for $\small k$ vectors and each $\small\mathbf{y}_i$ is $\small n \times 1$ in dimension for $p$ vectors.  Thus, we could multiply as: 
+
+# Matrix Addition, Subtraction, Multiplication (Cont.)
+
+
+$$\tiny\mathbf{X}^T\mathbf{Y} = \begin{bmatrix}
+\mathbf{x}_1^T\mathbf{y}_1 & \mathbf{x}_1^T\mathbf{y}_2 & \cdots & \mathbf{x}_1^T\mathbf{y}_p\\
+\mathbf{x}_2^T\mathbf{y}_1 & \mathbf{x}_2^T\mathbf{y}_2 & \cdots & \mathbf{x}_2^T\mathbf{y}_p\\
+\vdots & \vdots & & \vdots\\
+\mathbf{x}_k^T\mathbf{y}_1 & \mathbf{x}_k^T\mathbf{y}_2 & \cdots & \mathbf{x}_k^T\mathbf{y}_p\\
+\end{bmatrix}$$
+
+The matrix product is a matrix with $\small k \times p$ inner-products
+
+In the case above, we could **NOT** multiply $\small\mathbf{YX}$ because the inner dimensions do not agree ($\small n \times p \times k \times n$). 
+
+**NOTE: ORDER OF MATRICES MATTERS: typically $\small\mathbf{XY}\neq\mathbf{YX}$**
+
+###### Sometimes, only one of these ordered operations is possible (recall inner-dimensions must agree!)
+
+# Matrix Multiplication (Cont.)
+
+### Matrix multiplication example (using R script)
+
+```{r, include = TRUE, fig.align='center'}
+y1 <- c(2, 3, 2, 5, 6, 8) # variable y1 with 6 observations
+y2 <- c(-1, -2, 0, 0, 1, -1) # variable y2 with 6 observations
+Y <- as.matrix(data.frame(y1 = y1, y2 = y2))  # R needs to know that this is precisely a matrix
+Y
+```
+
+# Matrix Multiplication (Cont.)
+
+### Matrix multiplication example (using R script)
+```{r, include = TRUE, error=TRUE, fig.align='center'}
+x1 <- rep(1, 6) # variable x1 with 6 observations
+x2 <- c(rep(0, 3), rep(1,3)) # variable x2 with 6 observations
+X <- as.matrix(data.frame(x1 = x1, x2 = x2))
+X
+
+dim(Y); dim(X)
+t(X) %*% Y # %*% means matrix multiplication, whereas * means element by element multiplication
+Y%*%X
+```
+
+# ~~Matrix Division~~
+This is not something we can do.  We can invert some matrices, but we will come back to this later.
+
+# Important Matrix and Vector Multiplication Properties
+>- Any matrix or vector multiplied by a scalar multiplies every element by the scalar.  The name, "scalar," means that every element is scaled.
+>- Like vectors that have inner-products (dot products) or outer-products, sometimes matrices can be similar.  The tendency though is to call these cross-product matrices.  
+>- A vector inner-product of the form, $\small\mathbf{x}^T\mathbf{x}$ is a generalized method of squaring.  It is precisely the sum of squared values, rather than just a squared value.
+>- A matrix cross-product of the form, $\small\mathbf{X}^T\mathbf{X}$ is a generalized method of squaring.  This matrix has summed squared values of column vectors of $\small\mathbf{X}$ on a diagonal vector and summed cross-products between vectors in the off-diagonal elements.
+>- A matrix is **square** when it has equal rows and columns, e.g., $\small n \times n$.
+>- If $\small\mathbf{XY}$ is possible and $\small\mathbf{YX}$ is possible, they will not have the same product unless both matrices are square and $\small\mathbf{X} = \mathbf{Y}$.  The dimensions of matrix products are also likely different.
+>- The next slide will describe some special matrices.
+
+# Special Matrices
+
+```{r, echo = FALSE, out.width="100%", fig.align='center'}
+include_graphics("LectureData/05.matrices/special.matrices.png")  
+```
+Orthogonal vectors or matrices with vectors that are also unit length, $\small\left( \mathbf{a}^T\mathbf{a}\right)^{1/2} = 1$, are also **orthornormal**.
+
+# Special Matrices and Special Matrix Properties
+
+### Some additional notes
+- Some sources refer to "triangular" matrices.  These might be symmetric matrices, where the elements above a diagonal match the elements below.  However, these might refer to a matrix that looks like a symmetric matrix but values below the diagonal are all 0.
+- A matrix cross-product will always produce a symmetric matrix.
+
+### Special Matrix Properties (Really important at times!)
+- **Symmetry**: $\small\mathbf{X} = \mathbf{X}^T$
+- **Positive-definite**: If $\small\mathbf{X}$ is symmetric, $\small\mathbf{a}^T \mathbf{Xa}$ is a positive scalar if $\small\mathbf{a}$ has non-zero values.  It also means all eigenvalues of $\small\mathbf{X}$ are non-negative (more later).
+- **Idempotent**: If $\small\mathbf{X}$ is square, $\mathbf{XX} = \mathbf{X}$.
+
+# Special Matrices and Special Matrix Properties (Cont.)
+
+### Matrix Projection
+Matrix multiplication is often used for the purpose of projection of data, $\small\mathbf{Y}$.  In a most technical and overly mathematical sense, projection is an alignment of data in a manifold of the data space (where Euclidean geometry is at least approximately appropriate).  In a simpler sense, projection is a method of rotating, stretching, flipping, and/or scaling a data space.  This is the essence of linear models - finding a constrained explanation of the data.
+
+
+Two ways to understand projection:
+
+$\small\mathbf{HY}$: where $\small\mathbf{H}$ is an $\small n \times n$ projection matrix
+
+$\small\mathbf{YH}$: where $\small\mathbf{H}$ is a $\small p \times p$ rotation/shear/scale matrix
+
+Both of these will make more sense with exposure to linear model uses, but for now, let's consider what the latter does.
+
+# Matrix Projection: Geometric Interpretations
+
+To best understand attributes of high-dimensional data spaces and algebra applied to them, consider two-dimensional data spaces and realize the algebra can be generalized to higher dimensions.
+
+### The Result of $\mathbf{YH}$, where $\mathbf{H}$ is a $p \times p$ matrix
+
+$\small\mathbf{H}$ type | Description | Result/Comment
+:---------- | :--------------- | :-----------------------------
+$\small\mathbf{I}$ | Identity matrix | No change
+$\small c\mathbf{I}$ | Scaled identity matrix | Enlarge (expand) or reduce (shrink).  $\small c\mathbf{I}$ is not idempotent.
+$\small\mathbf{D}$ | Diagonal matrix | Stretching of axes (variables).  $\small\mathbf{D}$ is not idempotent.
+$\small\mathbf{H}_{orthogonal}$ | $\small\mathbf{H} = \mathbf{H}^T$ | Rigid rotation of $\small\mathbf{Y}$ (see note).  $\small\mathbf{H}_{orthogonal}$ is idempotent.
+$\small\mathbf{H}_{oblique}$ | $\mathbf{H} \neq \mathbf{H}^T$ | Shear of $\small\mathbf{Y}$.  $\small\mathbf{H}_{oblique}$ can be idempotent, but certainly not symmetric.
+
+
+**Note** that $\small\mathbf{H}_{orthogonal}$ can be viewed as a rotation matrix, which makes sense in low-dimensional data spaces.  For example, in a two dimension data space, it can be the same as:
+$$\small\mathbf{H}_{orthogonal} = \begin{bmatrix}
+\cos\theta & -\sin\theta\\
+\sin\theta & \cos\theta
+\end{bmatrix} $$
+for a rotational angle, $\small\theta$, in a plane.
+
+# Matrix Projection: Geometric Interpretations (Cont.)
+```{r, echo = FALSE, out.width="100%", fig.align='center'}
+include_graphics("LectureData/05.matrices/projections.png")  
+```
+
+# Matrix Inversion
+
+- Matrices cannot be divided.  Much like division of a scalar is the same as multiplication by its inverse (i.e., reciprocal), some matrices can be inverted.
+- Matrix needs to be square, *non-singular*; symmetric, non-singular is optimal.  
+- Matrix inversion fulfills the property that $\small\mathbf{AA}^{-1} = \mathbf{I}$
+- Illustration is simplest with a $\small 2 \times 2$ matrix
+
+Let $\small\mathbf{A}$ be a $\small 2 \times 2$ matrix,
+$$\small\mathbf{A} = \begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix}$$
+Then,
+$$\small \mathbf{A}^{-1} = \left| \mathbf{A} \right|^{-1} \begin{bmatrix}
+d & -b\\
+-c & a
+\end{bmatrix} $$
+where $\small\left| \mathbf{A} \right| = ad-bc$
+
+If $\small|\mathbf{A}| = 0$, the matrix is *singular* and cannot be inverted (dividing by 0 from matrices).
+
+# Matrix Inversion: Example
+
+$$\tiny\mathbf{A} = \begin{bmatrix}
+3 & 4 \\
+4 & 6
+\end{bmatrix}$$
+
+$$\tiny\left| \mathbf{A} \right| = 18-16$$
+$$\tiny\left| \mathbf{A} \right|^{-1} = 0.5$$
+$$ \tiny\mathbf{A}^{-1} = \left| \mathbf{A} \right|^{-1} \begin{bmatrix}
+d & -b\\
+-c & a
+\end{bmatrix} = 
+0.5 \begin{bmatrix}
+6 & -4\\
+-4 & 3
+\end{bmatrix} =
+\begin{bmatrix}
+3 & -2\\
+-2 & 1.5
+\end{bmatrix} $$
+
+Confirm (using R script)
+
+```{r, include = TRUE, fig.align='center'}
+A = matrix(c(3, 4, 4, 6), nrow = 2, ncol = 2)
+A
+solve(A) # solve function finds inverse
+A %*% solve(A)
+```
+
+# Matrix Inversion (Cont.)
+
+- Note, inversion with 3 × 3 matrices or larger, not a trivial exercise
+- Plagiarized from Wikipedia…
+
+```{r, echo = FALSE, out.width="80%", fig.align='center'}
+include_graphics("LectureData/05.matrices/wiki.inversion.png")  
+```
+
+# Putting Our Knowledge to Good Use!
+Matrix inversion is frequently used in statistical estimation
+
+However, recall that a matrix must be square in order to be inverted, and data matrices ($\small n \times p$) are unlikely to be square (i.e., $\small n\neq{p}$).
+
+But, matrix cross-products are square *and* symmetric, and are essentially the squaring of matrices.
+
+**Thus**, matrix cross-products are invertible (and frequently used as a step before inversion).
+
+- Consider:  $\tiny\mathbf{X} = \begin{bmatrix}
+1 & 0 \\
+1 & 0 \\
+1 & 0 \\
+1 & 1 \\
+1 & 1 \\
+1 & 1
+\end{bmatrix}$   We calculate: $\tiny\mathbf{X^TX} =\begin{bmatrix} 1 & 1 & 1 & 1 & 1 & 1 \\ 0 & 0 & 0 & 1 & 1 & 1 \end{bmatrix}  
+\begin{bmatrix}
+1 & 0 \\
+1 & 0 \\
+1 & 0 \\
+1 & 1 \\
+1 & 1 \\
+1 & 1
+\end{bmatrix} = \begin{bmatrix} 6 & 3 \\ 3 & 3 \end{bmatrix}$  
+
+Then, the matrix inverse is: $\small\mathbf{(X^TX)}^{-1}= \frac{1}{6*3 - 3*3}\begin{bmatrix} 3 & -3 \\ -3 & 6 \end{bmatrix}=\begin{bmatrix} .333 & -.333 \\ -.333 & .667 \end{bmatrix}$
+
+# Using R scripts
+
+```{r, include = TRUE, fig.align='center'}
+x1 <- rep(1, 6) # variable x1 with 6 observations
+x2 <- c(rep(0, 3), rep(1,3)) # variable x2 with 6 observations
+X <- as.matrix(data.frame(x1 = x1, x2 = x2))
+X
+crossprod(X)
+solve(crossprod(X))
+```
+
+# Using R scripts (Cont.)
+
+And while we are on the topic…
+Imagine that the second column is a variable, $X$, taking on the value either 0 or 1
+
+The first column is a “dummy” variable
+
+```{r, include = TRUE, fig.align='center'}
+X
+```
+With a little bit of mind-bending, one might notice that 
+
+$$\small\mathbf{X}^T\mathbf{X} = \begin{bmatrix}
+n & \sum X\\
+\sum X & \sum X^2
+\end{bmatrix} $$
+
+# A Simpler Example
+
+Let's reduce the $\mathbf{X}$ matrix, such that
+$$\tiny\mathbf{X}_0 = \begin{bmatrix}
+1\\ 1\\ 1\\ 1\\ 1\\ 1 \end{bmatrix}$$
+
+Now find the cross-product and inverse:
+```{r, include = TRUE, fig.align='center'}
+X0 <- X[,1] # just the first column
+crossprod(X0)
+solve(crossprod(X0))
+```
+Thus, $\small\mathbf{X}_0^T\mathbf{X}_0 = n$ and $\left( \mathbf{X}_0^T\mathbf{X}_0 \right)^{-1} = n^{-1}$
+
+# Putting Our Knowledge to Good Use! (Cont.)
+
+Now for fun, let's find the cross-product between $\mathbf{X}_0$ and $\mathbf{Y}$
+```{r, include = TRUE, fig.align='center'}
+Y <- c(2, 3, 2, 5, 6, 8)
+crossprod(X0, Y)
+
+```
+
+If we examine $\small\mathbf{Y}$ again, you might notice something
+
+```{r, include = TRUE, fig.align='center'}
+Y
+
+```
+
+$\small\mathbf{X}_0^T\mathbf{Y}$ produces vector sums, $\sum y_i$ for each variable.
+
+# Putting Our Knowledge to Good Use! (Cont.)
+
+One more step!  Let's find the result of two things:
+
+$\small\left( \mathbf{X}_0^T\mathbf{X}_0 \right)^{-1}\mathbf{X}_0^T\mathbf{Y}$  |  |  $\small\mathbf{X}_0 \left( \mathbf{X}_0^T\mathbf{X}_0 \right)^{-1}\mathbf{X}_0^T\mathbf{Y}$
+:----------------- | :-------------- | :--------------------- 
+
+```{r, include = TRUE, fig.align='center'}
+solve(crossprod(X0)) %*% crossprod(X0, Y)
+X0 %*% solve(crossprod(X0)) %*% crossprod(X0, Y)
+
+```
+###### The former finds a (row) vector of variable means.  The latter creates a matrix of variable means for every observation in the original data matrix, $\mathbf{Y}$!
+
+Although it might not yet be obvious, we just used the general linear model to find fitted (predicted) values for a model design that has a single mean (centroid).
+
+# The General Linear Model
+$$\huge \mathbf{Y}=\mathbf{X}\mathbf{\beta } +\mathbf{E}$$
+
+Component | Dimension | Description
+:----- | :---------- | :------------------------------------------------------
+$\small\mathbf{Y}$ | $\small n \times p$ | Data matrix with $n$ observations for $\small p$ variables
+$\small\mathbf{X}$ | $\small n \times k$ | Linear model design matrix with $\small n$ observations for $k$ parameters
+$\small\mathbf{\beta}$ | $\small k \times p$ | Matrix of coefficients expressing change in values for the $\small k$ model parameters for each of $\small p$ variables
+$\small\mathbf{E}$ | $\small n \times p$ | Matrix of residuals (error) for $\small n$ observations for $\small p$ variables
+
+Like any area of statistics, the coefficients for a linear model (which has parameters for variable change associated with some hypothetical process) are generally unknown but exist in a population, and are, therefore, estimated from a sample.  We can solve this algebraically as the solution that would be true if there was no error in the model (i.e., $\small\mathbf{E}$ = 0).  The goal is to solve for $\small\mathbf{\beta}$.
+
+# The General Linear Model: Solving for $\small\mathbf{\beta}$
+
+To derive the formula for $\small\mathbf{\beta}$ we do the following:
+
+$$\small\mathbf{Y}=\mathbf{X}\mathbf{\beta } $$
+$$\small\mathbf{X}^T\mathbf{Y} = \mathbf{X}^T\mathbf{X}\mathbf{\beta } $$
+
+$$\small\left( \mathbf{X}^T\mathbf{X} \right)^{-1} \mathbf{X}^T\mathbf{Y} = 
+\left( \mathbf{X}^T\mathbf{X} \right)^{-1} \mathbf{X}^T\mathbf{X}\mathbf{\beta } $$
+$$\small\left( \mathbf{X}^T\mathbf{X} \right)^{-1} \mathbf{X}^T\mathbf{Y} = 
+\mathbf{I}\mathbf{\beta } $$
+
+$$\small\hat{\mathbf{\beta }}=\left ( \mathbf{X}^{T} \mathbf{X}\right )^{-1}\left ( \mathbf{X}^{T} \mathbf{Y}\right )$$
+The ^ reminds us that this is a matrix of estimate values.
+
+# The Linear Model: Predicted Values and Residuals
+
+Using the linear model, predicted values are: 
+
+
+$$\small\hat{\mathbf{Y}}=\mathbf{X}{\mathbf{\beta}=\mathbf{X}\left ( \mathbf{X}^{T} \mathbf{X}\right )^{-1} \mathbf{X}^{T} \mathbf{Y}} = \mathbf{HY}$$
+
+Here, the 'hat' matrix $\small\mathbf{H}$ is an $\small n\times n$ projection matrix. This operation finds the predicted values $\small\hat{\mathbf{Y}}$ for the linear model specified in $\small\mathbf{X}$. 
+
+Thus, residuals of the model are found as: 
+
+$$\small\mathbf{E} = \mathbf{Y} - \hat{\mathbf{Y}}=\mathbf{Y} - \mathbf{H}'\mathbf{Y} =\left(\mathbf{I}-\mathbf{H}'\right)\mathbf{Y}$$
+
+# A Comparison of Models
+
+Now we are in a position to compare models. 
+
+$\tiny\mathbf{X}_R = \begin{bmatrix} 1\\ 1\\ 1\\ 1\\ 1\\ 1 \end{bmatrix}$  & $\tiny\mathbf{X}_F = \begin{bmatrix} 1 & 0 \\ 1 & 0 \\ 1 & 0 \\ 1 & 1 \\ 1 & 1 \\ 1 & 1 \end{bmatrix}$
+
+Let's compare the fit of the data to both $\small\mathbf{X}_{R}$ and $\small\mathbf{X}_{F}$:
+
+Estimate | $\small\mathbf{X}_{R}$| $\small\mathbf{X}_{F}$
+:------------- | :------------------- | :--------------------------
+Coefficients |  $\tiny\hat{\mathbf{\beta_R}}=\left ( \mathbf{X}_R^{T} \mathbf{X}_R\right )^{-1}\left ( \mathbf{X}_R^{T} \mathbf{Y}\right )$ | $\tiny\hat{\mathbf{\beta_F}}=\left ( \mathbf{X}_F^{T} \mathbf{X}_F\right )^{-1}\left ( \mathbf{X}_F^{T} \mathbf{Y}\right )$ 
+Predicted Values | $\small\hat{\mathbf{Y}}_R=\mathbf{X}_R\hat{\mathbf{\beta}}_R$ | $\small\hat{\mathbf{Y}}_F=\mathbf{X}_F\hat{\mathbf{\beta}}_F$
+Model Residuals | $\small\hat{\mathbf{E}}_R=\mathbf{Y}-\hat{\mathbf{Y}}_R$ | $\small\hat{\mathbf{E}}_F=\mathbf{Y}-\hat{\mathbf{Y}}_F$
+Model Residual Error ($\small{SSE}$) | $\small\mathbf{S}_R=\hat{\mathbf{E}}_R^T\hat{\mathbf{E}}_R$ | $\small\mathbf{S}_F=\hat{\mathbf{E}}_F^T\hat{\mathbf{E}}_F$
+
+Significance test based on: $\small{F}=\frac{(\mathbf{S}_R -\mathbf{S}_F) /(k-1) }{\mathbf{S}_F /(n-k)}$
+
+$\small{F}$-ratio is then evaluated using parametric methods or empirical sampling distributions from RRPP
+
+# The Linear Model: Comments
+
+The linear model allows us to fit our data to various models: $\small\mathbf{X}_F$ & $\small\mathbf{X}_F$
+
+The fit to these models is compared statistically using parametric distributions or empirical sampling distributions obtained via resampling (RRPP)
+
+**BOTH** ANOVA and regression models are encapsulated by the linear model: the difference is what types of variables are found in $\small\mathbf{X}$
+
+Next time: Moving this to multivariate $\small\mathbf{Y}$ data!
+

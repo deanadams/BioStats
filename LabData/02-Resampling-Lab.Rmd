@@ -1,0 +1,158 @@
+---
+title: "Resampling Methods"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+---
+
+### **Motivation**
+Increasingly, quantitative analyses of biological data involve resampling procedures: randomization/permutation, bootstrap, jackknife, MCMC, Monte Carlo simuations, etc. are all widely used approaches to evaluate the significance of patterns in data, or evaluate the degree to which the observed pattern corresponds with expected patterns generated from some model-based process.
+
+These approaches may be implemented in R. The tools required to do so include the generation (simulation) of data based on some model, and the selection of values from a vector of observations. 
+
+#### **1: Simulating Data**
+Here are some ways in which data may be simulated in R. Note that more complex functions exist for particular tasks (e.g., simulate data along the branches of a phylogeny under a Brownian motion model of evolution using 'sim.char' in 'geiger'), but that is simply a more complicated function that simulates random normal deviates in a particular fashion: under the hood the simulation generator is one of the functions below (mvrnorm).
+
+```{r eval=TRUE}
+x <- rnorm(5000)
+hist(x,20,freq=T)
+x2<-runif(5000)
+hist(x2,20,freq=T)
+
+z1<-rnorm(500, mean = 1, sd = 0.3)
+hist(z1,20,freq=T)
+
+z2<-rnorm(500, mean = 3, sd = 0.3)
+plot(z1,z2)
+
+z3<-runif(500, 0, 1)
+z4<-runif(500, 0,1)
+plot(z3,z4)
+
+##Setting the 'seed' for random number generation
+	#IMPORTANT for checking simulations prior to full run
+set.seed(2)  #sets the seed
+rnorm(10)
+set.seed(2)  #sets the seed
+rnorm(10)
+rnorm(10)		#note that the seed is not held indefinitely in memory)
+
+## Simulate CORRELATED Data Using MVTNORM
+	##basic idea: simulate rnorm vectors, & multiply by decomposition of a covariance matrix
+		## covariance matrix specifies correlation structure
+library(mvtnorm) 
+corr.val<-0.7
+a <- rmvnorm(n=500,mean=c(0,0),sigma=matrix(c(1,corr.val,corr.val,1),2,2)) 
+cor(a)
+plot(a)
+```
+
+#### **2: Resampling Data**
+A second crucial skill is to be able to resample data in some way. Permutation and bootstrap approaches are accmoplished in R using the function 'sample':
+
+```{r eval=TRUE}
+x <- 1:10
+#dim(x)<-c(10,1) #force dimensions to make column vector
+x
+sample(x)	# Randomize the order of locations
+sample(x,replace=FALSE)	#more explicit
+sample(x,(length(x)-2),replace=FALSE)	#sub-sample
+```
+
+Note that if used incorrectly, 'sample' can get one into trouble. Imagine the cases where rows of a matrix are to be shuffled: 
+
+```{r eval=TRUE}
+x <- 1:10
+y<-cbind(x,x,x)
+y
+
+sample(y,replace=FALSE)    #We did not tell it to preserve rows!!
+  #THIS IS NOT CORRECT. It shuffles all values
+
+y[sample(nrow(y)),]   	   # ROWS Preserved (needed for resampling multivariate data)
+```
+
+#### **3: A Simple Randomization Test**
+Here is a simple randomization test. All randomization tests have 3 main sections:
+1) Obtain test parameters and summary measures from observed data
+2) Permute the data; obtain summary measures from permuted data and generate histogram
+3) Compare observed value to permuted values to assess significance. 
+
+Below is a simple randomization test. It is NOT optimized for speed or coding efficiency, but rather is written in 'readable' form based on these steps (in future weeks we will see how to improve this approach for computational efficiency):
+
+```{r eval=TRUE}
+bumpus<-read.csv("Data/bumpus.csv",header=T)
+bumpus.data<-log(bumpus[,(5:13)]) # set of log-linear measurements
+sex<-as.factor(bumpus[,2])
+TL<-bumpus.data$TL
+
+#Observed data
+t.test(formula=bumpus.data$TL~sex)	
+plot(sex,bumpus.data$TL,ylab="Total Length")
+t.obs<-t.test(formula=bumpus.data$TL~sex)$statistic[[1]]  #grab t-statistic from frame	
+t.obs
+
+#Randomization Test
+permute<-999
+P.1tailed<-P.2tailed<-1
+t.rand.vec<-array(NA,(permute+1))
+t.rand.vec[permute+1]<-t.obs
+for(i in 1:permute){
+  ###Shuffle Data
+	y.rand<-sample(bumpus.data$TL)  #NOTE: notation works ONLY for single variable 
+  ###Run analysis on random data
+	t.rand.vec[i]<-t.test(formula=y.rand~sex)$statistic[[1]]
+}  #end permute
+
+##Significance assessment
+P.1tailed<-length(which(t.rand.vec<=t.rand.vec[permute+1])) / (permute+1)  #because observed is negative
+P.2tailed<-length(which(abs(t.rand.vec)>=abs(t.rand.vec[permute+1]))) / (permute+1)  
+P.1tailed
+P.2tailed
+####Plot
+hist(t.rand.vec,20,freq=T,col="gray")
+segments(t.obs, 0, t.obs, 50)  ##Plot Observed value
+```
+
+#### **4: Bootstrapping Data**
+Bootstrapping is sampling with replacement. Thus in any bootstrap replicate, some observations are represented more than once while others are left out. Such mehtods are particularly useful for obtaining confidence intervals. Below are examples of various types of Bootstrap CI, coded in various ways: 
+
+```{r eval=TRUE}
+x <- 1:10
+sample(x,replace=TRUE)
+
+#Observed mean and CI
+mean.TL<-mean(TL)	
+mean.TL
+int<-1.96*sqrt(var(TL)/length(TL))
+CIlow<-mean.TL-int
+CIhi<-mean.TL+int
+CIlow
+CIhi
+#Bootstrap data
+boot.mean<-numeric(1000)
+for (i in 1:1000){
+  boot.mean[i]<-mean(sample(TL,replace=T))
+}
+
+### PERCENTILE BOOTSTRAP CI
+quantile(boot.mean,c(0.025,0.975))
+
+###Standard Boostrap CI
+int.boot<-1.96*sd(boot.mean)
+CIlow.boot<-mean.TL-int.boot
+CIhi.boot<-mean.TL+int.boot
+CIlow.boot
+CIhi.boot
+
+#Using the packag boot
+library(boot)
+mymean<-function(TL,i)mean(TL[i])
+myboot<-boot(TL,mymean,R=1000)
+myboot
+
+quantile(myboot$t,c(0.025,0.975))
+#Various Bootstrap CI
+boot.ci(myboot)
+```

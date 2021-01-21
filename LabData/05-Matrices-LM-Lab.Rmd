@@ -1,0 +1,194 @@
+---
+title: "Matrices and the Linear Model"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### **Motivation**
+Today's lab has two objectives. First we will remind ourselves of matrix algebra computations in R, and derive the linear model from it. Next we will code multiple implementationf of LM in R, and compare their computational performance. First some basic matrix operations (reviewed from week 1):
+
+```{r eval=TRUE, error=TRUE}
+bumpus<-read.csv("Data/bumpus.csv",header=T)
+bumpus.data<-as.matrix(bumpus[,(5:13)])  #note: 'as.matrix' forces data type
+  cor(bumpus.data)    #correlation  matrix
+  vcv.bumpus<-var(bumpus.data)    #covariance matrix
+  var(bumpus.data)
+
+# Elementary matrix algebra
+a<-matrix(c(1,0,4,2,-1,1),nrow=3)
+b<-matrix(c(1,-1,2,1,1,0),nrow=2)
+a
+b
+
+c<-t(a)	#matrix transpose
+a
+c
+
+d<-matrix(c(2,3,1,4),nrow=2)
+det(d)	#matrix determinant
+exp(determinant(d)$modulus)  #another way
+2*a	#scalar multiplication
+
+#Matrix addition and subtraction #NOTE: dimensions must agree 
+b+c
+b-c
+
+#elementwise multiplication (Hadamard product)
+c
+b
+c*b
+
+diag(5)   #identity matrix with 5 rows/cols
+
+# matrix multiplication
+a%*%b		## %*% is symbol for matrix multiplication
+b%*%a		## matrix order matters
+
+# matrix inversion
+d
+solve(d)
+solve(vcv.bumpus)
+
+### example of redundant variables causing singularities
+a <- rnorm(10)
+b <-rnorm(10)
+c <- a+b
+cov.dat <- cov(cbind(a,b,c))
+solve(cov.dat)
+
+
+# Generalized Inverse
+library(MASS)
+ginv(vcv.bumpus)		#one way of dealing with singular covariance matrices (when P>N, or when there are redundancies in the data)
+
+### Matrix decomposition
+#eigen-analysis
+eigen(vcv.bumpus)			#decomposition of square-symmetric matrices
+
+#singular-value decomposition
+svd(vcv.bumpus)			#Same results as 'eigen'
+#svd(bumpus.data)			#Can also decompose rectangular matrices (NOT run)
+
+```
+
+#### **1: The Linear Model in Matrix Form**
+Here we use matrix algebra to accomplish linear regression and anova. The steps require fitting a full and reduced model to obtain parameters, fitted values, residuals, and SS. We show that these are identical to values obtained using 'lm': thus they are equivant 'under the hood.'
+
+```{r eval=TRUE}
+#Some data
+x<-matrix(1,10)
+x2<-matrix(c(1,1,1,1,1,0,0,0,0,0))
+xnew<-cbind(x,x2)
+y<-matrix(c(5,4,4,4,3,7,5,6,6,6))
+yreg<-matrix(c(1,3,4,6,8,7,9,11,10,13))
+xreg<-matrix(c(1,2,3,4,5,6,7,8,9,10))
+xnewreg<-cbind(x,xreg)
+
+#ANOVA
+model1<-lm(y~x2)
+  model.matrix(model1)
+b<-solve(t(xnew)%*%xnew)%*%t(xnew)%*%y
+summary(model1)
+b
+
+predict(model1)
+yhat<-xnew%*%b
+yhat
+
+SSFull<-t(y-yhat)%*%(y-yhat)
+bred<-solve(t(x)%*%x)%*%t(x)%*%y
+yhatred<-x%*%bred
+yhatred
+SSRed<-t(y-yhatred)%*%(y-yhatred) #Is SSTot
+SSModel<-SSRed-SSFull
+anova(model1)
+SSModel
+SSFull
+SSRed
+
+#Regression
+model2<-lm(yreg~xreg)
+breg<-solve(t(xnewreg)%*%xnewreg)%*%t(xnewreg)%*%yreg
+summary(model2)
+breg
+
+predict(model2)
+yhatreg<-xnewreg%*%breg
+yhatreg
+
+SSFullreg<-t(yreg-yhatreg)%*%(yreg-yhatreg)
+bredreg<-solve(t(x)%*%x)%*%t(x)%*%yreg
+yhatredreg<-x%*%bredreg
+yhatredreg
+SSRedreg<-t(yreg-yhatredreg)%*%(yreg-yhatredreg) #Is SSTot
+SSModelreg<-SSRedreg-SSFullreg
+anova(model2)
+SSModelreg
+SSFullreg
+SSRedreg
+```
+
+#### **2: Multiple implementations of LM**
+In R there are often multiple ways to implement the same analysis. One question is how they compare computationally.  Linear models serve as an example. Below are five (yes 5) different ways to implement a regression. We then compare them for different sized data (both N-objects and P-variables):
+
+```{r eval=TRUE}
+library(microbenchmark)
+
+x<-matrix(rnorm(10000),ncol=2)
+xf<-cbind(1,x)
+y<-matrix(rnorm(nrow(x)))
+
+lm(y~x)  #Common method
+solve(t(xf)%*%xf)%*%t(xf)%*%y
+crossprod(solve(crossprod(xf)),crossprod(xf,y))
+lm.fit(xf,y)$coefficients
+.lm.fit(xf,y)$coefficients  ### NOTE: a very low-level function (cannot use in packages submitted to CRAN)
+qr.coef(qr(xf),y)
+
+microbenchmark(
+  lm(y~x),
+  solve(t(xf)%*%xf)%*%t(xf)%*%y,
+  crossprod(solve(crossprod(xf)),crossprod(xf,y)),
+  lm.fit(xf,y),.lm.fit(xf,y),
+  qr.coef(qr(xf),y)
+)
+
+###NOTE that the best implementation can change with the size of the data matrix
+#Large X univ. Y
+x<-matrix(rnorm(10000),ncol=50)
+xf<-cbind(1,x)
+y<-matrix(rnorm(nrow(x)))
+microbenchmark(
+  lm(y~x),
+  solve(t(xf)%*%xf)%*%t(xf)%*%y,
+  crossprod(solve(crossprod(xf)),crossprod(xf,y)),
+  lm.fit(xf,y),.lm.fit(xf,y),
+  qr.coef(qr(xf),y)
+)
+
+##Large Y univ. X
+y<-matrix(rnorm(10000),ncol=100)
+x<-matrix(rnorm(nrow(y)))
+xf<-cbind(1,x)
+microbenchmark(
+  lm(y~x),
+  solve(t(xf)%*%xf)%*%t(xf)%*%y,
+  crossprod(solve(crossprod(xf)),crossprod(xf,y)),
+  lm.fit(xf,y),.lm.fit(xf,y),
+  qr.coef(qr(xf),y)
+)
+
+#large Y and X
+y<-matrix(rnorm(20000),ncol=100)
+x<-matrix(rnorm(10000),ncol=50)
+xf<-cbind(1,x)
+microbenchmark(
+  lm(y~x),
+  solve(t(xf)%*%xf)%*%t(xf)%*%y,
+  crossprod(solve(crossprod(xf)),crossprod(xf,y)),
+  lm.fit(xf,y),.lm.fit(xf,y),
+  qr.coef(qr(xf),y)
+)
+
+```

@@ -1,0 +1,419 @@
+---
+title: "07: Interaction Terms and Trajectory Analysis"
+subtitle: 
+author: "Dean Adams, Iowa State University"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE, echo = TRUE, tidy = TRUE}
+library(knitr)
+library(RRPP)
+library(geomorph)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#From Factorial Models to Trajectories
+
+We have seen that factorial models enable us to attribute variation to differing factors, and in the case of categorical factors, determine whether levels (groups) differ in some way. For instance, the plot below shows 4 groups which appear distinct in their trait attributes. However, as biologists, we have additional information about these groups; for instance, they may be males and females from each of two populations. Thus, levels of one factor `sex` are really *linked* via the other factor `population`. 
+
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/07.PTA/IntroPCPlot.png")  
+```
+
+#From Factorial Models to Trajectories
+
+We have seen that factorial models enable us to attribute variation to differing factors, and in the case of categorical factors, determine whether levels (groups) differ in some way. For instance, the plot below shows 4 groups which appear distinct in their trait attributes. However, as biologists, we have additional information about these groups; for instance, they may be males and females from each of two populations. Thus, levels of one factor `sex` are really *linked* via the other factor `population`. 
+
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/07.PTA/IntroPCPlot2.png")  
+```
+
+Might there be additional information we could glean statistically from viewing these as linked data (trajectories)?
+
+# Trajectory Analysis
+
+Trajectory analysis is a means of quantifying and comparing attributes of these linkages. In the case below, the vectors linking males and females form sexual dimorphism vectors. These represent *vectors of change* in trait values between levels (the sexes in this case), and these may be treated as a second-order dataset that may be compared across populations. Trajectory analysis accomplishes this task.
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/07.PTA/IntroPCPlot2.png")  
+```
+
+#####Vector and Trajectory Methods Discussed Today were Originally Described in: 
+#####Collyer and Adams. *Ecology*. 2007; Adams and Collyer. *Evolution*. 2007; Adams and Collyer. *Evolution*. 2009; Collyer and Adams. *Hystrix*. 2013. 
+
+# Trajectory Analysis
+
+In the case of **factorial** models, one might consider two orders of possible factor-level analyses:
+
+Order | Vectors | Test
+:---- | :------- | :------------------------------------------------------
+First | $\mathbf{\hat{y}}_i$ | Compare means, given appropriate null (reduced) model, to ascertain a logical explanation for significant factor interactions.  (*We have done this already.  e.g., pairwise comparisons.*)
+Second | $\mathbf{\hat{y}}_i - \mathbf{\hat{y}}_j$ | Compare change in means across levels of factor B among levels of factor A.  Second-order analyses target the pattern of change and analyze the geometric attributes of trajectories that describe the change.
+
+As an example, with the pupfish body shape data, a first-order analysis seeks to understand if the variation among the means of the `sex:population` groups was meaningful, after accounting for general population differences and sexual dimorphism.  A second-order analysis might define sexual dimorphism vectors and compare their geometric attributes in a specific way, to help explain *why* the variation is meaningful.
+
+#Interaction Terms in Linear Models
+
+Let's take a step back and reconsider model interaction terms. Say we have `Y~A+B+A:B`.
+
+The interaction term `A:B` measures the joint effect of main effects `A` & `B`. It identifies whether responses to `A` dependent on level of `B`
+
+Interactions are Are *VERY* common in biology. For instance, the example below shows 2 species in 2 environments (Factors `A` & `B`). Species 1 has a higher growth rate in the moist environment, while species 2 has a higher growth rate in the dry environment.  Statistically, such patterns would be identified by a significant `species:environment` interaction.
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/07.PTA/TradeOff.png")  
+```
+
+###Note: the study of trade-offs and reaction norms in evolutionary ecology is essentially the study of interactions!
+
+# Understanding Interactions
+
+Significant interactions identify a joint response of factors (response to Factor `B` depends on level in Factor `A`)
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/07.PTA/TradeOff.png")  
+```
+
+Interpreting interactions for univariate data is straightforward: simply plot them!
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/07.PTA/Interaction-UnivData.png")  
+```
+
+# Understanding Interactions (Cont.)
+
+For two traits, more complicated variants are possible, but a 2D plot still suffices for visual inspection. 
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/07.PTA/Interaction-BivarData.png")  
+```
+
+# Interactions to Trajectories
+
+In the previous plots, we have 'linked' levels of one factor across another. For two levels, that produces vectors, whose patterns we compared visually. More formally, we should use quantitative summaries. Consider the following: 
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/07.PTA/PCVectorConcept.png")   
+```
+
+Here the white and blue dots ($\small\mathbf{\hat{y}}_{i,1}^T$ and $\mathbf{\hat{y}}_{i,2}^T$) correspond to levels within each group (e.g., sexes within each population). Likewise, the vector between them is defined as, $\small\mathbf{\hat{y}}_{i,2}^T - \mathbf{\hat{y}}_{i,1}^T$. These represent **Change Vectors** describing the difference in mean trait values between levels within each group. 
+
+For our model, `Y~population+sex+population:sex`, they represent vectors describing the sexual dimorphism within each population.  
+
+The question then is: do these vectors differ, and if so how?
+
+# Attributes of Change Vectors (2-Point Trajectories)
+
+Once we have defined the change vectors for each group, we require summary measures of them. In any dimension, vectors have two attributes: a **length** and a **direction**. 
+
+First, the length of each change vector is found as: $\small\Vert{D}_1\Vert=\left( \mathbf{\Delta \hat{y}}_1^T \mathbf{\Delta \hat{y}_1} \right)^{1/2}$.  Where: $\small{\mathbf{\Delta \hat{y}}_1}=\mathbf{\hat{y}}_{1,2}^T - \mathbf{\hat{y}}_{1,1}^T$. This is the length of $\small{D}_1$. Vector lengths are obtained for all vectors.
+
+Next, we calculate two test statistics: one that describes the difference in vector magnitudes, and another the difference in their angular direction: 
+
+$$\small MD = \left| d_1 - d_2 \right| = \left| \left( \mathbf{\Delta \hat{y}}_1^T \mathbf{\Delta \hat{y}_1} \right)^{1/2} -
+\left(\mathbf{\Delta \hat{y}}_2^T \mathbf{\Delta \hat{y}}_2 \right)^{1/2} \right| $$
+
+$$\small\theta = \frac{\mathbf{\Delta \hat{y}}_1^T \mathbf{\Delta \hat{y}}_2 }{d_1d_2}$$
+
+Here, $\small{MD}$ represents the *magnitude difference* between vector lengths, and $\small\theta$ represents the *angular difference* between vector directions.
+
+# Hypothesis Tests
+
+Evaluating $\small{MD}$ and $\small\theta$ involves something we have performed previously RRPP with factorial models. The procedure is as follows, and is based on a comparison of variation from $\mathbf{X}_F$ & $\mathbf{X}_R$ where:
+
+$\mathbf{X}_F$ is: `Y~A + B + A:B`
+
+$\mathbf{X}_R$ is: `Y~A + B`
+
+Estimate | $\small\mathbf{X}_{R}$| $\small\mathbf{X}_{F}$
+:------------- | :------------------- | :--------------------------
+Coefficients |  $\tiny\hat{\mathbf{\beta_R}}=\left ( \mathbf{X}_R^{T} \mathbf{X}_R\right )^{-1}\left ( \mathbf{X}_R^{T} \mathbf{Y}\right )$ | $\tiny\hat{\mathbf{\beta_F}}=\left ( \mathbf{X}_F^{T} \mathbf{X}_F\right )^{-1}\left ( \mathbf{X}_F^{T} \mathbf{Y}\right )$ 
+Predicted Values | $\small\hat{\mathbf{Y}}_R=\mathbf{X}_R\hat{\mathbf{\beta}}_R$ | $\small\hat{\mathbf{Y}}_F=\mathbf{X}_F\hat{\mathbf{\beta}}_F$
+Model Residuals | $\small\hat{\mathbf{E}}_R=\mathbf{Y}-\hat{\mathbf{Y}}_R$ | $\small\hat{\mathbf{E}}_F=\mathbf{Y}-\hat{\mathbf{Y}}_F$
+
+For $\mathbf{X}_F$, $\small{MD}$ and $\small\theta$ are obtained from $\small\hat{\mathbf{Y}}_F$. Then:
+
+- 1) RRPP is performed by permuting $\small\hat{\mathbf{E}}_R$ 
+- 2) pseudo values are obtained as $\small\mathbf{\mathcal{Y}} = \mathbf{\hat{Y}}_{R} + \mathbf{E}_{R}$
+- 3) these are used in $\mathbf{X}_F$ to obtain fitted values
+- 4) Finally, $\small{MD}_{Rand}$ and $\small\theta_{Rand}$ are obtained for significance testing
+
+# Trajectory Analysis: Comments
+
+Testing $\small{MD}$ and $\small\theta$ evaluates *context dependent* trait changes. "Is there greater sexual dimorphism in one population as compared to another?"
+
+This is based on vector attributes, which embody aspects of interaction terms. 
+
+In fact, RRPP used in this manner is explicitly a test of **interaction term** attributes (think of the RRPP procedure we utilized: `Y~A+B+A:B` versus `Y~A+B`).
+
+In fact, if the interaction term from the manova is not significant, this implies that there is no context-dependent pattern in the data: understanding the main effects in the model is sufficient.
+
+Note also, that standard pairwise comparisons 'leave some information on the table' that vector analysis evaluates. Pairwise comparisons are at best tests of magnitude between two groups. They do *NOT* evaluate differences in distances between pairs of groups, nor directional differences. **Only trajectory/vector analysis accomplishes this!**
+
+# Trajectory Analysis: Familiar Example
+
+What we have not yet established is whether second-order statistics generated by RRPP are appropriate (they are).  We will examine that shortly, but let's first get a sense how this works.  This example uses the `R` package, `geomorph` with the `Pupfish` data from `RRPP`.  (A trajectory analysis option is under development for the `pairwise` function in `RRPP`, but we know it works now in `geomorph`.)
+
+```{r, echo = TRUE, include = TRUE}
+data("Pupfish")
+pupfish <- Pupfish # Duplicate data frame
+class(pupfish) <- "geomorph.data.frame" # Help R and geomorph work with the data
+
+#Note: trajectory analysis found in the 'geomorph' package.
+TA <- trajectory.analysis(f1 = coords ~ Pop * Sex, data = pupfish, print.progress = FALSE)
+```
+
+# Trajectory Analysis: Familiar Example (Cont.)
+```{r, echo = TRUE, include = TRUE}
+summary(TA, angle.type = "deg")
+```
+
+# Trajectory Analysis: Familiar Example (Cont.)
+```{r, echo = TRUE, include = TRUE}
+plot(TA)
+```
+
+The trajectory analysis and plot demonstrate that sexual dimorphism differs between the two populations. One population (Marsh) displays greater SD than the other. Also, the direction of that sexual dimorphism is not the same in the data space. 
+
+# Trajectory Analysis: Example 2
+
+Another example in salamanders, regarding evolutionary phenotypic responses of two species to competition (design: 2 species in 2 environments). 
+
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/07.PTA/pta/Slide02.png")   
+```
+
+Here, the magnitude of vectors was not different but the direction was. The interpretation in this case is that both species displayed similar *amounts* of phenotypic evolution in response to competition, but the direction differed. In this case, the species diverged evolutionarily: a pattern consistent with character displacement. 
+
+
+# Trajectory Analysis With Covariates
+
+Earlier examples of trajectory analysis assumed no covariate, visually: 
+
+```{r, echo = FALSE}
+include_graphics("LectureData/07.PTA/TrajNoCov.png")   
+```
+
+However, for many hypotheses, one must account for variation due to a covariate while simultaneously assessing patterns of multivariate change. 
+
+```{r, echo = FALSE}
+include_graphics("LectureData/07.PTA/TrajWithCov.png")   
+```
+
+Adams and Collyer *Evolution* (2007) demonstrated that simply incorporating the covariate into the model permitted accomplishes this analytical goal. 
+
+Mathematically this is the model: `Y~cov+A+B+A:B`.
+
+# Trajectory Analysis With Covariates (Cont.)
+
+The method works exactly as expected!
+
+```{r, echo = FALSE}
+include_graphics("LectureData/07.PTA/A-C07-Evol.png")   
+```
+
+# Trajectory Analysis: Generalizations
+
+Now we have to consider that a trajectory might contain more than two points.  Two-point trajectories are great because they have two attributes - length and direction - with which we have learned how to handle for statistical tests.  A three point trajectory is a sequence of two vectors; a four-point trajectory is a sequence of three vectors; etc.  We could go crazy trying to analyze every pairwise vector of every pairwise difference in a pairwise fashion, or further consider the attributes of trajectories.
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/07.PTA/pta/Slide04.png")  
+```
+
+Trajectories have as attributes
+
+1. **Length** (of a vector between two points, of the sum of vector lengths - the **path distance** if three or more points)
+2. **Direction** (angular change from a reference, of vectors for two points, or of first PCs for three or more points)
+3. **Shape** (if three or more points, the cumulative angular and length changes of consecutive vectors)
+
+# Trajectory Analysis (Cont.)
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/07.PTA/pta/Slide04.png")  
+```
+
+Trajectory Statistics
+
+Attribute Compared | 2-point Statistic | >2-point Statistic
+:-------- | :----------- | :------------------------------------
+Length | $MD = \mid {d}_1 - {d}_2 \mid$ | $MD = \mid \sum d_1 - \sum d_2 \mid$
+Angle | $\theta = \frac{\mathbf{\Delta \hat{y}}_1^T \mathbf{\Delta \hat{y}}_2 }{d_1d_2}$ | $\theta = \mathbf{u}_{1,1}^T \mathbf{u}_{2,1}$, where $\mathbf{u}_{i,1}$ refers to the first eigenvector of the $i^{th}$ group, which happens to already be unit size.
+Shape | *NA* | $D_P = \left(\left( \mathbf{\hat{z}}_1^T -  \mathbf{\hat{z}}_2^T \right) \left( \mathbf{\hat{z}}_1 - \mathbf{\hat{z}}_2 \right) \right)^{1/2}$, where $\mathbf{\hat{z}}$ is a vectorized form of the matrix, $\mathbf{\hat{Y}}$, which has been centered, "standardized" by matrix size, and rotated.  $D_P$ is Procrustes distance.
+
+# Generalized Procrustes Analysis
+
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/07.PTA/pta/Slide05.png")  
+```
+
+# Generalized Procrustes Analysis (Cont.)
+
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/07.PTA/pta/Slide06.png")  
+```
+
+# Generalized Procrustes Analysis (Cont.)
+
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/07.PTA/pta/Slide07.png")  
+# Trajectory Analysis (Cont.)
+```
+
+# Generalized Procrustes Analysis (Cont.)
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/07.PTA/pta/Slide04.png")  
+```
+
+Trajectory Statistics
+
+Attribute Compared | 2-point Statistic | >2-point Statistic
+:----------- | :---------------- | :------------------
+Length | $MD = \mid {d}_1 - {d}_2 \mid$ | $MD = \mid \sum d_1 - \sum d_2 \mid$
+Angle | $\theta = \frac{\mathbf{\Delta \hat{y}}_1^T \mathbf{\Delta \hat{y}}_2 }{d_1d_2}$ | $\theta = \mathbf{u}_{1,1}^T \mathbf{u}_{2,1}$, where $\mathbf{u}_{i,1}$ refers to the first eigenvector of the $i^{th}$ group, which happens to already be unit size.
+Shape | *NA* | $D_P = \left(\left( \mathbf{\hat{z}}_1^T -  \mathbf{\hat{z}}_2^T \right) \left( \mathbf{\hat{z}}_1 - \mathbf{\hat{z}}_2 \right) \right)^{1/2}$, where $\mathbf{\hat{z}}$ is a vectorized form of the matrix, $\mathbf{\hat{Y}}$, which has been centered, "standardized" by matrix size, and rotated.  $D_P$ is Procrustes distance.
+
+
+# Trajectory Analysis (Cont.) 
+
+Each of these statistics could be considered test statistics in a hypothesis test.  The expected value of each is 0 under a null hypothesis of no difference in geometric attribute.  The question now is whether these second-order statistics behave as we would hope for hypothesis tests.  The way to test this is to create data with known properties and see what happens.
+
+
+# Trajectory Analysis (Cont.)
+
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/07.PTA/pta/Slide08.png")  
+```
+
+# Trajectory Analysis (Cont.)
+
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/07.PTA/pta/Slide09.png")  
+```
+
+
+# Trajectory Analysis (Cont.)
+
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/07.PTA/pta/Slide10.png")  
+```
+
+# Trajectory Analysis (Cont.)
+
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/07.PTA/pta/Slide11.png")  
+```
+
+# Trajectory Analysis (Cont.)
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/07.PTA/pta/Slide12.png")  
+```
+
+# Trajectory Analysis (Cont.)
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/07.PTA/pta/Slide13.png")  
+```
+
+# Trajectory Analysis (Cont.)
+
+#### Conclusion: Using RRPP, trajectory analysis provides appropriate pairwise test statistics.  Therefore, in addition to ANOVA and pairwise tests with first-order statistics, one can perform a trajectory analysis with the same random permutations from RRPP, for factorial models.
+
+  - The intention for performing trajectory analysis should be clear.  The statistics can be more useful than simple pairwise comparisons, especially if there are several groups and multiples "stages" in the trajectories.  The many pairwise combinations would become exhausting to consider.
+  - Although the models have to be factorial in nature, they can include covariates or other factors, in which case the points are least squares means.
+  - An example will illustrate how this analysis is effective with more than two points.
+
+# Trajectory Analysis: Illustrative Example
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/07.PTA/snake.pta/Slide1.png")  
+```
+
+# Trajectory Analysis: Illustrative Example
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/07.PTA/snake.pta/Slide2.png")  
+```
+
+# Trajectory Analysis: Illustrative Example
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/07.PTA/snake.pta/Slide3.png")  
+```
+
+# Trajectory Analysis: Illustrative Example
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/07.PTA/snake.pta/Slide4.png")  
+```
+
+# Trajectory Analysis: Examples of Its Use in The Scientific Literature
+
+
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/07.PTA/ta.examples/Slide1.png")  
+```
+
+# Trajectory Analysis: Examples of Its Use in The Scientific Literature
+
+
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/07.PTA/ta.examples/Slide2.png")  
+```
+
+# Trajectory Analysis: Examples of Its Use in The Scientific Literature
+
+
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/07.PTA/ta.examples/Slide3.png")  
+```
+
+# Trajectory Analysis: Examples of Its Use in The Scientific Literature
+
+
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/07.PTA/ta.examples/Slide4.png")  
+```
+
+# Trajectory Analysis: Examples of Its Use in The Scientific Literature
+
+
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/07.PTA/ta.examples/Slide5.png")  
+```
+
+# Trajectory Analysis: Examples of Its Use in The Scientific Literature
+
+
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/07.PTA/ta.examples/Slide6.png")  
+```
+
+# Trajectory Analysis: Examples of Its Use in The Scientific Literature
+
+
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/07.PTA/ta.examples/Slide7.png")  
+```
+
+# Trajectory Analysis: Examples of Its Use in The Scientific Literature
+
+A recent review in *Ann. Rev. Ecol. Evol. Syst.* (2018) highly recommends use of trajectory analysis for evaluating patterns of parallel and non-parallel evolution!
+
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/07.PTA/Bolnick.png")  
+```
+
+# Trajectory Analysis: Summary and Other Comments
+
+- There are many different research questions where comparing trajectories in multivariate data spaces is appropriate.
+- Many E & E research designs are factorial by nature.
+- Related to the theme of high-dimensional data analysis, none of these test statistics are variable-number dependent.  Any number of dimensions is fine.
+- **Comment** Sometimes the statistics are not fully intuitive.  For example, angles can be seemingly large but not significant if
+  
+  + there are many data dimensions
+  + vector lengths are small
+
+Also, angles might be strange if trajectories change direction a lot (maybe returning to initial states in later states), such that describing a general direction does not make sense.
+
+We recommend focusing on effect sizes and considering all attributes, together.

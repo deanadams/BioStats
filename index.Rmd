@@ -2,9 +2,11 @@
   title: "Advanced Biostatistics (EEB 590C)"
   output: html_document
 ---
+
+# Welcome to Advanced Biostatistics!
   
-This course presents a survey of the biostatistical methods commonly used in evolutionary and ecological research.  It motivates this topic from the conceptual and logical foundations of matching one’s data and hypotheses with analytical techniques.  The goal is to provide a working knowledge of statistical methods, so that one may better determine which analytical approaches are most appropriate for different types of data. The course therefore follows a: *‘Think first, implement methods second’* perspective. The mathematical and conceptual relationships among methods will also be discussed. \hfill\break
+This course presents a survey of the biostatistical methods commonly used in evolutionary and ecological research. It explores the conceptual and logical foundations of biological statistics for ecological and evolutionary research, and provides perspective on how one can match analytical approaches with biological hypotheses and data type. 
 
-**NOTE:** This course is NOT intended to be a substitute for all courses in statistics. It *is* intended to be a gateway to advanced courses in statistics; providing students a perspective on what areas of statistics are relevant to their types of data. It is also intended to provide sufficient detail so that one may pick up a recent issue of *Evolution*, *American Naturalist*, *Ecology*, etc. and be able to understand the statistical methodology used in the articles. This way, one may more critically evaluate the literature, and be better equipped to implement these methods in one’s own research as the need arises.  \hfill\break
+The goal is to provide a working knowledge of statistical methods common to E&E research, so that one may better determine which analytical approaches are most appropriate for different types of data. The course therefore follows a: *‘Think first, implement methods second’* perspective. The mathematical and conceptual relationships among methods will also be discussed. 
 
-**Course Format:** There will be one lecture each week, followed by a computer laboratory. In laboratory we will implement the methods discussed in lecture to provide ‘hands on’ experiences designed to reinforce the statistical concepts learned that day. The laboratory exercises will be performed in R. 
+One goal of the course is to provide sufficient background and detail of analytical methods such  that one may pick up a recent issue of *Evolution*, *American Naturalist*, *Ecology*, etc. and be able to understand the statistical methodology used in the articles. This enables biologists to more critically evaluate the literature, and be better equipped to implement appropriate methods in their own research.  

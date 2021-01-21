@@ -1,0 +1,176 @@
+---
+title: "Regression Models"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### **Motivation**
+Today we explore various type of regression models and their implementation. First let's read in some data:
+
+```{r eval=TRUE}
+bumpus<-read.csv("Data/bumpus.csv",header=T)
+bumpus.data<-log(as.matrix(bumpus[,(5:13)])) # matrix of log-linear measurements
+sex<-as.factor(bumpus[,2])
+surv<-as.factor(bumpus[,4])
+SexBySurv<-as.factor(paste(sex,surv))
+Y<-as.matrix(bumpus.data[,1])
+X1<-bumpus.data[,2]
+X2<-bumpus.data[,3]
+```
+
+#### **1: Simple Linear Regression**
+Simple linear regression fits a bivariate model of the form Y~X, where variation in Y is explained by variation in X. Here are two implementations: parametric and permutational.
+
+```{r eval=TRUE}
+lm(Y~X1)
+
+#more information
+model1<-lm(Y~X1)
+summary(model1)	#provides regression coefficients	
+anova(model1)	#provides model term tests
+plot(X1,Y,pch=21, bg="black", cex=2)
+abline(model1,lwd=2,col="red")
+
+  #Lots of components in model, such as:
+model1$fitted.values
+model1$residuals
+
+#Regression evaluated via residual randomization (RRPP)
+library(RRPP)
+mydat <- rrpp.data.frame(Y = Y, X1 = X1, X2 = X2, sex = sex, surv = surv, SexBySurv = SexBySurv)
+
+model2 <- lm.rrpp(Y~X1, print.progress = FALSE, data = mydat)
+anova(model2)
+anova(model1)	#Identical to parametric results 
+coef(model2)
+coef(model1)
+
+  #plot(model1) #Diagnostic plots: NOTE RUN
+```
+
+#### **2: Model II Regression**
+Model II regresion allows for error in both Y and X, and models deviations orthogonal to the regression line (rather than only in the Y-direction). **NOTE**: Method is shown for illustrative purposes only.  There are very good reasons *not* to use this for biological data (see lecture for discussion).
+
+```{r eval=TRUE}
+library(lmodel2)
+lmodel2(Y~X1,nperm=999)
+  RMA<-lmodel2(Y~X1)
+plot(RMA, pch=21,cex=2, bg="black")
+abline(model1,lwd=2,col="blue")
+```
+
+#### **3: Multiple Regression**
+Multiple regression is the case where variation in Y is explained by several independent variables: Y~X1+X2, etc
+
+```{r eval=TRUE}
+summary(lm(Y~X1+X2))
+anova(lm(Y~X1+X2))
+
+library(scatterplot3d)
+plot<-scatterplot3d(X1,X2,Y)
+plot$plane3d(lm(Y~X1+X2))
+```
+
+One can also perform multiple regression via RRPP.  Note that here we have also evaluated the multicollinearity among the independent (X) variables. When this is reasonably large, type II SS may be prefered. 
+
+```{r eval=TRUE}
+#via RRPP
+anova(lm.rrpp(Y~X1+X2,print.progress = FALSE, data=mydat))
+  cor(X1,X2)  #hmm, there is multicollinearity in the X-variables. Perhaps use type II SS.
+anova(lm.rrpp(Y~X1+X2,print.progress = FALSE, data=mydat,SS.type = "II"))
+```
+
+A polynomial regression is a special case of multiple regression where X is sequentially raised to higher powers: X, X^2, X^3, etc.
+
+```{r eval=TRUE}
+#polynomial regression
+fit  <- lm(Y~X1) #first degree
+fit2 <- lm(Y~poly(X1,2,raw=TRUE))#second degree
+fit3 <- lm(Y~poly(X1,3,raw=TRUE))#third degree
+fit4 <- lm(Y~poly(X1,4,raw=TRUE))#fourth degree
+
+#evaluate models
+anova(fit)
+anova(fit,fit2)  #In this case, adding polynomial terms NOT an improvement
+anova(fit2,fit3)
+anova(fit3,fit4)
+
+plot(X1,Y)
+abline(model1,col="red")
+xx <-seq(min(X1),max(X1),length=100)
+lines(xx, predict(fit2, data.frame(X1=xx)), col="blue")
+lines(xx, predict(fit3, data.frame(X1=xx)), col="green")
+lines(xx, predict(fit4, data.frame(X1=xx)), col="purple")
+```
+
+#### **4: ANCOVA: Analysis of Covariance**
+When one has both categorical and continuous independent X-variables, the model is an ANCOVA.  Here one must first test for homogeneity in Y~X slopes across groups. If these are not statistically distinguishable, a common slope model may be used to compare group means while accounting for a common slope.
+
+On the other hand, if the slopes are different, one must perform a comparisons of slopes test to determine how the slopes differ (rather than the group mean test). Examples are below:  
+
+```{r eval=TRUE}
+anova(lm(Y~X2*SexBySurv))
+
+#Implies slopes for M and F statistically equivalent, so drop and re-run
+anova(lm(Y~X2+SexBySurv))
+model.ancova<-lm(Y~X2+SexBySurv)
+
+colo<-rep("blue",nrow(bumpus.data)); colo[which(SexBySurv == 'f TRUE')]<-"red";
+	colo[which(SexBySurv == 'f FALSE')]<-"pink"; colo[which(SexBySurv == 'm FALSE')]<-"lightblue";
+
+plot(X2,Y,pch=21,cex=2,bg=colo)
+abline(model.ancova$coefficients[1],model.ancova$coefficients[2])
+abline((model.ancova$coefficients[1]+model.ancova$coefficients[3]),model.ancova$coefficients[2])
+abline((model.ancova$coefficients[1]+model.ancova$coefficients[4]),model.ancova$coefficients[2])
+abline((model.ancova$coefficients[1]+model.ancova$coefficients[5]),model.ancova$coefficients[2])
+	#note: parameters are intercept, slope, deviations of int. for groups
+
+#via RRPP
+model.anc2 <- lm.rrpp(Y~X2*SexBySurv, print.progress = FALSE, data = mydat)
+anova(model.anc2)
+
+model.anc3 <- lm.rrpp(Y~X2+SexBySurv, print.progress = FALSE, data = mydat)
+
+#NOTE: `plot` works on lm.rrpp objects, but is most useful for  #multivariate data
+plot(X2,Y,pch=21,cex=2,bg=colo)
+abline(model.ancova$coefficients[1],model.ancova$coefficients[2])
+abline((model.ancova$coefficients[1]+model.ancova$coefficients[3]),model.ancova$coefficients[2])
+abline((model.ancova$coefficients[1]+model.ancova$coefficients[4]),model.ancova$coefficients[2])
+abline((model.ancova$coefficients[1]+model.ancova$coefficients[5]),model.ancova$coefficients[2])
+```
+
+With ANCOVA, one can still perform pairwise comparisons among groups. However, which comparisons to perform depends upon the outcome of the ANCOVA. For example, if the test of slopes model (i.e., interaction term) did not reveal differences, then a common slopes model is fit to the data. In this case, one compares differences among groups in terms of their least squares means. On the other hand, if the interaction term implied that one or more groups display differing slopes, then pairwise comparisons of slopes are in order.  The former may be accomplished using 'standard' approaches. Both tests of means and tests of slopes are facilitated in RRPP (see help files for publications describing the theoretical developments of these methods).
+
+```{r eval=TRUE}
+### Pairwise comparisons: test of means
+pairwise.t.test(model.ancova$fitted.values, SexBySurv, p.adj = "none")  #standard approach
+
+#Pairwise comparisons of means via RRPP
+summary(pairwise(model.anc3, groups = SexBySurv), test.type = "dist", stat.table = FALSE) 
+
+#Pairwise comparisons of SLOPES (NOTE: makes sense only when interaction term significant)
+PW <- pairwise(model.anc3, groups = SexBySurv)
+summary(PW, test.type = "VC", angle.type = "deg")  #comparison of angles between vectors
+```
+
+#### **5: Permutation Test for Regression**
+Here is code for performing a permutation test to evaluate linear regression. It is written in 'loop' style, so it is more readable (in a few weeks we'll discuss other implementations). Note that the function 'procD.lm' in the package 'geomorph' also performs this test.
+
+```{r eval=TRUE}
+F.obs<-anova(lm(Y~X1))$F[[1]]  #Find Test value and save
+permute<-1999
+F.rand.vec<-array(NA,(permute+1))
+F.rand.vec[permute+1]<-F.obs
+for(i in 1:permute){
+  ###Shuffle Data
+	y.rand<-sample(Y)	#Resample vector 
+	F.rand.vec[i]<-anova(lm(y.rand~X1))$F[[1]]  
+}  
+F.obs
+P.Ftest<-rank(F.rand.vec[permute+1])/(permute+1)
+P.Ftest
+####Plot
+hist(F.rand.vec,40,freq=T,col="gray")
+segments(F.obs, 0, F.obs, 50)  ##Plot Observed value
+```

@@ -1,0 +1,190 @@
+---
+title: "ANOVA Models"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### **Motivation**
+Today we explore various type of ANOVA  models and their implementation. First let's read in some data and plot a histogram:
+
+```{r eval=TRUE}
+bumpus<-read.csv("Data/bumpus.csv",header=T)
+bumpus.data<-log(as.matrix(bumpus[,(5:13)])) # matrix of log-linear measurements
+sex<-as.factor(bumpus[,2])
+surv<-as.factor(bumpus[,4])
+SexBySurv<-as.factor(paste(sex,surv))
+ TotalLength<-bumpus.data[,1]
+ 
+ ## Multi-group histogram
+sexdata<-split(TotalLength,sex)
+hist(sexdata$m,col="blue",freq=TRUE)
+hist(sexdata$f,col="red",freq=TRUE,add=TRUE)
+#ANOTHER WAY, SHOWING OVERLAP
+
+hist(sexdata$m, col=rgb(0,0,0,1),freq=TRUE)
+hist(sexdata$f, col=rgb(0.8,0.8,0.8,0.5), freq=TRUE,add=T)
+```
+
+
+#### **1: Single-Factor ANOVA**
+A single-factor ANOVA fits a bivariate model of the form Y~X, where variation in Y is explained by variation among groups as coded in X. Here are several implementations, including two parametric and one permutational.  Additionally, pairwise comparisons are shown using standard and permutation approaches:
+
+```{r eval=TRUE}
+#  Some components of the linear model
+ model1<-lm(TotalLength~sex)
+ anova(model1)  	#Statistical summary
+ coef(model1)   #for ANOVA, these are means gp1 and dev for mean gp 2
+ predict(model1)		#Predicted values
+ resid(model1)		#Residuals
+ 
+ anova(lm(TotalLength~sex))
+plot(sex,TotalLength,ylab="Total Length")
+  summary(aov(TotalLength~sex))    #another way to do univariate ANOVA
+
+##### ANOVA via residual randomization
+library(RRPP) 
+mydat <- rrpp.data.frame(TotalLength = TotalLength, sex = sex, surv=surv, SexBySurv = SexBySurv)  
+  
+res <- lm.rrpp(TotalLength~sex, print.progress = FALSE, data = mydat)
+anova(res)     #note: summary components are part of the object: see res$ANOVA$ res$coef, etc.
+coef(res)
+```
+
+There are several important components to note here. First, the parameters, SS, MS, F-values are identical to those obtained using standard parametric methods. So RRPP estimates identical parameters and summary values when compared to 'standard' methods. Note though that there are additional elements in the ANOVA table. Specifically, each term in the model has an R-squared value, and an empirically-derived effect size (Z-score). These can assist in interpreting the strength of signal across factors in the model. These become particularly important with multivariate response data.
+
+Programming note: with RRPP, it is generally advisable to create an rrpp.dataframe (see above). R functions generally first search for data in a supplied data frame and if none are found, then search the global environment, which increases the probability of an error.  The easiest way to assure there are no errors is to provide an rrpp.data.frame for *lm.rrpp*, thus eliminating some common problems with local versus global environmental variables.
+
+```{r eval=TRUE}
+anova(lm(TotalLength~SexBySurv)) ### Single-Factor ANOVA (4 groups)
+
+model2 <- lm.rrpp(TotalLength~SexBySurv, print.progress = FALSE, data = mydat) #via RRPP
+anova(model2)
+
+#post-hoc tests
+pairwise.t.test(TotalLength, SexBySurv, p.adj = "none")  #standard
+
+#pairwise comparisons via RRPP
+posthoc <- pairwise(fit = model2,groups = SexBySurv, print.progress = FALSE)
+summary(posthoc)
+```
+
+#### **3: Factorial ANOVA**
+Factorial ANOVA is the case where variation in Y is explained by several independent factors: $Y=X_1\beta_1+X_2\beta_2+\dots$. The interaction between factors may also be of interest. Pairwise comparisons are also implemented:
+
+```{r eval=TRUE}
+anova(lm(TotalLength~sex+surv+sex:surv))
+
+###SHORTHAND for FULL Factorial
+anova(lm(TotalLength~sex*surv))
+
+model3 <- lm.rrpp(TotalLength~sex*surv, print.progress = FALSE, data = mydat)
+anova(model3)
+```
+
+With factorial models, another function argument comes into play: full versus residual randomization. This option changes the reduced model against which full models are compared. Full randomization (FRPP) compares each term versus Y~1, whereas RRPP performs a set of sequential comparisons as described in lecture (where we learned that RRPP is the most general and universal permutation procedure).  
+
+```{r eval=TRUE}
+anova(lm.rrpp(TotalLength~sex*surv, print.progress = FALSE, RRPP = TRUE, data = mydat))
+anova(lm.rrpp(TotalLength~sex*surv, print.progress = FALSE,RRPP = FALSE, data = mydat))
+```
+
+For pairwise comparisons, one can also specify FRPP or RRPP.  In this particular example, this does make a difference. 
+
+```{r eval=TRUE}
+model.r <- lm.rrpp(TotalLength~sex+surv, print.progress = FALSE, data = mydat)
+model.n <- lm.rrpp(TotalLength~1, print.progress = FALSE, data = mydat)
+
+###NOTE: pairwise comparison interpretations can change when using different reduced models
+summary(pairwise(model3, groups = SexBySurv, print.progress = FALSE))  #  Default: against H_r: Y=sex+surv
+summary(pairwise(model3, fit.null = model.r,groups = SexBySurv, print.progress = FALSE))  #against H_r: Y=sex+surv
+summary(pairwise(model3, fit.null = model.n,groups = SexBySurv, print.progress = FALSE))  #against H_r: Y~1
+```
+
+#### **4: Nested ANOVA**
+One can also have a factor which is nested within a main effect. These are implemented using the following notation:
+
+```{r eval=TRUE}
+anova(lm(TotalLength~sex/surv)) #survival nested within sex  
+  #NOTE: F-tests not correct: all are based on MSE; but sex should be tested against nested effect!
+```
+Note however, that the standard F-test is not correct for the main effect (sex in this case). The reason is that all factors are tested agains the global residual error (MSE). Thus, one can either 'by hand' re-calculate post-hoc, write a function, or use the 'aov' function combined with some by-hand calculations. A simpler alternative is to use RRPP:
+
+```{r eval=TRUE}
+model.nested <- lm.rrpp(TotalLength~sex/surv, effect.type = "F", print.progress = FALSE, data = mydat)
+anova(model.nested)  #unadjusted
+anova(model.nested, error = c("sex:surv", "Residuals"))  #  Correct MSE specification
+   #inspect F for sex relative to MS-sex and MS-sex:surv
+```
+
+#### **5: Mixed Models**
+Linear mixed models contain both fixed and random effects. They are especially useful for accounting for: random variation across subject groups, in repeated measures or hierarchical designs, or other situations where the observations are not independent. Thus, they are enormously useful in the biological sciences.
+
+Statistically, line mixed models are evaluated using REML (reduced maximum likelihood). Thus, in R, a different set of functions are used; these are found in the `lme4` package. 
+
+Here is a simple example. In this case, the data are from of a sleep deprivation study. We are looking at reaction time as a function of days, subject by subject:
+
+```{r eval=TRUE}
+library(lme4)
+library(lattice)
+  
+xyplot(Reaction ~ Days | Subject, sleepstudy, type = c("g","p","r"),
+       index = function(x,y) coef(lm(y ~ x))[1],
+       xlab = "Days of sleep deprivation",
+       ylab = "Average reaction time (ms)", aspect = "xy")
+```
+
+As can be seen, reaction time increases with day, but the relationship differs by subject (the slopes and intercepts in particular). This suggests that a model with random slopes and intercepts is appropriate.
+
+Let's run an analysis evaluating reaction time as a function of days, while accounting for the random variation in slopes and intercepts among subjects: `Reaction~Days (Days|Subject)`. 
+
+```{r eval=TRUE}
+
+fm1 <- lmer(Reaction ~ Days + (Days|Subject), sleepstudy)
+anova(fm1)
+summary(fm1)
+```
+
+For illustration purposes, let's now fit just a random intercepts model, and compare this with linear model alternatives:
+
+```{r eval=TRUE}
+
+fm2 <- lmer(Reaction ~ Days + (1|Subject), data = sleepstudy) 
+summary(fm2)
+anova(fm2)
+anova(lm(Reaction~Days*Subject, data= sleepstudy))
+anova(lm(Reaction~Days, data= sleepstudy))
+```
+
+Notice that the SSE for `Days` is the same across all models, but the F-values are not. The reason is that each model differs in how the remaining variation is accounted for. **This is important!** One must carefully consider what is the appropriate model regarding fixed and random effects, based on the types of expected variation in the study (see lecture).
+
+#### **6: Type I, type II, and type III SS**
+Statistically, there are multiple ways to obtain sums-of-squares for a linear model. Type I SS are sequential SS; type II are conditional SS, and type III are marginal SS. As discussed in class, there are times when one of these may be more appropriate than another, and one may wish to specify a SS type for a particular anlaysis. In R, type I SS are the default. However, using RRPP, one can adjust this quite easily. 
+
+```{r eval=TRUE}
+anova(lm.rrpp(TotalLength~sex*surv, SS.type="I", print.progress = FALSE, data = mydat))  #sequential SS
+anova(lm.rrpp(TotalLength~sex*surv, SS.type="II", print.progress = FALSE, data = mydat)) #conditional SS
+anova(lm.rrpp(TotalLength~sex*surv, SS.type="III", print.progress = FALSE, data = mydat)) #marginal SS
+```
+
+###**7: A Permutation Test for ANOVA**
+Here is code for performing a permutation test to evaluate ANOVA. It is written in 'loop' style, so it is more readable (in a few weeks we'll discuss other implementations). Note that ALL functions in the package RRPP above use permutation approaches. 
+
+```{r eval=TRUE}
+F.obs<-anova(lm(TotalLength~sex))[1,4]  #Find Test value and save
+permute<-999
+F.rand.vec<-array(NA,(permute+1))
+F.rand.vec[permute+1]<-F.obs
+for(i in 1:permute){
+  ###Shuffle Data
+	y.rand<-sample(TotalLength)  #SHUFFLE FIRST COL
+	F.rand.vec[i]<-anova(lm(y.rand~sex))[1,4]  
+}  
+P.Ftest<-rank(F.rand.vec[permute+1])/(permute+1)
+F.obs
+P.Ftest
+
+hist(F.rand.vec,40,freq=T,col="gray")
+segments(F.obs, 0, F.obs, 50)  ##Plot Observed value
+
+```

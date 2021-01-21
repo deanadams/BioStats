@@ -1,0 +1,624 @@
+Subclass,Order,Species,BMR (mlO2/hour),Body mass for BMR (gr),Reference for BMR,FMR (kJ/day),Body mass for FMR (gr),Reference for FMR
+Eutheria,Afrosoricida,Amblysomus hottentotus,84.7,70,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Afrosoricida,Chrysochloris asiatica,51.48,44,White et al06BiolLett,NA,NA,NA
+Eutheria,Afrosoricida,Echinops telfari,133.9,116.4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Afrosoricida,Geogale aurita,7.728,6.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Afrosoricida,Hemicentetes semispinosus,64.1,133,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Afrosoricida,Limnogale mergulus,55.9,77.7,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Afrosoricida,Microgale cowani,31.964,12.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Afrosoricida,Microgale dobsoni,56.4,44.6,White et al06BiolLett,77.1,42.6,Nagy et al99
+Eutheria,Afrosoricida,Microgale talazaci,43.56,44,White et al06BiolLett,66.5,42.8,Nagy et al99
+Eutheria,Afrosoricida,Setifer setosus,121.9,530,White et al06BiolLett,NA,NA,NA
+Eutheria,Afrosoricida,Tenrec ecaudatus,130.65,650,White et al06BiolLett,NA,NA,NA
+Eutheria,Artiodactyla,Alces alces,51419,325000,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Artiodactyla,Antidorcas marsupialis,NA,NA,NA,24100,43300,Nagy et al99
+Eutheria,Artiodactyla,Antilocapra americana,9318,37800,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Artiodactyla,Capreolus capreolus,8308,21500,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Artiodactyla,Cervus elaphus,NA,NA,NA,25000,107000,Haggarty et al98
+Eutheria,Artiodactyla,Connochaetes taurinus,41242,196500,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Artiodactyla,Lama pacos,NA,NA,NA,14050,48000,Reik 2008
+Eutheria,Artiodactyla,Odocoileus hemionus,NA,NA,NA,18000,39100,Nagy et al99
+Eutheria,Artiodactyla,Odocoileus virginianus,25609,58588,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Artiodactyla,Oryx leucoryx,NA,NA,NA,16578.5,85250,Anderson & Jetz 2005
+Eutheria,Artiodactyla,Ovis canadensis,19120,69125,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Artiodactyla,Pecari tajacu,5945,20500,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Artiodactyla,Rangifer tarandus,NA,NA,NA,15500,52800,Reik 2008
+Eutheria,Carnivora,Acinonyx jubatus,8982,37900,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Ailurus fulgens,878.22,5740,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Alopex lagopus,1374,3600,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Arctictis binturong,2284.8,14280,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Arctocephalus galapagoensis,NA,NA,NA,4780,37400,Nagy et al99
+Eutheria,Carnivora,Arctocephalus gazella,NA,NA,NA,34600,23000,Nagy et al99
+Eutheria,Carnivora,Arctogalidia trivirgata,552.75,2010,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Bassariscus astutus,NA,NA,NA,472,752,Nagy et al99
+Eutheria,Carnivora,Bassariscus sumichrasti,633.6,1280,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Callorhinus ursinus,NA,NA,NA,36100,51100,Nagy et al99
+Eutheria,Carnivora,Canis latrans,2686.57,10000,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Canis lupus,8080,33000,McNab2005ZoolSinica,17700,37300,Nagy et al99
+Eutheria,Carnivora,Canis mesomelas,3860,7720,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Cerdocyon thous,1524.32,5444,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Eira barbara,1221.3,2950,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Felis concolor (Puma concolor),8841.7,37200,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Felis pardalis (Leopardus pardalis),3126.3,10500,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Felis rufus (Lynx rufus),4220,9400,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Carnivora,Felis serval (Leptailurus serval),3137.2,10100,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Felis wiedii (Leopardus wiedii),937.2,3600,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Felis yagouaroundi (Herpailurus yaguarondi),1737,8400,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Fennecus zerda (Vulpes zerda),583.2,1215,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Fossa fossana,906.26,2260,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Galerella sanguinea,410.4,540,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Genetta tigrina,747,1698,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Carnivora,Gulo gulo,5694,12700,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Carnivora,Herpestes javanicus,403.26,611,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Hyaena hyaena,5728,34300,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Carnivora,Lutra lutra,4500,10000,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Lycaon pictus,NA,NA,NA,15300,25170,Nagy et al99
+Eutheria,Carnivora,Martes americana,594.9,900,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Martes martes,717,920,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Carnivora,Meles meles,2984,11050,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Carnivora,Mirounga angustirostris,NA,NA,NA,30804,86750,Anderson & Jetz 2005
+Eutheria,Carnivora,Mustela erminea,165,75,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Mustela frenata,240.58,225,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Mustela vison,488.4,660,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Nandinia binotata,862.54,4270,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Nasua narica,1207.43,3670,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Nasua nasua,993,4000,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Neophoca cinerea,NA,NA,NA,39500,83500,Nagy et al99
+Eutheria,Carnivora,Panthera leo,16954,98000,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Panthera onca,11189,50400,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Carnivora,Panthera tigris,23994.6,137900,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Paradoxurus hermaphroditus,759.98,3160,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Phoca vitulina,28467,85467,McNab2005ZoolSinica,52500,99000,Nagy et al99
+Eutheria,Carnivora,Phocarctos hookeri,NA,NA,NA,52648.5,111400,Anderson & Jetz 2005
+Eutheria,Carnivora,Potos flavus,795.95,2343.33,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Procyon cancrivorus,464,1160,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Carnivora,Procyon lotor,1598.625,5075,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Proteles cristatus,2194,8100,White et al06BiolLett,1850,8540,Nagy et al99
+Eutheria,Carnivora,Spilogale putorius,299.52,624,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Suricata suricatta,310.25,850,White et al06BiolLett,468,697,Scantlebury et al02
+Eutheria,Carnivora,Taxidea taxus,2700,9000,White et al06BiolLett,NA,NA,NA
+Eutheria,Carnivora,Ursus ursinus (Melursus ursinus),844,6696,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Carnivora,Vulpes cana,NA,NA,NA,642,972,Nagy et al99
+Eutheria,Carnivora,Vulpes rueppelli,798.9,1546,Williams et al02PhysiolBiochemZool,1014.65,1750,Williams et al02
+Eutheria,Carnivora,Vulpes velox,NA,NA,NA,1780,2100,Nagy et al99
+Eutheria,Carnivora,Vulpes vulpes,2442,4440,White et al06BiolLett,2216.2,4926.6,Winstanlet et al03
+Eutheria,Carnivora,Zalophus californianus,31868,73000,McNab2005ZoolSinica,38600,78000,Nagy et al99
+Eutheria,Chiroptera,Antrozous pallidus,21.9,22,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Chiroptera,Chalinolobus gouldii,25.2,17.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Cynopterus brachyotis,47.5,37.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Desmodus rotundus,34.692,29.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Diaemus youngi,37.332,36.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Diphylla ecaudata,38.642,27.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Dobsonia minor,74.4,73.7,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Dobsonia moluccensis,367.9,404.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Dobsonia praedatrix,142.5,179.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Eonycteris spelaea,48,51.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Eptesicus fuscus,20.8,10.4,White et al06BiolLett,43.6,20.8,Nagy et al99
+Eutheria,Chiroptera,Erophylla bombifrons (Erophylla sezekorni),17.71,16.1,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Eumops perotis,39.76,56,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Glossophaga commissarisi,NA,NA,NA,45.7,8.7,Voigt et al 2006
+Eutheria,Chiroptera,Glossophaga sorcina,29.376,9.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Hipposideros galeritus,9.35,8.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Histiotus velatus,15.68,11.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Koopmania concolor (Artibeus concolor),39.794,19.7,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Leptonycteris yerbabuenae (Leptonycteris curasoae),44,22,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Macroderma gigas,139.12,148,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Macroglossus minimus,18.5,15.85,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Macrotus californicus,14.625,11.7,White et al06BiolLett,21.5,13,Nagy et al99
+Eutheria,Chiroptera,Megaloglossus woermanni,18.5,12.4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Chiroptera,Melonycteris melanops,43.3,53.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Miniopterus australis,94.336,107.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Miniopterus schreibersi,25.9658,10.91,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Molossus molossus,22.464,15.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Monophyllus redmani,11.136,8.7,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Mormoops blainvilli,7.998,8.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Mormoops megalophylla,24.42,16.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Myotis lucifugus,8.918,5.2,White et al06BiolLett,29.9,9,Nagy et al99
+Eutheria,Chiroptera,Myotis nigricans,8.9,3.7,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Chiroptera,Natalus tumidirostris,8.316,5.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Noctilio albiventris,31.59,27,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Noctilio leporinus,70.76,61,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Nyctimene albiventer,27.3,30.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Nyctimene cyclotis,64.6,40.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Nyctimene major,20.4,13.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Nyctophilus geoffroyi,11.2,8,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Paranyctimene raptor,24.5,23.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Peropteryx macrotis,11.55,5,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Phyllostomus discolor,47.905,33.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Phyllostomus elongatus,47.9,35.6,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Chiroptera,Phyllostomus hastatus,100.198,84.2,White et al06BiolLett,146,80.8,Nagy et al99
+Eutheria,Chiroptera,Pipistrellus pipistrellus,NA,NA,NA,29.3,7.3,Nagy et al99
+Eutheria,Chiroptera,Platyrrhinus lineatus,44.895,21.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Plecotus auritus,11.2,10.25,White&Seymour03PNAS,27.6,8.5,Nagy et al99
+Eutheria,Chiroptera,Pteronotus davyi,15.322,9.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Pteronotus parnellii,30.72,19.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Pteronotus personatus,22.96,14,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Pteronotus quadridens,6.125,4.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Pteropus giganteus,290.7,562.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Pteropus hypomelanus,290.1,520.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Pteropus poliocephalus,316.9,598,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Pteropus pumilus,126.4,194.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Pteropus rodricensis,134.9,254.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Pteropus scapulatus,242.54,362,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Pteropus vampyrus,804.1,1024.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Rhinonycteris aurantinus (Rhinonicteris aurantia),16.209,8.27,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Rhinophylla fischerae,44.9,9.5,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Chiroptera,Rhinophylla pumilio,18.62,9.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Rousettus aegyptiacus,122.6,146,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Rousettus amplexicaudatus,104.3,91.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Sturnira lilium,53.217,21.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Sturnira tildae,18.6,20.5,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Chiroptera,Syconycteris australis,21.85,15.9,White et al06BiolLett,76.9,17.4,Geiser & Coburn99
+Eutheria,Chiroptera,Tadarida brasiliensis,20.28,16.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Tonatia bidens,55.074,27.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Uroderma bilobatum,31.59,16.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera,Vampyressa pusilla,31.6,8.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Chiroptera ,Anoura caudifera,42.67,11.5,White et al06BiolLett,51.9,11.5,Nagy et al99
+Eutheria,Chiroptera ,Artibeus fimbriatus,42.7,63.9,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Chiroptera ,Artibeus jamaicensis,76.84,45.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera ,Artibeus lituratus,107.954,70.1,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera ,Carollia brevicauda,NA,NA,NA,50,18.2,Voigt et al 2006
+Eutheria,Chiroptera ,Carollia perspicillata,43.061,14.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera ,Chiroderma doriae,43.1,19.9,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Chiroptera ,Chrotopterus auritus,141.267,96.1,White et al06BiolLett,NA,NA,NA
+Eutheria,Chiroptera ,Saccopteryx bilineata,14.51,7.8,White et al06BiolLett,16.2,7.9,Anderson & Jetz 2005
+Eutheria,Hyracoidea,Dendrohyrax dorsalis,751,2210,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Hyracoidea,Heterohyrax brucei,720,2000,White et al06BiolLett,NA,NA,NA
+Eutheria,Hyracoidea,Procavia capensis,660,2400,White et al06BiolLett,NA,NA,NA
+Eutheria,Lagomorpha,Lepus alleni,1650,3000,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lagomorpha,Lepus americanus,1518,1581,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lagomorpha,Lepus arcticus,1082,3004.4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lagomorpha,Lepus californicus,1311,2300,White&Seymour03PNAS,1300,1800,Nagy et al99
+Eutheria,Lagomorpha,Lepus timidus,2118,3025,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lagomorpha,Lepus townsendii,1264,2430,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lagomorpha,Ochotona dauurica,249,127.7,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lagomorpha,Ochotona princeps,167,109,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lagomorpha,Oryctolagus cuniculus,1140,2000,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lagomorpha,Sylvilagus audubonii,438,672.4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Atelerix albiventris,148.5,450,White et al06BiolLett,NA,NA,NA
+Eutheria,Lypothyphla,Blarina brevicauda,65.6,20.5,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Blarina carolinensis,33.7,10.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Condylura cristata,110.25,49,White et al06BiolLett,NA,NA,NA
+Eutheria,Lypothyphla,Crocidura crossei,22.4,10.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Crocidura flavescens,44.5,33.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Crocidura hildegardeae,26,10,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Crocidura leucodon,29.8,11.7,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Crocidura luna,24.8,11.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Crocidura olivieri,58.4,38.9,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Crocidura poensis,31.1,17.3,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Crocidura russula,22.9,10.4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Crocidura suaveolens,18.9,6.5,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Crocidura viaria,22.1,14.7,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Cryptotys parva,19.2,6.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Echinosorex gymnura,504.84,721.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Lypothyphla,Erinaceus concolor,347.1794,822.7,White et al06BiolLett,NA,NA,NA
+Eutheria,Lypothyphla,Erinaceus europaeus,337.5,750,White et al06BiolLett,NA,NA,NA
+Eutheria,Lypothyphla,Hemiechinus auritus,152,400,White et al06BiolLett,NA,NA,NA
+Eutheria,Lypothyphla,Hylomys suillus,60.112,57.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Lypothyphla,Neomys anomalus,66.8,13.1,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Neomys fodiens,54.7,17.1,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Neurotrichus gibbsii,46.492,11.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Lypothyphla,Notisorex crawfordi,13.2,4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Paraechinus aethiopicus (Hemiechinus aethiopicus),112.5,450,White et al06BiolLett,NA,NA,NA
+Eutheria,Lypothyphla,Scalopus aquaticus,67.68,48,White et al06BiolLett,NA,NA,NA
+Eutheria,Lypothyphla,Scapanus latimanus,76.2,61,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Scapanus orarius,64.1,61.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Scapanus townsendii,108.9,130.1,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Sorex alpinus,48.2,7.9,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Sorex araneus,44.7,7.5,Ochocinska&Taylor05,58.1,8.19,Ochocinska & Taylor05
+Eutheria,Lypothyphla,Sorex cinereus,31.5,3.5,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Sorex coronatus,51.9,9.1,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Sorex minutus,30.8,4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Sorex ornatus,52.3,9.7,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Sorex vagrans,28.1,5.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Suncus etruscus,14.4,2.4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Suncus murinus,59.5,30.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Lypothyphla,Talpa europaea,NA,NA,NA,173,87.7,Speakman 1997
+Eutheria,Macroscelidea,Elephantulus brachyrhynchus,43.71,45.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Macroscelidea,Elephantulus edwardii,54.5,50,White et al06BiolLett,NA,NA,NA
+Eutheria,Macroscelidea,Elephantulus intufi,52,46.49,White et al06BiolLett,NA,NA,NA
+Eutheria,Macroscelidea,Elephantulus myurus,66.31,62.97,White et al06BiolLett,NA,NA,NA
+Eutheria,Macroscelidea,Elephantulus rozeti,47.8,45.31,White et al06BiolLett,NA,NA,NA
+Eutheria,Macroscelidea,Elephantulus rufescens,56.87,53,White et al06BiolLett,NA,NA,NA
+Eutheria,Macroscelidea,Macroscelides proboscideus,52.26,39,White et al06BiolLett,NA,NA,NA
+Eutheria,Macroscelidea,Petrodromus tetradactylus,179.52,206.11,White et al06BiolLett,NA,NA,NA
+Eutheria,Pholidota,Manis crassicaudata,1240.98,15910,White et al06BiolLett,NA,NA,NA
+Eutheria,Pholidota,Manis javanica,1105.64,4220,White et al06BiolLett,NA,NA,NA
+Eutheria,Pholidota,Manis pentadactyla,667.845,3637.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Pholidota,Manis tetradactyla,229.09,1430,White et al06BiolLett,NA,NA,NA
+Eutheria,Pholidota,Manis tricuspis,276,1365,White et al06BiolLett,NA,NA,NA
+Eutheria,Primates,Aloutta palliata,2055,4670,White&Seymour03PNAS,2580,7330,Nagy et al99
+Eutheria,Primates,Aotus trivirgatus,442,820,White et al06BiolLett,NA,NA,NA
+Eutheria,Primates,Callithrix jacchus,152,190,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Primates,Cebuella pygmea (Callithrix pygmaea),117,116.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Primates,Erythrocebus patas,1068,3000,White et al06BiolLett,NA,NA,NA
+Eutheria,Primates,Eulemur fulvus,746,2330,White et al06BiolLett,NA,NA,NA
+Eutheria,Primates,Galago moholi,51.2,170,Ross92,NA,NA,NA
+Eutheria,Primates,Galago senegalensis,137.2,171.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Primates,Leontopithecus rosalia,381.5,733.7,Thompson et al94,NA,NA,NA
+Eutheria,Primates,Macaca fuscata,4173.6,9550,Nakayama et al71,NA,NA,NA
+Eutheria,Primates,Microcebus murinus,NA,NA,NA,115.4,64.5,Schmid & Speakman 2000
+Eutheria,Primates,Nycticebus coucang,272.6,1160,White et al06BiolLett,NA,NA,NA
+Eutheria,Primates,Otolemur crassicaudatus,412,950,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Primates,Otolemur garnetti,704,1314,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Primates,Papio anubis,2777.89,9500,White et al06BiolLett,NA,NA,NA
+Eutheria,Primates,Perodicticus potto,337,898,Genoud2002,NA,NA,NA
+Eutheria,Primates,Saguinus geoffroyi,234,225,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Primates,Saimiri sciureus,800.628,875,White et al06BiolLett,NA,NA,NA
+Eutheria,Primates,Tarsius spectrum,149,173,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Primates,Tarsius syrichta,76.7,113,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Abrothrix lanosus (Akodon lanosus),45.6,24,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Abrothrix longipilis (Akodon longipillis),57.528,42.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Acomys cahirinus,46.2,42,White et al06BiolLett,51.8,38.3,Nagy et al99
+Eutheria,Rodentia,Acomys russatus,42.9,55.55,White et al06BiolLett,47.8,45,Nagy et al99
+Eutheria,Rodentia,Acomys spinosissimus,44.1,27.02,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Acomys subspinosus,83.4,32.25,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Aconaemys fuscus,120.96,112,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Aethomys namaquensis,56.753,64.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Agouti paca,2746.8,9156,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Akodon albiventer,46.5,31,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Akodon azarae,40.8,24,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Alticola argentatus,121,37.7,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Ammospermophilus leucurus,93.88,95.7,White et al06BiolLett,88,87,Nagy et al99
+Eutheria,Rodentia,Aplodontia rufa,277.2,630,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Apodemus flavicollis,43.259,23.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Apodemus hermonensis,50.02,20.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Apodemus mystacinus,56.035,40.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Apodemus sylvaticus,43.3,23.9,White et al06BiolLett,67.9,20.5,Corp et al99
+Eutheria,Rodentia,Arborimus longicaudus,58.86,21.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Arvicola terrestris,106.68,91.97,White et al06BiolLett,119,85.8,Nagy et al99
+Eutheria,Rodentia,Auliscomys micropus,97.11,62.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Baimomys taylori,17.09,7.15,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Bathyergus janetta,215.18,406,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Bathyergus suillus,303.8,620,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Calomys musculinus,27.6,16.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Calomys venustus (Calomys callosus),74.7,50.1,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Cannomys badius,172,344,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Capromys pilorides,604.9,2630,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Cavia magna,NA,NA,NA,462.9,519.45,Kunkele et al05
+Eutheria,Rodentia,Cavia porcellus,346,629,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Chaetodipus baileyi,34.54,29.1,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Chaetodipus californicus,21.34,22,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Chaetodipus fallax,26.852,19.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Chaetodipus formosus (Perognathus formosus),NA,NA,NA,45.2,17.9,Nagy et al99
+Eutheria,Rodentia,Chaetodipus hispidus,49.375,39.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Chaetodipus intermedius,17.865,14.95,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Chaetodipus penicillatus,22.4,16,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Chelemys macronyx,84.32,62,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Chinchilla lanigera,200.2,426,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Chroeomys andinus,64.7,34.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Chroeomys olivaceus (Akodon olivaceus),49.41,27,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Clethrionomys californicus,61.12,18.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Clethrionomys gapperi,49.34,22.25,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Clethrionomys glareolus,63.4,23.4,White&Seymour03PNAS,88,23.4,Nagy et al99
+Eutheria,Rodentia,Clethrionomys rufocanus,59.4,27,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Clethrionomys rutilus,77,28,White&Seymour03PNAS,57.6,16,Nagy et al99
+Eutheria,Rodentia,Coendou prehensilis,918.4,3280,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Conilurus penicillatus,162.7,213.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Cricetomys gambianus,1140.7,1870,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Cricetulus migratorius,43.91,30.7,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Cricetus cricetus,231.68,362,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Cryptomys bocagei,69.56,94,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Cryptomys damarensis,78.66,138,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Cryptomys hottentotus,67.5,75,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Cryptomys mechowi,160.2,267,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Ctenomys australis,116.62,340,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Ctenomys fulvus,189,300,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Ctenomys maulinus,187.1,215,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Ctenomys opimus,109.7,214,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Ctenomys peruanus,220.5,490,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Ctenomys talarum,109.626,121,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Cynomys ludovicanus,422.67,1112.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Dasyprocta azarae,1886,3849,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Dasyprocta leporina,1558.5,2687,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Desmodillus auricularis,87.75,71.93,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Dicrostonyx groenlandicus,98.85,59.62,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Dipodomys agilis,63.63,60.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Dipodomys deserti,92.22,106,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Dipodomys heermanni,73.2,63.3,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Dipodomys merriami,42.46,36.5,White et al06BiolLett,47.6,34.3,Nagy et al99
+Eutheria,Rodentia,Dipodomys microps,66.9,57.2,White et al06BiolLett,84.5,57.1,Nagy et al99
+Eutheria,Rodentia,Dipodomys nitratoides,46.1,37.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Dipodomys ordii,64.21,46.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Dipodomys panamintinus,74.279,64.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Dipus sagitta ,121.154,160,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Dolichotis salinicola,725.9,1613,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Eligmodontia typus,29.93,17.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Epixerus wilsoni,241.5,460,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Erethizon dorsatum,2784,11136,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Euneomys chinchilloides,84.4,65.4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Funisciurus congicus,95.454,112.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Funisciurus isabella,102.1,60,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Funisciurus lemnisciatus,89.6,95,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Funisciurus pyrrhopus,181.3,244,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Galea musteloides,264,322,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Geocapromys brownii,736.8,2456,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Geocapromys ingrahami,265.8,775,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Geomys bursaris,137.9,197,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Geomys pinetis,133.15,172.95,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Georychus capensis,115.67,194.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Gerbillurus paeba,34.82,33.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Gerbillurus setzeri,37.02,46.1,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Gerbillurus tytonis,31.69,29.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Gerbillurus vallinus,34.76,38.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Gerbillus allenbyi,38.8,35.3,White et al06BiolLett,35.6,22.8,Nagy et al99
+Eutheria,Rodentia,Gerbillus dasyurus,29.26,27.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Gerbillus gerbillus,42.47,29.7,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Gerbillus henleyi,NA,NA,NA,26.5,9.3,Nagy et al99
+Eutheria,Rodentia,Gerbillus nanus,22.15,28.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Gerbillus perpallidus,43.5,52.4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Gerbillus pusillus,13.48,12.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Gerbillus pyramidum,81.4,108.5,White et al06BiolLett,45.2,31.8,Nagy et al99
+Eutheria,Rodentia,Glaucomys volans,67.46,64.25,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Graomys griseoflavus,83.97,69.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Graphiurus ocularis,66.4,67.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Heliophobius argentocinereus,74.8,88,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Heliosciurus rufobrachium,133.4,230,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Heterocephalus glaber,20.48,32,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Heteromys anomalus,100.485,69.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Heteromys desmarestianus,99.146,75.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Hydrochaeris hydrochaeris,6596.3,26385,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Hydromys chrysogaster,528.3,900,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Hystrix africaeaustralis,2361.702,11300,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Isthmomys pirrensis,121.35,137.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Jaculus jaculus,92.25,75,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Jaculus orientalis,139,139,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Kerodon rupestris,360.5,801,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Lagostomus maximus,1899.5,6784,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Lagurus curtatus (Lemmiscus curtatus),50.3,30.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Lemmus lemmus,192,80,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Lemmus sibericus,90.19,50.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Lemniscomys griselda,57.62,47.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Lemniscomys rosalia,61.47,50.53,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Liomys irroratus,53.872,48.1,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Liomys salvani,46.866,43.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Malacothrix typica,20.62,21.7,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Maresomys boliviensis (Auliscomys boliviensis),110.59,76.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Marmota flaviventris,1546.2,4295,White et al06BiolLett,2430,3190,Nagy et al99
+Eutheria,Rodentia,Marmota monax,662.5,2650,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Mastomys (Praomys) natalensis,32.78,41.5,White et al06BiolLett,86.6,57.3,Nagy et al99
+Eutheria,Rodentia,Megadontomys thomasi,124.1,110.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Meriones crassus,NA,NA,NA,65,69.2,Nagy et al99
+Eutheria,Rodentia,Meriones hurriane,54.51,69,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Meriones tristrami,98.56,112,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Meriones unguiculatus,77.05,67,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Mesocricetus auratus,147,98,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microcavia niata,175.7,255,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Microdipodops megacephalus,30.173,11,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microdipodops pallidus,19.76,15.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Micromys minutus,21.08,7.37,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus agrestris,63.6,28,White et al06BiolLett,77.8,26.8,Nagy et al99
+Eutheria,Rodentia,Microtus arvalis,62,20,White et al06BiolLett,90,20,Nagy et al99
+Eutheria,Rodentia,Microtus breweri,73.81,53.1,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus californicus,68.2,44,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus guentheri,80.154,43.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus longicaudus,67.52,28.55,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus mexicanus,46.94,28.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus montanus,83.33,35.13,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus ochrogaster,79.08,46.7,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus oeconomus,100.93,33.7,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus pennsylvanicus,75.07,38.9,White et al06BiolLett,115,36.9,Nagy et al99
+Eutheria,Rodentia,Microtus pinetorum,58.4,25.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus richardsoni,128.02,65.65,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Microtus subterraneus,49.5,17.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Microtus townsendii,90.4,52.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Microtus xanthognathus,98.64,68.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Millardia meltada,58.4,67.4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Mus minutoides,24.02,8.06,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Mus musculus,NA,NA,NA,65.1,19.3,Nagy et al99
+Eutheria,Rodentia,Mus spretus,61.9,21.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Muscardinus avellanarius,62.98,23.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Myoprocta acouchy,502.7,914,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Myopus schisticolor,93.456,26.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Myoxus glis,158,200,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Mystromys albicaudatus,126.79,93.78,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Nannospalax ehrenbergi ,104.53,135.15,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Nannospalax leucodon,148.74,201,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Napaeozapus insignis,39.6,22,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Neofiber alleni,216.8,258.1,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Neotoma albigula,134.5,183,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Neotoma cinerea,168.6,205.1,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Neotoma fuscipes,147.73,187,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Neotoma lepida,86.9,110,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Notomys alexis,45.22,32.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Notomys cervinus,41.72,34.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Ochrotomys nuttalli,27.11,19.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Octodon bridgesi,183.3,176.1,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Octodon degus,170.24,192.97,White et al06BiolLett,143.2,188.55,Bozinovic et al04
+Eutheria,Rodentia,Octodon lunatus,171.5,173.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Octodontomys gliroides,130.7,152,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Octomys mimax,115.04,118.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Oligoryzomys longicaudatus,51.04,28.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Ondatra zibethicus,642.94,1004.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Onychomys torridus,29.6,19.1,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Otomys irroratus,84.864,102,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Otomys sloggetti,133.68,113.29,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Otomys unisulcatus,106.56,96,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Oxymycterus roberti,91.02,83.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Paraxerus cepapi,145.34,223.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Paraxerus palliatus ,260.29,366.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Parotomys brantsii,83.91,86.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Pedetes capensis,793.5,2300,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Perognathus flavus,17.31,8.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Perognathus longimembris,9.523,8.9,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Peromyscus californicus,52.36,47.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Peromyscus crinitus,25.12,15.9,White et al06BiolLett,39.3,13.4,Nagy et al99
+Eutheria,Rodentia,Peromyscus eremicus,33.11,21.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Peromyscus gossypinus,36.98,21.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Peromyscus leucopus,33.2,20,White et al06BiolLett,41.4,19.2,Nagy et al99
+Eutheria,Rodentia,Peromyscus maniculatus,36.88,22.8,White et al06BiolLett,53.4,17.9,Nagy et al99
+Eutheria,Rodentia,Peromyscus megalops,90.7,66.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Peromyscus oreas,43.51,24.58,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Peromyscus polionotus,21.5,12,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Peromyscus sitkensis,46.74,28.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Peromyscus truei ,50.796,33.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Phenacomys intermedius,67.295,21.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Phodopus sungorus,40.863,25.7,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Phyllotis darwini ,71.39,59,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Phyllotis magister,69,62.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Phyllotis xanthopygus,56.65,55,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Podomys floridanus,51.7,30.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Proechimys semispinosus,313.7,498,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Psammomys obesus,NA,NA,NA,165,170,Nagy et al99
+Eutheria,Rodentia,Pseudomys albocinereus,NA,NA,NA,62.2,32.6,Nagy et al99
+Eutheria,Rodentia,Pseudomys gracilicaudus,83.79,79.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Pseudomys hermannsburgensis,23.3,12.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Pseudomys nanus,NA,NA,NA,44.6,44.4,Anderson & Jetz 2005
+Eutheria,Rodentia,Rattus colletti,123,165.7,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Rattus fuscipes,84.36,76,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Rattus lutreolus,63.22,109,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Rattus sordidus,106.6,187,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Rattus villosissimus,145.85,250.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Reithrodon auritus,76.8,78.7,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Reithrodontomys megalotis,22.5,9,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Rhabdomys pumilio,32.1,39.6,White et al06BiolLett,64.55,41.7,Scantlebury et al06
+Eutheria,Rodentia,Saccostomus campestris,51.49,61.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Sciurus carolinensis,369.6,440,White et al06BiolLett,574,588,Bryce et al 2001
+Eutheria,Rodentia,Sciurus vulgaris,NA,NA,NA,347,322,Bryce et al 2001
+Eutheria,Rodentia,Scotinomys teguina,31.2,12,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Scotinomys xerampelinus,31.92,15.2,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Sekeetamys calurus,44.4,56.9,White et al06BiolLett,44,41.2,Nagy et al99
+Eutheria,Rodentia,Sicista betulina,32,10,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Sigmodon alleni,203.3,137.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Sigmodon fulviventer,207.4,137.8,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Sigmodon hispidus,230.4,139.3,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Sigmodon leucotis,186.5,128.6,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Sigmodon ochrognathus,154.2,115.1,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Spalacopus cyanus,106.8,135.33,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus armatus,147.2,320,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus beecheyi,317.79,599.6,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus beldingi,127.26,303,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus citellus,228,240,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus lateralis,143.4,237,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus mohavensis,112.8,240,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus parryi,520,650,White&Seymour03PNAS,817,630,Nagy et al99
+Eutheria,Rodentia,Spermophilus richardsoni,131.52,274,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus saturatus,161.4,252.2,White&Seymour03PNAS,226,214,Nagy et al99
+Eutheria,Rodentia,Spermophilus spilosoma,92.22,174,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus tereticaudus,93.52,167,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus townsendii,105.34,229,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus tridecemlineatus,140.44,205.43,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Spermophilus undulatus,667.08,680,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Steatomys pratensis,18.77,37.54,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Stochomys longicaudatus,97.5,84.2,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Tachyorcyctes splendens,150.89,191,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Tamias alpinus,57.7,39,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Tamias amoenus,96.27,57.1,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Tamias merriami,78.75,75,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Tamias minimus,72.73,45.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Tamias palmeri,113.1,69.4,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Tamias striatus,90,87.4,White et al06BiolLett,143,96.3,Nagy et al99
+Eutheria,Rodentia,Tamiasciurus hudsonicus,254.6,228.3,White et al06BiolLett,347,322,Anderson & Jetz 2005
+Eutheria,Rodentia,Tatera afra,182.115,106.5,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Tatera indica,75.7,87,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Tatera leucogaster,132.56,157.62,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Thallomys paedulcus,87.27,132.425,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Thomomys bottae,120.12,143,White et al06BiolLett,130,104,Nagy et al99
+Eutheria,Rodentia,Thomomys talpoides,142.04,106.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Thomomys umbrinus,72.25,85,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Thrichomys apereoides,206.7,323,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Tympanoctomys barrerae,77.112,71.4,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Uromys caudimaculatus,570.8,812,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Rodentia,Xerus inauris,326.28,542,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Xerus princeps,340.13,602,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Zapus hudsonicus,35.7,23.8,White et al06BiolLett,NA,NA,NA
+Eutheria,Rodentia,Zyzomys argurus,NA,NA,NA,15.6,46.8,Anderson & Jetz 2005
+Eutheria,Scandentia,Orycteropus afer,6144,48000,White et al06BiolLett,NA,NA,NA
+Eutheria,Scandentia,Ptilocerus lowii,43.5,58,White et al06BiolLett,NA,NA,NA
+Eutheria,Scandentia,Tupaia glis,93.48,123,White et al06BiolLett,NA,NA,NA
+Eutheria,Scandentia,Urogale everetti,224.1,260.6,White&Seymour03PNAS,NA,NA,NA
+Eutheria,Xenarthra,Bradypus variegatus,685.99,3790,White et al06BiolLett,545,4150,Nagy et al99
+Eutheria,Xenarthra,Cabassous centralis,916.8,4330,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Chaetophractus nationi,559,2150,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Chaetophractus vellorosus,306.36,1110,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Chaetophractus villosus,808.12,4540,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Choloepus hoffmanni,603.2,3770,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Cyclopes didactylus,114.48,240,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Dasypus novemcinctus,865.22,3510,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Euphractus sexcinctus,1236.69,8190,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Myrmecophaga tridactyla,2607.17,30600,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Priodontes maximus,3027.73,45190,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Tamandua mexicana,991.52,3976.67,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Tamandua tetradactyla,898.8,3500,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Tolypeutes matacus,209.96,1160,White et al06BiolLett,NA,NA,NA
+Eutheria,Xenarthra,Zaedyus pichi,393.24,1740,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Antechinomys laniger (Sminthopsis laniger),25.28,25.8,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Antechinus flavipes,45.105,46.5,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Antechinus stuartii,33.79,28.2,White et al06BiolLett,70.4,25.3,Nagy & Bradshaw 2000
+Marsupialia,Dasyuromorpha,Antechinus swainsonii,63,66.9,White et al06BiolLett,134,47.5,Nagy & Bradshaw 2000
+Marsupialia,Dasyuromorpha,Dasycercus cristicaudata,51.01,101,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Dasyuroides byrnei (Dasycercus byrnei),71.71,91.71,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Dasyurus geoffroyi,568.68,1354,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Dasyurus hallucatus,243.01,558,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Dasyurus maculatus,558.06,1782,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Dasyurus viverrinus,396.2,982,White et al06BiolLett,793,1029,Anderson & Jetz 2005
+Marsupialia,Dasyuromorpha,Myrmecobius fasciatus,142.4,400,White et al06BiolLett,268.9,488.2,Cooper et al03
+Marsupialia,Dasyuromorpha,Ningaui yvonnae,15.66,11.6,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Paranthechinus apicalis,NA,NA,NA,94.25,51.5,Speakman 2000
+Marsupialia,Dasyuromorpha,Phascogale calura,NA,NA,NA,61.9,33.5,Nagy & Bradshaw 2000
+Marsupialia,Dasyuromorpha,Phascogale tapoatafa,127.17,157,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Planigale gilesi,6.98,9.07,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Planigale ingrami,11.3,7.1,White&Seymour03PNAS,NA,NA,NA
+Marsupialia,Dasyuromorpha,Planigale maculata,12,10.8,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Planigale tenuirostris,11.289,7.1,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Sarcophilus harrisii (Sarcophilus laniarius),1325.363,5775,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Sminthopsis crassicaudata,25.1,16.4,White et al06BiolLett,49,11.4,Nagy & Bradshaw 2000
+Marsupialia,Dasyuromorpha,Sminthopsis macroura,22.54,19.35,White et al06BiolLett,NA,NA,NA
+Marsupialia,Dasyuromorpha,Sminthopsis murina,21.47,19,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Caluromys derbianus,225.03,328.5,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Chironectes minimus,456.5,934.5,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Didelphis marsupialis,570.605,1164.5,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Didelphis virginiana,831.93,2488.33,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Gracilinanus microtarsus,18.72,13,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Lutreolina crassicaudata,406,812,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Marmosa robinsoni,97.6,122,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Metachirus nudicaudatus,204.96,336,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Monodelphis brevicaudata,56.51,75.5,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Monodelphis domestica,60.01,104,White et al06BiolLett,NA,NA,NA
+Marsupialia,Didelphimorphia,Philander opossum,337.95,751,White et al06BiolLett,NA,NA,NA
+Marsupialia,Diprodontia,Acrobates pygmaeus,15.12,14,White et al06BiolLett,NA,NA,NA
+Marsupialia,Diprodontia,Aepyprimnus rufescens,1071.6,2820,White et al06BiolLett,1430,2860,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Bettongia gaimardi,641.255,1385,White et al06BiolLett,NA,NA,NA
+Marsupialia,Diprodontia,Bettongia lesueur,NA,NA,NA,442,720,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Bettongia penicillata,561.4,1018,White et al06BiolLett,603,1100,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Burramys parvus,36.769,44.3,White et al06BiolLett,NA,NA,NA
+Marsupialia,Diprodontia,Cercartetus conncinnus,22.32,18.6,White et al06BiolLett,NA,NA,NA
+Marsupialia,Diprodontia,Cercartetus lepidus,18.774,12.6,White et al06BiolLett,NA,NA,NA
+Marsupialia,Diprodontia,Cercartetus nanus,60.2,70,White et al06BiolLett,NA,NA,NA
+Marsupialia,Diprodontia,Dendrolagus matschiei,1426.8,6960,White&Seymour03PNAS,NA,NA,NA
+Marsupialia,Diprodontia,Gymnobelideus leadbeateri,102.9,166,White&Seymour03PNAS,225.5,125,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Hemibelideus lemuroides,NA,NA,NA,675,1026,Speakman 2000
+Marsupialia,Diprodontia,Lagorchestes conspicillatus,851.2,2660,White&Seymour03PNAS,680,2529,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Lagorchestes hirsutus,NA,NA,NA,596.5,1402,Speakman 2000
+Marsupialia,Diprodontia,Lasiorhinus krefftii,NA,NA,NA,4915.1,23412.5,Evans et al03
+Marsupialia,Diprodontia,Lasiorhinus latifrons,2991.7,29917,White et al06BiolLett,3802.4,28000,Evans et al03
+Marsupialia,Diprodontia,Macropus eugenii,1390.2,4878,White&Seymour03PNAS,1150,4380,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Macropus giganteus,NA,NA,NA,8170,43900,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Macropus robustus,5684.2,29300,White&Seymour03PNAS,1572,12912,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Macropus rufus,5848.2,32490,White&Seymour03PNAS,NA,NA,NA
+Marsupialia,Diprodontia,Petauroides volans,573.9,1141,White et al06BiolLett,520,995,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Petaurus breviceps,89.9,127,White et al06BiolLett,172.5,123.5,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Petrogale lateralis,NA,NA,NA,610,2205,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Petrogale xanthopus,NA,NA,NA,2210,8900,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Phascolarctos cinereus,1034,4765,White et al06BiolLett,1710,7520,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Potorous tridactylus,416.4,976,White et al06BiolLett,517,835,Nagy et al99
+Marsupialia,Diprodontia,Pseudocheirus herbertensis,NA,NA,NA,446,1103,Speakman 2000
+Marsupialia,Diprodontia,Pseudocheirus peregrinus,430.5,916,White et al06BiolLett,599,853,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Setonix brachyurus,834.3,2674,White&Seymour03PNAS,548,1900,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Spilocuscus maculatus,1143.25,4250,White et al06BiolLett,NA,NA,NA
+Marsupialia,Diprodontia,Tarsipes rostratus,29,10,White et al06BiolLett,34.4,9.9,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Thylogale billardierii,NA,NA,NA,1630,5980,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Trichosurus arnhemensis,731.6,2005,White et al06BiolLett,324,1103,Nagy & Bradshaw 2000
+Marsupialia,Diprodontia,Vombatus ursinus,NA,NA,NA,7935.2,33453.75,Evans et al03
+Marsupialia,Notoryctemorphia,Notoryctes caurinus,21.42,34,White et al06BiolLett,NA,NA,NA
+Marsupialia,Peramelemorphia,Echymipera kalabu,340.55,695,White et al06BiolLett,NA,NA,NA
+Marsupialia,Peramelemorphia,Echymipera rufescens ,421.43,751.29,White et al06BiolLett,NA,NA,NA
+Marsupialia,Peramelemorphia,Isoodon auratus,149.8,428,White et al06BiolLett,211,358,Nagy & Bradshaw 2000
+Marsupialia,Peramelemorphia,Isoodon macrourus,573.87,1551,White et al06BiolLett,NA,NA,NA
+Marsupialia,Peramelemorphia,Isoodon obesulus,222.27,717,White et al06BiolLett,690,1232,Nagy & Bradshaw 2000
+Marsupialia,Peramelemorphia,Macrotis lagotis,449.665,1294,White et al06BiolLett,594.6,888,Anderson & Jetz 2005
+Marsupialia,Peramelemorphia,Perameles gunni,420.174,837,White et al06BiolLett,NA,NA,NA
+Marsupialia,Peramelemorphia,Perameles nasuta,316.05,645,White et al06BiolLett,NA,NA,NA
+Monotremata,Monotremata,Ornithorhynchus anatinus,194.04,693,White et al06BiolLett,NA,NA,NA
+Monotremata,Monotremata,Tachyglossus aculeatus,430.55,2725,White et al06BiolLett,875,2860,Nagy et al99
+Monotremata,Monotremata,Zaglossus bruijni,1215.4,10300,White et al06BiolLett,NA,NA,NA

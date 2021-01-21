@@ -1,0 +1,158 @@
+---
+title: "Multivariate Association and Canonical Ordination"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### **Motivation**
+Today we discuss methods of multivariate association, as well as canonical ordination techniques.  Multivariate association methods are generalizations of bivariate correlation, but where Y1 and Y2 are matrices. There are several general approaches.
+
+###**Mantel tests**
+Mantel tests evaluate the association between distance matrices. The procedure is straightforward: obtain the appropriate distance matrix for each multivariate dataset, and calculate the pairwise Mantel coefficient from them. This may be accomplished in the R-package `vegan`.
+
+First we'll load some data and libraries:
+```{r eval=TRUE}
+library(geomorph)
+library(vegan)
+library(RRPP)
+
+data(pupfish)
+p1<-c(4,10:17, 39:56) #variables [landmarks] in Y1
+  Y1<-two.d.array(pupfish$coords[p1,,]) # head data as 2D matrix
+  Y2<-two.d.array(pupfish$coords[-p1,,]) # body data as 2D matrix
+  Group<-as.factor(paste(pupfish$Pop,pupfish$Sex)) 
+cols <- rep(1, 56)
+cols[p1] <- 2
+plotAllSpecimens(pupfish$coords, mean = FALSE, plot.param=list(pt.bg = cols)) #to show the data
+ 
+```
+
+Now let's run Mantel tests: first a pairwise and then a three-way Mantel test.
+```{r eval=TRUE}
+mantel(dist(Y1),dist(Y2)) 
+ plot(dist(Y1),dist(Y2))
+mantel.partial(dist(Y1),dist(Y2),dist(pupfish$CS))  #3-way Mantel
+  
+```
+
+As discussed in class, Mantel tests are straightforward and easy to use. However, they tend to have elevated type I error rates, low power, and can display significant bias (see references in lecture). Thus, alternative multivariate association methods are preferred. 
+
+###**The RV Coefficient**
+One alternative is the RV coefficient, which characterizes the strength of association between two sets of continuous variables. The measure ranges from 0 to 1, with higher values indicative of a greater degree of covariation between the two datasets. The function below calculates the RV coefficient and assesses its significance using permutation, where rows of one dataset are permuted relative to the other. 
+
+```{r eval=TRUE}
+RV<-function(x,y,iter=999){
+  n<-nrow(x)
+  x<-scale(x,scale=FALSE); y<-scale(y,scale=FALSE)
+  ind <- c(list(1:n), (Map(function(x) sample.int(n, n), 1:iter)))
+  y.rand <- lapply(1:(iter+1), function(i) y[ind[[i]], ])
+  S11<-crossprod(x, x)/(n - 1)
+  S22.r<-lapply(1:(iter+1), function(i) crossprod(y.rand[[i]], y.rand[[i]])/(n - 1))
+  S12.r<-lapply(1:(iter+1), function(i) crossprod(x, y.rand[[i]])/(n - 1))
+  RV.r<-unlist(lapply(1:(iter+1), function(i) sum(diag(S12.r[[i]]%*%t(S12.r[[i]]))) /
+                 sqrt(sum(diag(S11%*%S11)) * sum(diag(S22.r[[i]]%*%S22.r[[i]])))))
+  p.val<- 1-(rank(RV.r)[1])/(iter+1)
+  p.val<-ifelse(p.val==0,1/(iter+1),p.val)
+  return(list(RV=RV.r[[1]],pvalue=p.val))
+}
+
+RV(Y1,Y2)
+sqrt(RV(Y1,Y2)$RV)  #closer to a correlation
+```
+
+###**2-Block Partial Least Squares (PLS)**
+Another option is partial least squares, which characterizes the maximal covariation between two sets of variables. This is found from a singular-value decomposition (SVD) of the cross-covariance matrix: S12. As above significance using permutation, where rows of one dataset are permuted relative to the other. 
+
+```{r eval=TRUE}
+pls.res<-two.b.pls(Y1,Y2,print.progress = FALSE)
+summary(pls.res)
+plot(pls.res)
+```
+
+###**Canonical Ordination Methods**
+Canonical ordinations are ordinations that take into account some linear model (Y~X). Thus, they do not generate ordinations of the actual dataspace, but rather provide a representation of that space under the model being examined. Visually, they are often very appealing; however it must be remembered that these represent a distorted (or stylized) view of the dataspace! Thus, they should never be used in place of PCA or PCoA.
+
+###**Canonical Variates Analysis**
+CVA (equivalent to Discriminant Analysis), provides an ordination of between-group variation relative to within-group variation. The plot maximally separates groups relative to within-group variability. When plotted properly, within-group scatter should be approximately circular, as this is standardized during the analysis. 
+
+Here is a simple example with 4 groups. First, the actual dataspace is displayed (using PCA) followed by the CVA representation. 
+
+```{r eval=TRUE}
+mydata<-read.csv("data/Lab-10.Pupfish.csv",header=T)
+species<-as.factor(mydata[,1]); sex<-as.factor(mydata[,2])
+SL<-(mydata[,3]); Y<-as.matrix(mydata[,-(1:3)])	
+Group<-as.factor(paste(species,sex))  
+
+Y<-prcomp(Y)$x	
+ col.gp<-rep("green",nrow(Y));   col.gp[which(species== 'FW')]<-"red"
+ shape.gp<-rep(21,nrow(Y));   shape.gp[which(sex== 'M')]<-22
+ rdf <- rrpp.data.frame(Y=Y, SL=SL, sex=sex, species=species)
+ 
+plot(Y,pch=shape.gp,bg=col.gp,asp=1,cex=1.5)
+
+## CVA
+library(MASS)
+lda.pupfish<-lda(Y,Group)
+cva.pupfish<-predict(lda.pupfish,Y)
+cv.scores<-cva.pupfish$x
+
+plot(cv.scores,pch=shape.gp,bg=col.gp,asp=1,cex=1.5)
+```
+
+####**CVA: Caveats**
+A major caveat with CVA is that both distances and directions in the CVA space do not represent the actual distances in the multivariate dataspace, because variation has been re-represented in a relative form (between relative to within).  Thus, groups are generally more separated in CVA plots than they are in the actual datspace. Also, it can be the case that some groups are displayed further from one another, while others closer than they are (see example in lecture). 
+
+```{r eval=TRUE}
+library(mvtnorm) 
+corr.val<-0.7
+groups<-gl(3,50)
+a<- rmvnorm(n=50,mean=c(-3.4,0),sigma=matrix(c(1,corr.val,corr.val,1),2,2))
+b<- rmvnorm(n=50,mean=c(3.4,0),sigma=matrix(c(1,corr.val,corr.val,1),2,2))
+c<- rmvnorm(n=50,mean=c(0,6),sigma=matrix(c(1,corr.val,corr.val,1),2,2))
+orig.data<-rbind(a,b,c)
+col.gp.r<-rep("black",nrow(orig.data)); col.gp.r[which(groups== '2')]<-"red"; col.gp.r[which(groups== '3')]<-"green"
+
+plot(orig.data,pch=21,bg=col.gp.r,asp=1,cex=1.5)
+ordiellipse(orig.data, groups,conf=0.95)
+plot(predict(lda(orig.data,groups))$x,pch=21,bg=col.gp.r,asp=1,cex=1.5)
+ordiellipse(predict(lda(orig.data,groups))$x, groups,conf=0.95)
+```
+
+Finally, CVA can separate groups that are actually completely overlapping in the multivariate space. This last issue is shown below. 
+
+```{r eval=TRUE}
+data.rand<-matrix(rnorm(150*150),ncol=150)
+plot(data.rand,pch=21,bg=col.gp.r,asp=1,cex=1.5)
+plot(predict(lda(data.rand[,1:150],groups))$x,pch=21,bg=col.gp.r,asp=1,cex=1.5)
+```
+
+###**Redundancy Analysis**
+RDA provides an ordination of predicted values from a linear model. Again it is a stylized representation of the actual multivariate dataspace.
+
+```{r eval=TRUE}
+plot(Y,pch=shape.gp,bg=col.gp,asp=1,cex=1.5)
+pupfish.rda<-rda(Y~SL+species+sex+species:sex)
+rda.scores<-predict(pupfish.rda)
+plot(rda.scores,pch=shape.gp,bg=col.gp,asp=1,cex=1.5,xlab="RDA 1", ylab="RDA 2")
+```
+
+####**Redundancy Analysis: Caveats**
+A major caveat with RDA is if an incorrect model utilized, the resulting ordination is misleading. For the data above, it turns out there is a significant SL:species interaction. This is easily seen in the PC space and MANOVA, so now run the RDA with this interaction:
+
+```{r eval=TRUE}
+anova(lm.rrpp(Y~SL*species*sex, data=rdf, print.progress = FALSE))$table
+plot(Y,pch=shape.gp,bg=col.gp,asp=1,cex=1.5)
+plot(predict(rda(Y~SL*species*sex)),pch=shape.gp,
+     bg=col.gp,asp=1,cex=1.5,xlab="RDA 1", ylab="RDA 2")
+
+```
+
+Finally, here is the RDA when only groups are used:
+
+```{r eval=TRUE}
+plot(predict(rda(Y~species*sex)),pch=shape.gp,
+     bg=col.gp,asp=1,cex=1.5,xlab="RDA 1", ylab="RDA 2")
+```
+
+Obviously, what one uses as X in RDA matters a great deal!

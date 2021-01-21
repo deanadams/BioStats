@@ -1,0 +1,171 @@
+---
+title: "Phylogenetic Comparative Methods"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### **Motivation**
+Today we explore ways in which quantitative analyses may be performed in light of phylogenetic relationshps. When species trait values are used as data, we encounter a non-independence issue: species are not independent because they exhibit a shared evolutionary history as described by their phylogeny. Thus, the expected covariation between taxa is not iid: $\small\sim\mathcal{N}(0,1)$. Instead, it is $\small\sim\mathcal{N}(0,\textbf{V})$ where $\small\mathbf{V}$ is an expected covariance matrix described by the phylogeny and the evolutionary model under consideration.
+
+Numerous analytical methods have been devoped to take phylogeny into account, which collectively are termed *phylogenetic comparative methods* (PCMs). Today we will examine several of the more commonly used PCMs ones.
+
+### Data Setup
+Let's first read in some data, match the data to the phylogeny, and prune both. NOTE: a critical issue in R is that the species names in the data matrix [names(Y) or rownames(Y) depending on input type] match those on the phylogeny [phy$tip.label]: 
+
+```{r eval=TRUE}
+library(nlme)	# Contains GLS 
+library(ape)	# Many phylogenetics-related analyses (see Paradis, Analysis of Phylogenetics and Evolution with R)
+library(geiger) # Many evolutionary analyses
+library(phytools) 
+library(geomorph) #contains some multivariate PCMs
+library(RRPP)
+
+## Read data, phylogeny, and match the two
+tree.best<-read.nexus("Data/PlethodontidTree.nex") #Maximum Credible Tree
+plethdata<-read.csv("Data/meandata-CinGlutOnly.csv",row.names=1, header=TRUE )
+ size<-plethdata[,2];names(size)<-row.names(plethdata) 
+ gp<-as.factor(plethdata[,1]); names(gp)<-row.names(plethdata)
+# Prune tree to match taxa
+ plethtree<-treedata(phy = tree.best,data = plethdata, warnings = FALSE)$phy
+ plot(tree.best)
+plot(plethtree)
+axisPhylo(1) 
+ #Relative body proportions: trait/size
+ Y<-plethdata[,c(3:8)]
+     Y<-apply(Y,2,as.numeric);row.names(Y)<-row.names(plethdata)
+     TL = Y[,1]
+     Y.sz<-Y/size
+gdf <- geomorph.data.frame(Y=Y, Y.sz=Y.sz, TL = TL, size=size,gp=gp,phy = plethtree) 
+gdf$Cov <- vcv.phylo(plethtree)
+class(gdf) <- "rrpp.data.frame"
+```
+
+###**1: Phylogenetic regression/anova**
+
+One may perform models of the form Y~X while accounting for the phylogeny. This is accomplished using generalized least squares (GLS), which is can be implemented as a weighted regression. There are several ways to accomplish this in R, but first let's examine a non-phylogenetic analysis
+
+```{r eval=TRUE}
+anova(lm(TL~size))  
+summary(lm(TL~size))
+plot(TL~size)
+abline(lm(TL~size))
+
+summary(gls(TL~size, data=data.frame(TL=TL,size=size)))
+```
+
+Now let's take phylogeny into consideration:
+```{r eval=TRUE}
+  #using GLS
+bm.gls<-gls(TL~size, correlation=corBrownian(phy=plethtree), data=data.frame(TL=TL,size=size))
+summary(bm.gls)  #Here the correlation structure of the phylogeny is used
+anova(bm.gls)
+
+#using RRPP: same
+pgls.res<-lm.rrpp(TL~size,data=gdf, Cov = gdf$Cov,  print.progress = FALSE) 
+anova(pgls.res)
+pgls.res$LM$gls.coefficients
+
+#using Independent Contrasts: same
+picTL<-pic(TL, plethtree)
+picSz<-pic(size, plethtree)
+cor.test(picTL, picSz)
+summary(lm(picTL~picSz - 1)) #Contrasts run through origin: see Garland et al. 1992
+plot(picTL~picSz)
+abline(lm(picTL~picSz - 1))
+```
+
+The approach is also appropriate for anova-models, and for multivariate data (using D-PGLS):
+```{r eval=TRUE}
+  #Phylogenetic anova
+anova(lm.rrpp(TL ~ gp, Cov = gdf$Cov, data = gdf, iter = 999, print.progress = FALSE) )
+anova(gls(TL~gp, correlation=corBrownian(phy=plethtree), data=data.frame(TL=TL,gp=gp)))  
+
+  #multivariate phy-anova/regression (even when p>N)
+PGLS.reg<-lm.rrpp(Y ~ size, Cov = gdf$Cov, data = gdf, iter = 999, print.progress = FALSE) 
+anova(PGLS.reg)
+plot(PGLS.reg, type = "regression", predictor=size,reg.type = "RegScore")
+
+PGLS.aov<-lm.rrpp(Y ~ gp, Cov = gdf$Cov, data = gdf, iter = 999, print.progress = FALSE) 
+anova(PGLS.aov)  
+```
+
+###**2: Phylogenetic PLS (partial least squares)**
+
+One may also account for phylogeny when performing PLS, the multivariate association between two data matrices. 
+
+```{r eval=TRUE}
+PLS.Y <- phylo.integration(A = Y[,1:3], A2 = Y[,4:6], phy= plethtree, print.progress = FALSE)
+summary(PLS.Y)
+plot(PLS.Y)
+```
+
+###**3: Phylogenetic Ordination**
+
+A PCA with the phylogeny superimposed is a phylomorphospace. There are numerous functions for accomplishing this (e.g., in phytools): one we will illustrate is in geomorph (note that the ancestral states could be part of the output if anc.states = TRUE: 
+
+```{r eval=TRUE}
+plotGMPhyloMorphoSpace(phy = plethtree,A = arrayspecs(Y.sz,p=1,k=6), ancStates = FALSE, tip.labels = FALSE) 
+
+```
+
+
+###**4: Phylogenetic Signal**
+
+Phylogenetic signal is the degree to which closely related species display similar trait values. In R this may be implemented in picante, phytools, and geomorph. Multivariate phylogenetic signal is found in geomorph. Here we illustrate this in both packages. 
+
+```{r eval=TRUE}
+phylosig(plethtree, TL, method="K", test=T, nsim=1000)  #phytools
+physignal(gdf$TL,plethtree, print.progress = FALSE)   #geomorph
+
+#Multivariate
+PS.shape <- physignal(A=Y,phy=plethtree,iter=999, print.progress = FALSE)
+summary(PS.shape)
+plot(PS.shape)
+```
+
+###**5: Comparing Phylogenetic Evolutionary Rates**
+
+Comparing the rate of phenotypic evolution is sometimes of interest. Typically, there are two approaches: comparing rates among clades (e.g., does body size evolve faster in island taxa versus continental species?), and comparing rates among traits (e.g., does size evolve faster than shape?). The general approach is to fit the data to the phylogeny under a model with a single evolutionary rate for all taxa, and compare this fit to a model with multiple rates for groups of taxa (BM1 vs. BMM).  This may be implemented in several packages: 
+
+```{r eval=TRUE}
+#5a: Compare Evolutionary Rates Among Clades
+ER<-compare.evol.rates(A=Y, phy=plethtree,gp=gp,iter=999, print.progress = FALSE)
+summary(ER)   #significantly higher rate of morphological evolution 'large' Plethodon
+plot(ER)
+
+#5b: Compare Evolutionary Rates Among Traits (multivariate)
+var.gp <- c("B","A","A","B","B","B")  #head (A) vs. body (B)
+EMR<-compare.multi.evol.rates(A=Y,gp=var.gp, Subset=TRUE, phy= plethtree,iter=999, print.progress = FALSE)
+summary(EMR) #Limb traits evolve faster than head traits
+plot(EMR)
+```
+
+###**6: Comparing Evolutionary Models (Evolutionary 'Modes')**
+
+The previous section allowed a comparison to BM1 and BMM evolutionary models. However, there is a much broader class of models that could be considered, including Ornstein-Uhlenbeck models, early-burst models, etc. OU models can have one or more optima (OU1, OUM), and more complicated models can be envisioned. 
+
+As with Brownian motion rate models, the procedure is straightforward: the fit of the data to the phylogeny under a specified evolutionary model is obtained, along with the corresponding logL and AIC. Next, these are used to compare the fit of models to determine which has the highest support. A simple example is below (NOTE: The package OUCH, MVSLOUCH, OUwie, and others can compare more complicated models: BM1, BMM, OU1, OUM, etc.).  
+
+NOTE: only univariate examples are shown here, as multivariate OU methods do not currently work as intended. 
+
+```{r eval=TRUE}
+geo=get(data(geospiza))      #a smaller dataset (for time reasons)
+tmp=treedata(geo$phy, geo$dat)
+phy=tmp$phy; dat=tmp$data[,"tarsusL"] 
+plot(phy)
+
+bm.M<-fitContinuous(phy, dat, model="BM")
+ou.M<-fitContinuous(phy, dat, bounds = list(alpha = c(min = exp(-500), max = exp(2))),model="OU")
+  bm.M
+  ou.M
+
+# Compare models: LRT & AIC
+LRT.M<-(2*(ou.M$opt$lnL-bm.M$opt$lnL))
+prob.M<-pchisq(LRT.M, 1, lower.tail=FALSE)
+LRT.M
+prob.M
+
+bm.M$opt$aic
+ou.M$opt$aic #OU does not provide a better fit: use simpler model (BM)
+```

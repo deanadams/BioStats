@@ -1,0 +1,102 @@
+---
+title: "Meta Analysis"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### **Motivation**
+Today we examine methods that summarize quantitative data from across published studies.  From each published study an effect size and weight are calculated. These are then summarized using GLM, where the weights are the inverse of study variances. 
+
+First let's read in some data:
+
+```{r eval=TRUE}
+library(metafor)
+library(RRPP)
+mydata<-read.csv("Data/Lab-14-gur_hedge.csv",header=T)
+habitat<-mydata[,(1)]
+effectd<-as.matrix(mydata[,(2)])                                                             
+var<-as.matrix(mydata[,(4)])
+
+```
+
+###**1: Fixed Effects Meta-Analysis**
+
+Here is the simplest meta-analytic model: a fixed effects m-a with no structure (i.e., all studies belong to a single group) 
+
+####*No Structure Fixed Effects M-A*
+```{r eval=TRUE}
+#no structure
+ma.no<-rma.uni(yi=effectd,vi=var,data=mydata,method="FE")
+summary(ma.no)
+forest(ma.no)  #plot of study effect sizes
+```
+
+####*Categorical Structure Fixed Effects M-A*
+
+The next model is equivalent to meta-analytic anova:
+```{r eval=TRUE}
+ma.cat<-rma.uni(yi=effectd,vi=var,mods= ~habitat, data=mydata,method="FE")
+summary(ma.cat)
+
+#Group means
+ma.cat$b[1] #lentic
+ma.cat$b[1]+ma.cat$b[2] #marine
+ma.cat$b[1]+ma.cat$b[3] #terrestrial
+```
+
+###**2: Random Effects Meta-Analysis**
+
+These models incorporate a random effect to the study variance, much like random effects in a standard anova. 
+
+####*No Structure Random Effects M-A*
+```{r eval=TRUE}
+rma.uni(yi=effectd,vi=var,data=mydata)
+```
+
+####*Categorical Structure Random Effects M-A*
+
+This model is equivalent to a random effects m-a anova:
+```{r eval=TRUE}
+ma.catr<-rma.uni(yi=effectd,vi=var,mods= ~habitat, data=mydata)
+summary(ma.catr)
+
+#Group means
+ma.catr$b[1] #lentic
+ma.catr$b[1]+ma.catr$b[2] #marine
+ma.catr$b[1]+ma.catr$b[3] #terrestrial
+
+```
+
+###**3: Additional Analyses**
+
+As we discussed, there are many additional ways of exploring meta-analytic data: phylogenetic meta-analysis, cumulative meta-analysis, funnel plots, fail safe numbers, etc. Many of these may be found in the 'meta', 'rmeta' and 'metafor' package. Below are several examples. 
+
+```{r eval=TRUE}
+#Funnel plot for outliers
+funnel(ma.no)
+
+# fail safe number
+fsn(yi=effectd,vi=var,data=mydata)
+fsn(yi=effectd,vi=var,data=mydata,type="Rosenberg")
+```
+
+
+###**4: Using GLS 'by hand' in RRPP**
+
+Recognizing that meta-analysis is simply a GLS model where the weight matrix is a diagonal matrix containing study weights, one can use `RRPP` to perform the same task:
+
+```{r eval=TRUE}
+rdf <- rrpp.data.frame(effectd = effectd, habitat=habitat, var.e = diag(as.vector(var)))
+
+anova(lm.rrpp(effectd~1,Cov = rdf$var.e, data = rdf, print.progress = FALSE))
+summary(ma.no)  #same SS!
+
+res<- lm.rrpp(effectd~habitat,Cov = rdf$var.e, data = rdf, print.progress = FALSE)
+anova(res)
+summary(ma.cat) #same Q tests!
+res$LM$gls.coefficients #same group effect sizes
+
+```
+
+Note that for both models, one obtais identical results. This confirms that conceptually, meta-analysis is simply a GLS model containing a weight matrix which is a diagonal matrix with study weights on the diagonal.

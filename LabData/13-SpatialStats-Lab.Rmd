@@ -1,0 +1,143 @@
+---
+title: "Spatial Statistics"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+
+```{r eval=TRUE}
+library(spatstat)	
+library(RRPP)
+library(vegan)
+library(spdep)
+```
+
+### **Motivation**
+Today we examine methods that concern geographic space. Some assess whether or not there is spatial autocorrelation in data, others account for spatial autocorrelation in subsequent analyses. The latter can be accomplished using a generalized least squares model, or implemented as a weighted GLM.  These approaches model spatial non-independence in the error term of the GLM, and can assess the relationship between two sets of variables (Y~X) while accounting for spatial non-independence.  
+
+The observant student will note that this description, and the method used, is identical to what is done in phylogenetic comparative methods, where phylogenetic non-independence is accounted for during the analysis of Y~X.
+
+###**1: Point Patterns: Ripley's K**
+
+Our first analysis takes spatial data and examines point patterns for underdispersion or overdispersion:
+
+```{r eval=TRUE}
+#1: Ripley's K
+data(cells)
+plot(cells)
+plot(Kest(cells))   #shows K for various models: isotropic, poisson, etc.
+E<-envelope(cells,Kest,nsim=100,rank=2)
+plot(E) # plot shows that observed are underdispersed at small spatial scales
+```
+The plot shows that the observed data are underdispersed at small spatial scales. 
+
+###**Spatially Autocorrelated Data**
+
+Next we examine various patterns of spatial autocorrelation between one or more variables and geographic location. Typically these approaches are used on empirical data, but for this example we will simulate data with spatial autocorrelation. Our data contain a continuous variable and groups (ecotype) simulated across the landscape:
+
+```{r eval=TRUE}
+lat<-runif(50,0,5); long<-runif(50,0,5)
+g<-cbind(lat,long)  #create an XY spatial grid
+y <- sqrt(diag(g%*%t(g))) + rnorm(nrow(g))  #a spatially-autocorrelated variable
+        # Valuee is associated with distance from origin
+t <- sample(rep(c(1,2),length(y)/2))  #2 ecological 'groups' constrained by spatial contingency
+sc <- 0.0   #spatial contingency: 0->1
+for(i in 1:length(y)){
+  z = scale(y,scale=sd(y))
+  crit = 1-sc
+  crit =c(-crit/2,crit/2)*3
+  if(z[i]<=min(crit)) t[i]=1
+  if(z[i]>=max(crit)) t[i]=2 
+}
+
+plot(g, pch=21, bg=t, cex=y, asp=1, main="Species diversity proprotional to circle size 
+Color designates ecological type")
+```
+
+###**2: Covariation of Data with Geography**
+
+One pattern that can be quantitatively examined is the extent to which some variable covaries with geography. A Mantel test may be used for this (NOTE: recall the caveats of the Mantel test from week 10!)
+
+```{r eval=TRUE}
+mantel(dist(g), dist(y), permutations = 9999)  # Mantel association
+mantel.partial(dist(t), dist(y), dist(g), permutations = 9999)  #3-way Mantel holding group constant
+```
+
+###**3: Spatial Autocorrelation**
+
+One may also assess the level of spatial autocorrelation in a variable; that is, the degree to which spatially proximate samples display similar values. 
+
+```{r eval=TRUE}
+W<-tri2nb(g) #weights with Delauney tesselation
+moran.test(y,nb2listw(W))   #positive autocorrelation
+```
+
+###**4: Accounting for Spatial Autocorrelation**
+
+One may also be interested in determining the relationship between a set of dependent and independent variables while accounting for spatial non-independence. Here the linear model is of the form: Y~X|Geog, where Geog is modeled in the error covariance. As with phylogenetic comparative methods (week 11), this is accomplished using GLM (or more generally GLS). 
+
+Note that with spatial data, there are multiple ways to model the spatial covariance, based on how one expects spatial autocorrelation to decay with distance. We discussed numerous models in class: several are shown in the example below.
+
+```{r eval=TRUE}
+ols.fit <- lm(y~t, x=T)  #spatial proximity not considered
+summary(ols.fit)
+anova(ols.fit)
+
+# GLS models with different spatial autocorrelations
+  # Warning!  False convergeneces possible
+t <- as.factor(t)
+geo=data.frame(g,t,y)
+
+library(nlme)
+gls.fit.exp = gls(y~t, data=geo, correlation=corExp(form=~lat+long)) #exponential
+gls.fit.gaus = gls(y~t, data=geo,  correlation=corGaus(form=~lat+long)) #gaussian
+gls.fit.spher = gls(y~t, data=geo,  correlation=corSpher(form=~lat+long)) #spherical
+gls.fit.lin = gls(y~t, data=geo,  correlation=corLin(form=~lat+long)) #linear
+
+# look at coeffcients: VERY DIFFERENT when spatial non-independence considered
+ols.fit
+gls.fit.exp 
+gls.fit.gaus 
+gls.fit.spher 
+gls.fit.lin
+
+# model comparisons
+AIC(gls.fit.exp, gls.fit.gaus,gls.fit.lin) #Careful when y is multivariate, see Model Selection lecture
+   ## Exponential decay of spatial dependence is best model
+# Anova
+anova(gls.fit.exp)
+anova(gls.fit.gaus)
+anova(gls.fit.spher)
+anova(gls.fit.lin)
+```
+
+If one has a spatial covariance matrix, this can also be used in RRPP. An advantage here is that accounting for spatial covariance works identically for both univariate and multivariate response variables.  Here we show two examples. First, we estimate a simple spatial covariance matrix based on geographic distance:
+
+```{r eval=TRUE}
+# Spatial autocorrelation (from lat/long)
+spatCov <- function(x){
+  x <- as.matrix(x)
+  if(ncol(x) != 2) stop("Need two columns for lat long!")
+  d <- dist(x)
+  P <- cmdscale(d, 2)
+  tcrossprod(P)/(ncol(P) - 1)
+}
+
+#example  
+spat.cov<-spatCov(g)
+rdf <- rrpp.data.frame(g=g, y=y,t=t, spat.cov = spat.cov)
+res <- lm.rrpp(y~t,Cov = spat.cov, data = rdf, print.progress = FALSE)
+anova(res)
+```
+
+However, this approach does not incorporate the decay of spatial dependency with distance (see Cressie's work on spatial statistics and signal decay). A better approach is to extract the spatial covariance matrix from an nlme model, and use this in RRPP:
+
+```{r eval=TRUE}
+#exponential matrix
+my.exp <- corExp(1, form=~g) #g is lat/long from above
+my.exp <- Initialize(my.exp,geo)
+mycor <- corMatrix(my.exp)
+
+anova(lm.rrpp(y~t,Cov = mycor, data = rdf, print.progress = FALSE))
+```

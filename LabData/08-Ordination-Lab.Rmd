@@ -1,0 +1,98 @@
+---
+title: "Ordination Methods"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### **Motivation**
+The key to multivariate data analysis is understanding the patterns. Ordination approaches provide a useful means of examining patterns in high-dimensional dataspaces. 
+
+###**Principal Components Analysis**
+Principal components analysis (PCA) is the work-horse of ordination. There are numerous implementations in R. The base function `prcomp` is quite useful:
+```{r eval=TRUE}
+library(RRPP)
+library(vegan)
+  bumpus<-read.csv("data/bumpus.csv",header=T)
+  Y<-bumpus[,5:12]
+  Y <- scale(Y, scale = FALSE) #center data
+  gp.bumpus <- bumpus$sex
+pca.bumpus<-prcomp(Y) 
+summary(pca.bumpus)
+```
+Using `summary` on the `prcomp` object returns a table of the eigenvalues, and percent variation described by each PC axis. For this example, the first 3 PC axes describe 76% of the variation. Note that the last 4 dimensions have precisely 0% variation, meaning that there were redundancies in this data (standard parametric-based significance testing in MANOVA would not work, as the covariance matrix would be singular).
+
+One can visualize this using a scree plot:
+```{r eval=TRUE}
+library(vegan)
+screeplot(pca.bumpus,bstick = TRUE)  
+```
+
+A better understanding of the PC axes is found by examining the loadings of the original variables on each axis.
+```{r eval=TRUE}
+pca.bumpus$rotation[,1]  #1st PC axis
+```
+Variables with loadings close to zero are relatively unimportant for that PC axis, while loadings closer to +1 and -1 are more important.
+
+Finally, here is the PCA plot.
+```{r eval=TRUE}
+PC.scores<-pca.bumpus$x
+plot(PC.scores,xlab="PC I", ylab="PC II",asp=1,pch=21,bg=gp.bumpus,cex = 1.5)
+```
+
+###**Interpreting Ordination Plots**
+Interpreting ordination plots requires an understanding of what went into the plot, and what is preserved. For PCA, distances and directions among objects are preserved. Thus the approach has only rotated the data using a rigid-rotation. Further, if Euclidean data (or a metric distance) was used as input, then one may interpret distances and directions in the resulting ordination plot.
+
+Remember however, that the plot still represents a *projection* into a lower-dimensional space, so there may be additional pattern in the data that is not well-represented. For instance, large distances between specimens are a better representation of the true distance between those specimens than are smaller distances in the plot. The reason is that two specimens close together in the PC1 - PC2 plot may still be separated along PC3, etc. This is the case for all ordination approaches.
+
+To see this, one can do a plot of the true distances between objects in the full dataspace versus the distances as represented in the low-dimensional space:
+```{r eval=TRUE}
+plot(dist(Y),dist(PC.scores[,1:2]))
+cor(dist(Y),dist(PC.scores[,1:2]))
+```
+
+Here one can see greater 'spread' for the smaller distances (we have a teardrop-shaped distribution).  Note also that the correlation of distances in the 2D-PC space with the full space is 0.99.  Thus, very little information is 'lost' when viewing this 2D projection.
+
+###**The Bi-Plot**
+Sometimes it is useful to superimpose vectors for the variables in the PCA space. This is accomplished using a bi-plot (interpretation of the bi-plot was discussed in lecture).
+```{r eval=TRUE}
+biplot(pca.bumpus)
+```
+
+###**Principal Coordinates Analysis (PCoA)**
+PCoA, or metric (classic) multidimensional scaling provides a Euclidean ordination beginning with a distance matrix. The original approach was found in Gower (1966), who showed that for multivariate normal data, PCA from the covariance matrix, and PCoA from the Euclidean distance matrix, were equivalent. However, the advantage of PCoA is that one may use other distance matrices as input. 
+
+As the name implies, PCoA is metric, meaning distances and directions are preserved during the approach. Thus, if one has supplied a metric distance matrix, one is free to interpret distances and directions in the resulting ordination plot. 
+
+```{r eval=TRUE}
+bumpus.dist<-dist(Y)
+PCoA<-cmdscale(bumpus.dist)   #from vegan
+plot(PCoA,pch=21,bg=gp.bumpus,cex=1.5,asp=1)
+```
+
+Note that for this example, the PCoA plot is identical to that of PCA (with the exception of reflections of the axes, which is arbitrary).
+
+###**Non-Metric Multidimensional Scaling (NMDS)**
+Another approach is to use NMDS. Here, the rank-order of distances are preserved, rather than the distances themselves. Because of this, one should take great caution to *NOT* overinterpret patterns in these plots (distances and directions are not preserved).
+
+In other words, NMDS does not preserve distances and directions (even if a metric distance measure is used), so such patterns should be interpreted with extreme caution. 
+```{r eval=TRUE}
+bumpus.nmds <- metaMDS(dist(Y), autotransform=FALSE, k=2)
+plot(bumpus.nmds$points, asp=1,pch=21, bg=gp.bumpus, cex=1.5,xlab="NMDS1", ylab="NMDS2")
+```
+
+Note that here as well, one can input non-Euclidean distances. 
+```{r eval=TRUE}
+data(dune)  #from vegan
+dune
+dune.dist<-vegdist(dune)  #default = Bray-Curtis distance
+dune.nmds <- metaMDS(dune.dist, autotransform=FALSE, k=2)
+plot(dune.nmds)
+```
+
+###**Correspondence Analysis**
+Correspondence Analysis (CA) is another ordination approach for count data. 
+```{r eval=TRUE}
+dune.cca<-cca(dune)  #from vegan
+plot(dune.cca)
+```

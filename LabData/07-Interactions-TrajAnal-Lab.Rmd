@@ -1,0 +1,112 @@
+---
+title: "Patterns in Interaction Terms & Trajectory Analysis"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### **Motivation**
+As we discussed in lecture, interactions between main effects in a linear model describe context-dependent patterns in one's data. For instance, in the model: `Y~cov+group+cov:group`, a significant `cov:group` term implies that the relationship between Y and the covariate differs in some way among the groups. Such patterns are very common in biology and in fact describe patterns of considerable interest. However, with multivariate data, simply identifying a significant interaction in a linear model is only the first step towards understanding.
+
+Once a significant interaction has been identified, one must then dig deeper to understand its meaning. Below is an example for a factrial MANOVA.
+
+### **Multivariate Pairwise Comparisons**
+As seen in previous weeks, one can perform pairwise comparisons among groups via RRPP. The approach is based on distances between group means. 
+
+```{r eval=TRUE}
+library(geomorph)
+library(RRPP)
+
+data(Pupfish)
+Pupfish$Group <- interaction(Pupfish$Sex, Pupfish$Pop)
+fit.m <- lm.rrpp(coords ~ Pop * Sex, data = Pupfish, print.progress = FALSE) 
+anova(fit.m)$table
+```
+
+Note that the interaction between `pop` and `sex` is significant. This implies that some `pop:sex`combination(s) differ from the others, but not which ones. To identify which groups differ, we need multiple comparison tests. 
+
+```{r eval=TRUE}
+summary(pairwise(fit.m,groups = Pupfish$Group))
+plot(fit.m, type = "PC", pch=21, bg = Pupfish$Group, cex=2)
+legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
+```
+
+Note the major differences between sympatric populations of both species (blue and green), and the overlap between allopetric populations of the same species (black and red). This is the quintessential example of *character displacement*.
+
+
+### **MANCOVA Models: LS-Mean Comparisons**
+For MANCOVA models, a covariate is included in the model. Now several comparisons are of interest.  First, one can compare groups (LS-means) while accounting for the covariate. 
+
+```{r eval=TRUE}
+Pupfish$logSize <- log(Pupfish$CS)
+fit.slopes <- lm.rrpp(coords ~ logSize * Pop * Sex, data = Pupfish, print.progress = FALSE)
+anova(fit.slopes)$table
+PWS.gp <- pairwise(fit.slopes, groups = Pupfish$Group)
+summary(PWS.gp)
+plot(fit.slopes, type = "PC", pch=21, bg = Pupfish$Group, cex=2)
+legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
+
+```
+
+Note that the distances between pairs of group means are not the same as in the first example, because the covariate has been taken into account in the analysis.
+
+### **MANCOVA Models: Slope Comparisons**
+
+Additionally, one can compare the slopes among groups. 
+```{r eval=TRUE}
+PWS <- pairwise(fit.slopes, groups = Pupfish$Group, covariate = Pupfish$logSize)
+summary(PWS)
+summary(PWS, test.type = "VC", angle.type = "deg")
+
+plot(fit.slopes, type = "regression", reg.type = "RegScore", pch=21, bg = Pupfish$Group, predictor = Pupfish$logSize, cex=2)
+legend("topleft", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
+
+plot(fit.slopes, type = "regression", reg.type = "PredLine", pch=21, bg = Pupfish$Group, predictor = Pupfish$logSize, cex=2)
+legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
+```
+
+Note that the above provides comparisons allow for the length of the regression vector, as well as a test of the angular direction of the regressions in the multivariate trait space. 
+
+Together, these procedures provide considerable flexibility in evaluating patterns that comprise significant interaction terms. 
+
+### **Trajectory Analysis**
+
+Traditional pairwise comparisons following MANOVA are conducted using the distance between group means, as in our examples above. However, for factorial models, this is rather limiting and does not tell the entire story; the approach might leave some relevant biological signal unexamined.  For instance, consider the model in the example above: `Y~species+site+species:site`. In this case, we know that each species is found in each site. Thus, there is a *linkage* between site and species. To leverage this knowledge, we use **_trajectory analysis_**. 
+
+In this analysis, each level of factor 1 (e.g., species) is a trajectory in the multivariate space, which is formed by its corresponding least squares means ($\overline{Y}$) for the levels of factor B (e.g., site). This effectively 'links' the data from factor B within its level of factor A, forming the trajectory.
+
+These trajectories then have higher-order attributes in the multivariate space, and these may be statistically compared. First, they have a magnitude (length), and second, they have a direction.  For trajectories with 3 or more levels they also have a shape.
+
+Let's show an example for the data above. Here, our trajectories represent the degree of sexual dimorphism in each pupfish population.
+
+```{r eval=TRUE}
+class(Pupfish) <- "geomorph.data.frame" # Help R and geomorph work with the data
+
+TA <- trajectory.analysis(f1 = coords ~ Pop * Sex, data = Pupfish, print.progress = FALSE)
+summary(TA, angle.type = "deg")
+```
+
+Notice that in this example, there is evidence for differences in trajectory length, as well as trajectory direction. This means that there is greater sexual dimorphism in one population as compared to another, and also in the manner in which sexual dimorphism occurs. 
+
+Looking at these graphically we see the pattern: 
+
+```{r eval=TRUE}
+plot(TA)
+```
+
+#### **Multiple Trajectories & Multiple Levels**
+The approach works unaltered for more complicated datasets.
+
+```{r eval=TRUE}
+data(motionpaths)
+gdf <- geomorph.data.frame(trajectories = motionpaths$trajectories,
+                           groups = motionpaths$groups)
+TA <- trajectory.analysis(f1 = trajectories ~ groups, 
+                          traj.pts = 5, data=gdf,print.progress=FALSE)
+summary(TA)
+```
+
+```{r eval=TRUE}
+
+plot(TA)
+```

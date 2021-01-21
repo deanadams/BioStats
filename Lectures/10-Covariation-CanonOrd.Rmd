@@ -1,0 +1,1149 @@
+---
+title: "10: Multivariate Association and Canonical Ordination Methods"
+author: "Dean Adams, Iowa State University"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE, echo = TRUE, tidy = TRUE}
+library(knitr)
+library(RRPP)
+library(geomorph)
+library(vegan)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#  Variable Covariation
+
+Univariate covariation, correlation
+
+$$\small{cov}_{y_{1},y_{2}}=\sigma_{y_{1},y_{2}}=\frac{1}{n-1}
+\sum_{i=1}^{n}\left(y_{i1}-\bar{y}_{i1}\right)
+\left(y_{i2}-\bar{y}_{i2}\right)$$
+
+$$\small{cor}_{y_{1},y_{2}}=r_{1,2}=\frac{1}{n-1}
+\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y}_{i1}\right)}{s_{1}}
+\frac{\left(y_{i2}-\bar{y}_{i2}\right)}{s_{2}}$$
+
+
+# Variable Covariation: Example
+
+What is the relationship between mass-specific metabolic rate and body mass across 580 mammal species (data from Capellini et al. *Ecol.* 2010)
+
+```{r eval=TRUE, echo=FALSE, out.width="80%"}
+mydata<-read.csv("LectureData/10.covariation/MammalData.csv",header=TRUE)
+met.dat<-na.omit(cbind(log(mydata$Body.mass.for.BMR..gr.), log(mydata$BMR..mlO2.hour./mydata$Body.mass.for.BMR..gr.)))
+plot(met.dat,cex=1.5, pch=21, bg="red",ylab = expression('VO'^2),xlab="log(mass), g")
+```
+
+#  Variable Covariation
+
+Univariate covariation, correlation
+
+Sums of squares (SS):
+
+$\small{SS}_{x}=\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}=\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(x_{i}-\bar{x}\right)$   
+
+$\small{SS}_{y}=\sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}=\sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)\left(y_{i}-\bar{y}\right)$ 
+
+$\small{SC}_{xy}=\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)$ 
+
+Variance components
+
+$\small{s}^{2}_{x}=\sigma^{2}_{x}=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2}}{n-1}$  
+
+$\small{s}^{2}_{y}=\sigma^{2}_{y}=\frac{\sum_{i=1}^{n}\left(y_{i}-\bar{y}\right)^{2}}{n-1}$  
+
+$\small{cov}_{xy}=\sigma_{xy}=\frac{\sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)}{n-1}$
+
+#  Variable Covariation
+
+Univariate covariation, correlation
+
+$$\small{cov}_{y_{1},y_{2}}=\sigma_{y_{1},y_{2}}=\frac{1}{n-1}
+\sum_{i=1}^{n}\left(y_{i1}-\bar{y}_{i}\right)
+\left(y_{i2}-\bar{y}_{i2}\right)$$
+
+$$\small{cor}_{y_{1},y_{2}}=r_{1,2}=\frac{1}{n-1}
+\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y}_{i}\right)}{s_{1}}
+\frac{\left(y_{i2}-\bar{y}_{i2}\right)}{s_{2}}$$
+
+#  Variable Covariation
+
+Univariate covariation, correlation
+
+$$\small{cov}_{y_{1},y_{2}}=\sigma_{y_{1},y_{2}}=\frac{1}{n-1}
+\sum_{i=1}^{n}\left(y_{i1}-\bar{y}_{i}\right)
+\left(y_{i2}-\bar{y}_{i2}\right)$$
+
+$$\small{cor}_{y_{1},y_{2}}=r_{1,2}=\frac{1}{n-1}
+\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y}_{i}\right)}{s_{1}}
+\frac{\left(y_{i2}-\bar{y}_{i2}\right)}{s_{2}}$$
+
+Re-express: 
+
+$$\small{cor}_{y_{1},y_{2}}=r_{1,2}=\frac{1}{n-1}\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y}_{i}\right)}{s_{1}}\frac{\left(y_{i2}-\bar{y}_{i2}\right)}{s_{2}}=$$
+
+$$\small{r}_{1,2}=\frac{1}{n-1}\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y}_{i}\right)}{\sqrt{\frac{SS_{x}}{n-1}}}\frac{\left(y_{i2}-\bar{y}_{i2}\right)}{\sqrt{\frac{SS_{y}}{n-1}}}=$$
+
+$$\small{r}_{1,2}=\frac{SC_{xy}}{\sqrt{SS_{x}SS_{y}}}=\frac{\sigma_{xy}}{\sqrt{\sigma^{2}_{x}\sigma^{2}_{y}}}=\frac{\sigma_{xy}}{\sigma_{x}\sigma_{y}}$$
+
+# Variable Covariation: Example
+
+*X*: Independent (predictor) variable
+*Y*: Dependent (response) variable
+
+```{r eval=TRUE, echo = FALSE, out.width="50%"}
+plot(met.dat,cex=1.5, pch=21, bg="red",ylab = expression('VO'^2),xlab="log(mass), g")
+```
+
+# Variable Covariation: Example
+
+*X*: Independent (predictor) variable
+*Y*: Dependent (response) variable
+
+```{r echo = FALSE, eval=TRUE,out.width="50%"}
+plot(met.dat,cex=1.5, pch=21, bg="red",ylab = expression('VO'^2),xlab="log(mass), g")
+```
+
+$\small{SS}_{x}=2997.23$;    $\small{SS}_{y}=371.48$;     $\small{SC}_{xy}=-925.99$
+
+$\small{r}_{xy}=\frac{-925.99}{\sqrt{2997.23*371.48}}=-0.877$
+
+# Variable Covariation: Example
+
+*X*: Independent (predictor) variable
+*Y*: Dependent (response) variable
+
+```{r echo = FALSE, eval=TRUE,out.width="50%"}
+plot(met.dat,cex=1.5, pch=21, bg="red",ylab = expression('VO'^2),xlab="log(mass), g")
+met.dat<-scale(met.dat,center = TRUE, scale = FALSE)
+SSCP<-t(met.dat)%*%met.dat
+cov.mat<-cov(met.dat)
+cor.mat<-cor(met.dat)
+```
+
+$\small{SS}_{x}=2997.23$;    $\small{SS}_{y}=371.48$;     $\small{SC}_{xy}=-925.99$
+
+$\small{r}_{xy}=\frac{-925.99}{\sqrt{2997.23*371.48}}=-0.877$
+
+Strength of association: $\small{r}^{2}=0.770$
+
+### That's great, but what about correlations of two *SETS* of variables? 
+
+# First Pass: Mantel Tests
+
+Consider two data matrices $\small\mathbf{X}$ & $\small\mathbf{Y}$. The dispersion of objects in each may be described by the distance matrices, $\small\mathbf{D}_X$ & $\small\mathbf{D}_Y$.  A Mantel test is used to evaluate the association between two or more distance matrices.
+
+First, obtain: $\small{z}_M= \sum{\mathbf{X}_{i}\mathbf{Y}_{i}}$ where $\small\mathbf{X}$ & $\small\mathbf{Y}$ are the *unfolded* distance matrices
+
+Next, obtain the Mantel correlation coefficient: $\small{r}_M = \frac{z_M}{[n(n-1)/2]-1}$
+
+Assess significance of $\small{r_M}$ via permutation, where R/C of distance matrix are permuted.
+
+# First Pass: Mantel Tests
+
+Consider two data matrices $\small\mathbf{X}$ & $\small\mathbf{Y}$. The dispersion of objects in each may be described by the distance matrices, $\small\mathbf{D}_X$ & $\small\mathbf{D}_Y$.  A Mantel test is used to evaluate the association between two or more distance matrices.
+
+First, obtain: $\small{z}_M= \sum{\mathbf{X}_{i}\mathbf{Y}_{i}}$ where $\small\mathbf{X}$ & $\small\mathbf{Y}$ are the *unfolded* distance matrices
+
+Next, obtain the Mantel correlation coefficient: $\small{r}_M = \frac{z_M}{[n(n-1)/2]-1}$
+
+Assess significance of $\small{r_M}$ via permutation, where R/C of distance matrix are permuted.
+
+####Comments:  Mantel tests were hugely popular some decades ago, as they facilitate association tests for multivariate data (anova-analogs, and 3-matrix methods were developed). However, Mantel tests can suffer from inflated type I error, low power, and have significant bias with autocorrelated error. 
+
+####Thus, while widely used (especially in ecology), their drawbacks are sufficient to warrant a look at alternative approaches. We won't discuss them further. 
+
+######See: Oden and Sokal 1992. *J. Classif.*; Legendre 2000. *J. Stat. Comp. Simul.*; Harmon and Glor 2010. *Evolution*; Guillot & Rousset 2013. *Methods Ecol. Evol.*
+
+
+
+# Variable Covariation: Another Perspective
+
+Another way to approach this is via matrix algebra
+
+*Y~1~* = log(mass) & *Y~2~* = VO^2^
+
+$$\mathbf{Y}=[\mathbf{y}_{1}\mathbf{y}_{2}]$$
+
+Let $\small\mathbf{1}^{T}=[1 1 1 ... 1]$   then...
+
+$$\small\bar{\mathbf{y}}^{T}=\left(\mathbf{1}^{T}\mathbf{1}\right)^{-1}\mathbf{1}^{T}\mathbf{Y}$$
+
+# Variable Covariation: Another Perspective
+
+Another way to approach this is via matrix algebra
+
+*Y~1~* = log(mass) & *Y~2~* = VO^2^
+
+$$\mathbf{Y}=[\mathbf{y}_{1}\mathbf{y}_{2}]$$
+
+Let $\small\mathbf{1}^{T}=[1 1 1 ... 1]$   then...
+
+$$\small\bar{\mathbf{y}}^{T}=\left(\mathbf{1}^{T}\mathbf{1}\right)^{-1}\mathbf{1}^{T}\mathbf{Y}$$
+
+$$\small\bar{\mathbf{Y}}=\mathbf{1}\left(\mathbf{1}^{T}\mathbf{1}\right)^{-1}\mathbf{1}^{T}\mathbf{Y}$$
+
+# Variable Covariation: Another Perspective
+
+Another way to approach this is via matrix algebra
+
+*Y~1~* = log(mass) & *Y~2~* = VO^2^
+
+$$\mathbf{Y}=[\mathbf{y}_{1}\mathbf{y}_{2}]$$
+
+Let $\small\mathbf{1}^{T}=[1 1 1 ... 1]$   then...
+
+$$\small\bar{\mathbf{y}}^{T}=\left(\mathbf{1}^{T}\mathbf{1}\right)^{-1}\mathbf{1}^{T}\mathbf{Y}$$
+
+$$\small\bar{\mathbf{Y}}=\mathbf{1}\left(\mathbf{1}^{T}\mathbf{1}\right)^{-1}\mathbf{1}^{T}\mathbf{Y}$$
+
+$$\small\mathbf{E}=\mathbf{Y}_{c}=\mathbf{Y}-\bar{\mathbf{Y}}$$
+
+$$\small\mathbf{SSCP}=\mathbf{E}^{T}\mathbf{E}=\mathbf{Y}_{c}^{T}\mathbf{Y}_{c}$$
+
+$$\mathbf{SSCP}=\begin{bmatrix}
+\mathbf{SS}_{y_{1}} & \mathbf{SC}_{y_{1}y_{2}} \\
+\mathbf{SC}_{y_{2}y_{1}}  & \mathbf{SS}_{y_{2}}  
+\end{bmatrix}$$
+
+$\small{SSCP}$ is a matrix of sums of squares and cross-products (found using  deviations from the mean)
+
+# From SSCP to a Covariance Matrix
+
+$$\mathbf{SSCP}=\begin{bmatrix}
+\mathbf{SS}_{y_{1}} & \mathbf{SC}_{y_{1}y_{2}} \\
+\mathbf{SC}_{y_{2}y_{1}}  & \mathbf{SS}_{y_{2}}  
+\end{bmatrix}$$
+
+The covariance matrix is simply the $\small{SSCP}$ standardized by $\small{n-1}$:
+
+$$\hat{\mathbf{\Sigma}}=\frac{\mathbf{E}^{T}\mathbf{E}}{n-1}$$
+
+# From SSCP to a Covariance Matrix
+
+$$\mathbf{SSCP}=\begin{bmatrix}
+\mathbf{SS}_{y_{1}} & \mathbf{SC}_{y_{1}y_{2}} \\
+\mathbf{SC}_{y_{2}y_{1}}  & \mathbf{SS}_{y_{2}}  
+\end{bmatrix}$$
+
+The covariance matrix is simply the $\small{SSCP}$ standardized by $\small{n-1}$:
+
+$$\hat{\mathbf{\Sigma}}=\frac{\mathbf{E}^{T}\mathbf{E}}{n-1}$$
+
+$$\hat{\mathbf{\Sigma}}=\frac{\begin{bmatrix}
+\mathbf{SS}_{y_{1}} & \mathbf{SC}_{y_{1}y_{2}} \\
+\mathbf{SC}_{y_{2}y_{1}}  & \mathbf{SS}_{y_{2}}  
+\end{bmatrix}}{n-1}$$
+
+The covariance matrix is: 
+
+$$\hat{\mathbf{\Sigma}}=\begin{bmatrix}
+\sigma^{2}_{y_{1}} & \sigma_{y_{1}y_{2}}  \\
+\sigma_{y_{2}y_{1}}  & \sigma^{2}_{y_{2}}  
+\end{bmatrix}$$
+
+# From Covariance to Correlation
+
+Correlations are simply standardized covariances
+
+$$\small{cov}_{y_{1},y_{2}}=\sigma_{y_{1},y_{2}}=\frac{1}{n-1}
+\sum_{i=1}^{n}\left(y_{i1}-\bar{y}_{i1}\right)
+\left(y_{i2}-\bar{y}_{i2}\right)$$
+
+
+$$\small{cor}_{y_{1},y_{2}}=r_{1,2}=\frac{1}{n-1}
+\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y}_{i1}\right)}{s_{1}}
+\frac{\left(y_{i2}-\bar{y}_{i2}\right)}{s_{2}}$$
+
+
+# From Covariance to Correlation
+
+Correlations are simply standardized covariances
+
+$$\small{cov}_{y_{1},y_{2}}=\sigma_{y_{1},y_{2}}=\frac{1}{n-1}
+\sum_{i=1}^{n}\left(y_{i1}-\bar{y}_{i1}\right)
+\left(y_{i2}-\bar{y}_{i2}\right)$$
+
+
+$$\small{cor}_{y_{1},y_{2}}=r_{1,2}=\frac{1}{n-1}
+\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y}_{i1}\right)}{s_{1}}
+\frac{\left(y_{i2}-\bar{y}_{i2}\right)}{s_{2}}$$
+
+
+In matrix notation let: 
+
+$$\hat{\mathbf{\Sigma}}=\begin{bmatrix}
+\sigma^{2}_{y_{1}} & \sigma_{y_{1}y_{2}}  \\
+\sigma_{y_{2}y_{1}}  & \sigma^{2}_{y_{2}}  
+\end{bmatrix}$$
+
+$$\mathbf{V}=\begin{bmatrix}
+\sigma^{2}_{y_{1}} & 0 \\
+0  & \sigma^{2}_{y_{2}}  
+\end{bmatrix}$$
+
+# From Covariance to Correlation
+
+Correlations are simply standardized covariances
+
+$$\small{cov}_{y_{1},y_{2}}=\sigma_{y_{1},y_{2}}=\frac{1}{n-1}
+\sum_{i=1}^{n}\left(y_{i1}-\bar{y}_{i1}\right)
+\left(y_{i2}-\bar{y}_{i2}\right)$$
+
+
+$$\small{cor}_{y_{1},y_{2}}=r_{1,2}=\frac{1}{n-1}
+\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y}_{i1}\right)}{s_{1}}
+\frac{\left(y_{i2}-\bar{y}_{i2}\right)}{s_{2}}$$
+
+
+In matrix notation let: 
+
+$$\hat{\mathbf{\Sigma}}=\begin{bmatrix}
+\sigma^{2}_{y_{1}} & \sigma_{y_{1}y_{2}}  \\
+\sigma_{y_{2}y_{1}}  & \sigma^{2}_{y_{2}}  
+\end{bmatrix}$$
+
+$$\mathbf{V}=\begin{bmatrix}
+\sigma^{2}_{y_{1}} & 0 \\
+0  & \sigma^{2}_{y_{2}}  
+\end{bmatrix}$$
+
+Then: 
+$$\mathbf{R}=\mathbf{V}^{-\frac{1}{2}}\hat{\mathbf{\Sigma}}\mathbf{V}^{-\frac{1}{2}}=\begin{bmatrix}
+1 & r_{y_{1}y_{2}} \\
+r_{y_{2}y_{1}}  & 1  
+\end{bmatrix}$$
+
+###### Note: the covariance matrix of standard normal deviates ($\small{z}=\frac{y-\bar{y}}{\sigma_{y}}$) results in the correlation matrix (because correlations are standardized covariances!)
+
+# Covariation Example Revisited
+
+```{r echo = FALSE, eval=TRUE,out.width="50%"}
+plot(met.dat,cex=1.5, pch=21, bg="red",ylab = expression('VO'^2),xlab="log(mass), g")
+met.dat<-scale(met.dat,center = TRUE, scale = FALSE)
+SSCP<-t(met.dat)%*%met.dat
+cov.mat<-cov(met.dat)
+cor.mat<-cor(met.dat)
+```
+
+$$\small\mathbf{SSCP}=\begin{bmatrix}
+\mathbf{SS}_{y_{1}} & \mathbf{SC}_{y_{1}y_{2}} \\
+\mathbf{SC}_{y_{2}y_{1}}  & \mathbf{SS}_{y_{2}}  
+\end{bmatrix} = \begin{bmatrix}
+2997.23 \\
+-925.99  & 371.48  
+\end{bmatrix}$$
+
+
+$$\small\hat{\mathbf{\Sigma}}=\begin{bmatrix}
+\sigma^{2}_{y_{1}} & \sigma_{y_{1}y_{2}}  \\
+\sigma_{y_{2}y_{1}}  & \sigma^{2}_{y_{2}}  
+\end{bmatrix} = \begin{bmatrix}
+5.167 \\
+-1.596  & 0.640  
+\end{bmatrix}$$
+
+$$\small{R}=\begin{bmatrix}
+1 \\
+-0.877  & 1  
+\end{bmatrix}$$
+
+# Generalization: Two Blocks
+
+Consider $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$ as *matrices* not vectors:
+
+$$\mathbf{Y}=[\mathbf{Y}_{1}\mathbf{Y}_{2}]$$
+
+We can still envision *SSCP* , $\small\hat{\mathbf{\Sigma}}$, and $\small\mathbf{R}$ 
+
+
+# Generalization: Two Blocks
+
+Consider $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$ as *matrices* not vectors:
+
+$$\mathbf{Y}=[\mathbf{Y}_{1}\mathbf{Y}_{2}]$$
+
+We can still envision *SSCP* , $\small\hat{\mathbf{\Sigma}}$, and $\small\mathbf{R}$ 
+
+$$\hat{\mathbf{\Sigma}}=\begin{bmatrix}
+\mathbf{S}_{11} & \mathbf{S}_{12} \\
+\mathbf{S}_{21}  & \mathbf{S}_{22}  
+\end{bmatrix}$$
+
+$$\mathbf{R}=\begin{bmatrix}
+\mathbf{R}_{11} & \mathbf{R}_{12} \\
+\mathbf{R}_{21}  & \mathbf{R}_{22}  
+\end{bmatrix}$$
+
+$\small\hat{\mathbf{\Sigma}}$ and $\small\mathbf{R}$ now describe covariation and correlations between *BLOCKS* of variables
+
+# What's in a $\small\hat{\mathbf{\Sigma}}$ matrix?
+
+Dimensionality of $\small\hat{\mathbf{\Sigma}}$ and $\small\mathbf{R}$ determined by dimensions of $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+$\small\mathbf{Y}_{1}$ is $\small{n} \times {p}_{1}$ dimensions
+
+$\small\mathbf{Y}_{2}$ is $\small{n} \times {p}_{2}$ dimensions
+
+# What's in a $\small\hat{\mathbf{\Sigma}}$ matrix?
+
+Dimensionality of $\small\hat{\mathbf{\Sigma}}$ and $\small\mathbf{R}$ determined by dimensions of $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+$\small\mathbf{Y}_{1}$ is $\small{n} \times {p}_{1}$ dimensions
+
+$\small\mathbf{Y}_{2}$ is $\small{n} \times {p}_{2}$ dimensions
+
+Therefore $\small\hat{\mathbf{\Sigma}}$ is $\small({p}_{1}+{p}_{2}) \times ({p}_{1}+{p}_{2})$ dimensions
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/CovMatParts.png")  
+```
+
+Blocks can have different numbers of variables ($\small{p}_{1}\neq \small{p}_{2}$ )
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/CovMatParts2.png")  
+```
+
+# The Components of $\small\hat{\mathbf{\Sigma}}$
+
+Different sub-blocks within $\small\hat{\mathbf{\Sigma}}$ describe distinct components of trait covariation
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/CovMatParts2.png")  
+```
+
+$\small\mathbf{S}_{11}$: covariation of variables in $\small\mathbf{Y}_{1}$
+
+$\small\mathbf{S}_{22}$: covariation of variables in $\small\mathbf{Y}_{2}$
+
+$\small\mathbf{S}_{21}=\mathbf{S}_{12}^{T}$: covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+$\small\mathbf{S}_{21}=\mathbf{S}_{12}^{T}$ is the multivariate equivalent of $\small\sigma_{21}$ 
+
+# The Components of $\small\hat{\mathbf{\Sigma}}$
+
+Different sub-blocks within $\small\hat{\mathbf{\Sigma}}$ describe distinct components of trait covariation
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/CovMatParts2.png")  
+```
+
+$\small\mathbf{S}_{11}$: covariation of variables in $\small\mathbf{Y}_{1}$
+
+$\small\mathbf{S}_{22}$: covariation of variables in $\small\mathbf{Y}_{2}$
+
+$\small\mathbf{S}_{21}=\mathbf{S}_{12}^{T}$: covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+$\small\mathbf{S}_{21}=\mathbf{S}_{12}^{T}$ is the multivariate equivalent of $\small\sigma_{21}$ 
+
+Can we generalize an association measure from $\small\mathbf{S}_{21}$?
+
+# Escoffier's RV Coefficient
+
+Recall our derivation of the correlation coefficient
+
+$$\small{r}_{1,2}=\frac{1}{n-1}\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y}_{i1}\right)}{s_{1}}\frac{\left(y_{i2}-\bar{y}_{i2}\right)}{s_{2}}$$
+
+$$\small{r}_{1,2}=\frac{\sigma_{xy}}{\sigma_{x}\sigma_{y}}$$
+
+The squared correlation is then: 
+
+$$\small{r}^{2}=\frac{\sigma^{2}_{xy}}{\sigma^{2}_{x}\sigma^{2}_{y}}$$
+
+# Escoffier's RV Coefficient
+
+Recall our derivation of the correlation coefficient
+
+$$\small{r}_{1,2}=\frac{1}{n-1}\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y}_{i1}\right)}{s_{1}}\frac{\left(y_{i2}-\bar{y}_{i2}\right)}{s_{2}}$$
+
+$$\small{r}_{1,2}=\frac{\sigma_{xy}}{\sigma_{x}\sigma_{y}}$$
+
+The squared correlation is then: 
+
+$$\small{r}^{2}=\frac{\sigma^{2}_{xy}}{\sigma^{2}_{x}\sigma^{2}_{y}}$$
+
+Analogously, for multivariate one may consider: 
+
+$$\small{RV}=\frac{tr(\mathbf{S}_{12}\mathbf{S}_{21})}{\sqrt{tr(\mathbf{S}_{11}\mathbf{S}_{11})tr(\mathbf{S}_{22}\mathbf{S}_{22})}}$$
+
+Range of $\small\mathbf{RV}$:  $\small{0}\rightarrow{1}$
+
+###### Note: 'tr' signifies trace (sum of diagonal elements)
+
+# Escoffier's RV Coefficient: Comments
+
+The RV coefficient is *analogous* to $\small{r}^{2}$ but it is not a strict mathematical generalization
+
+
+$\small{r}^{2}=\frac{\sigma^{2}_{xy}}{\sigma^{2}_{x}\sigma^{2}_{y}}$ VS. $\small{RV}=\frac{tr(\mathbf{S}_{12}\mathbf{S}_{21})}{\sqrt{tr(\mathbf{S}_{11}\mathbf{S}_{11})tr(\mathbf{S}_{22}\mathbf{S}_{22})}}$
+
+The numerator of $\small{r}^{2}$ & $\small{RV}$ describes the covariation between $\small\mathbf{Y}_{1}$ & $\small\mathbf{Y}_{2}$
+
+The denominator of $\small{r}^{2}$ & $\small{RV}$ describes variation within $\small\mathbf{Y}_{1}$ & $\small\mathbf{Y}_{2}$
+
+Thus, $\small{RV}$ (like $\small{r}^{2}$) is a ratio of between-block relative to within-block variation 
+
+# Escoffier's RV Coefficient: Comments
+
+The RV coefficient is *analogous* to $\small{r}^{2}$ but it is not a strict mathematical generalization
+
+
+$\small{r}^{2}=\frac{\sigma^{2}_{xy}}{\sigma^{2}_{x}\sigma^{2}_{y}}$ VS. $\small{RV}=\frac{tr(\mathbf{S}_{12}\mathbf{S}_{21})}{\sqrt{tr(\mathbf{S}_{11}\mathbf{S}_{11})tr(\mathbf{S}_{22}\mathbf{S}_{22})}}$
+
+The numerator of $\small{r}^{2}$ & $\small{RV}$ describes the covariation between $\small\mathbf{Y}_{1}$ & $\small\mathbf{Y}_{2}$
+
+The denominator of $\small{r}^{2}$ & $\small{RV}$ describes variation within $\small\mathbf{Y}_{1}$ & $\small\mathbf{Y}_{2}$
+
+Thus, $\small{RV}$ (like $\small{r}^{2}$) is a ratio of between-block relative to within-block variation 
+
+However, because each $\small\mathbf{S}$ is a covariance matrix, the sub-components of $\small\mathbf{RV}$ are **squared** variances and covariances: not variances as in $\small{r}^{2}$: $\tiny\text{hence, range of  } \mathbf{RV}={0}\rightarrow{1}$ 
+
+# Escoffier's RV Coefficient: Comments
+
+The RV coefficient is *analogous* to $\small{r}^{2}$ but it is not a strict mathematical generalization
+
+
+$\small{r}^{2}=\frac{\sigma^{2}_{xy}}{\sigma^{2}_{x}\sigma^{2}_{y}}$ VS. $\small{RV}=\frac{tr(\mathbf{S}_{12}\mathbf{S}_{21})}{\sqrt{tr(\mathbf{S}_{11}\mathbf{S}_{11})tr(\mathbf{S}_{22}\mathbf{S}_{22})}}$
+
+The numerator of $\small{r}^{2}$ & $\small{RV}$ describes the covariation between $\small\mathbf{Y}_{1}$ & $\small\mathbf{Y}_{2}$
+
+The denominator of $\small{r}^{2}$ & $\small{RV}$ describes variation within $\small\mathbf{Y}_{1}$ & $\small\mathbf{Y}_{2}$
+
+Thus, $\small{RV}$ (like $\small{r}^{2}$) is a ratio of between-block relative to within-block variation 
+
+However, because each $\small\mathbf{S}$ is a covariance matrix, the sub-components of $\small\mathbf{RV}$ are **squared** variances and covariances: not variances as in $\small{r}^{2}$: $\tiny\text{hence, range of  } \mathbf{RV}={0}\rightarrow{1}$ 
+
+##### It is not at all obvious what a 'squared covariance' represents in a statistical sense, as variances are already summed squared deviations from the mean (see Bookstein. *Evol. Biol.* 2016)
+
+##### Nonetheless, $\small{RV}$ is often considered a multivariate measure of association between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+# RV Coefficient: Example
+
+Pecos pupfish (shape obtained using geometric morphometrics)
+
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/Pupfish Motivation.png")  
+```
+
+Is there an association between head shape and body shape?
+
+# RV Coefficient: Example
+
+Pecos pupfish (shape obtained using geometric morphometrics)
+
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/Pupfish Motivation.png")  
+```
+
+Is there an association between head shape and body shape?
+
+```{r echo=FALSE, out.width="80%"}
+data(pupfish)
+
+p1<-c(4,10:17, 39:56) #variables [landmarks] in Y1
+y<-two.d.array(pupfish$coords[p1,,]) # head data as 2D matrix
+x<-two.d.array(pupfish$coords[-p1,,]) # body data as 2D matrix
+y<-scale(y,center=TRUE, scale=FALSE)
+x<-scale(x,center=TRUE, scale=FALSE)
+S12 <- crossprod(x,y)/(dim(x)[1] - 1)
+S11 <- var(x)
+S22 <- var(y)
+RV <- sum(colSums(S12^2))/sqrt(sum(S11^2)*sum(S22^2))
+```
+
+$$\small{RV}=\frac{tr(\mathbf{S}_{12}\mathbf{S}_{21})}{\sqrt{tr(\mathbf{S}_{11}\mathbf{S}_{11})tr(\mathbf{S}_{22}\mathbf{S}_{22})}}=0.607$$
+
+$$\small\sqrt{RV}=0.779$$
+
+# RV Coefficient: Example
+
+Pecos pupfish (shape obtained using geometric morphometrics)
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/Pupfish Motivation.png")  
+```
+
+Is there an association between head shape and body shape?
+
+$$\small{RV}=\frac{tr(\mathbf{S}_{12}\mathbf{S}_{21})}{\sqrt{tr(\mathbf{S}_{11}\mathbf{S}_{11})tr(\mathbf{S}_{22}\mathbf{S}_{22})}}=0.607$$
+
+$$\small\sqrt{RV}=0.779$$
+
+Conclusion: head shape and body shape appear to be correlated (associated). However, we still require a formal test of this summary measure!
+
+# Multivariate Association: Partial Least Squares
+
+Another way to summarize the covariation between blocks is via Partial Least Squares (PLS)
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/CovMatParts2.png")  
+```
+
+$\small\mathbf{S}_{21}=\mathbf{S}_{12}^{T}$: expresses covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+# Multivariate Association: Partial Least Squares
+
+Another way to summarize the covariation between blocks is via Partial Least Squares (PLS)
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/CovMatParts2.png")  
+```
+
+$\small\mathbf{S}_{21}=\mathbf{S}_{12}^{T}$: expresses covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+*Decomposing* the information in $\small\mathbf{S}_{12}$ to find rotational solution (direction) that describes greatest covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+$$\small\mathbf{S}_{12}=\mathbf{U\Lambda{V}}^T$$
+
+# Multivariate Association: Partial Least Squares
+
+Another way to summarize the covariation between blocks is via Partial Least Squares (PLS)
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/CovMatParts2.png")  
+```
+
+$\small\mathbf{S}_{21}=\mathbf{S}_{12}^{T}$: expresses covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+*Decomposing* the information in $\small\mathbf{S}_{12}$ to find rotational solution (direction) that describes greatest covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+$$\small\mathbf{S}_{12}=\mathbf{U\Lambda{V}}^T$$
+
+$\small\mathbf{U}$ is the matrix of left singular vectors, which are eigenvectors of $\small\mathbf{Y}_{1}$ aligned in the direction of maximum covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+$\small\mathbf{V}$  is the matrix of right singular vectors, which are eigenvectors of $\small\mathbf{Y}_{2}$ aligned in the direction of maximum covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+$\small\mathbf{\Lambda}$ contains the singular values (squared eigenvalues: $\small\lambda^{2}$) describe the covariation between pairs of singular vectors  $\small\mathbf{U}$  and $\small\mathbf{V}$ 
+
+Note: $\small\frac{\lambda^{2}_{1}}{\sum\lambda^{2}_{i}}\times100$ (percent covariation explained by first pair of axes)
+
+# PLS Correlation
+
+$$\small\mathbf{S}_{12}=\mathbf{U\Lambda{V}}^T$$
+
+Ordination scores found by projection of centered data on vectors $\small\mathbf{U}$ and $\small\mathbf{V}$
+
+$$\small\mathbf{P}_{1}=\mathbf{Y}_{1}\mathbf{U}$$
+
+$$\small\mathbf{P}_{2}=\mathbf{Y}_{2}\mathbf{V}$$
+
+The first columns of $\small\mathbf{P}_{1}$ and $\small\mathbf{P}_{2}$ describe the maximal covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+# PLS Correlation
+
+$$\small\mathbf{S}_{12}=\mathbf{U\Lambda{V}}^T$$
+
+Ordination scores found by projection of centered data on vectors $\small\mathbf{U}$ and $\small\mathbf{V}$
+
+$$\small\mathbf{P}_{1}=\mathbf{Y}_{1}\mathbf{U}$$
+
+$$\small\mathbf{P}_{2}=\mathbf{Y}_{2}\mathbf{V}$$
+
+The first columns of $\small\mathbf{P}_{1}$ and $\small\mathbf{P}_{2}$ describe the maximal covariation between $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$
+
+The correlation between $\small\mathbf{P}_{11}$ and $\small\mathbf{P}_{21}$ is the PLS-correlation
+
+$$\small{r}_{PLS}={cor}_{P_{11}P_{21}}$$
+
+# Partial Least Squares: Example
+
+```{r, echo = FALSE, out.width="40%"}
+include_graphics("LectureData/10.covariation/Pupfish Motivation.png")  
+```
+
+$\tiny{RV}=\frac{tr(\mathbf{S}_{12}\mathbf{S}_{21})}{\sqrt{tr(\mathbf{S}_{11}\mathbf{S}_{11})tr(\mathbf{S}_{22}\mathbf{S}_{22})}}=0.607$ and $\tiny\sqrt{RV}=0.779$
+
+$\small{r}_{PLS}={cor}_{P_{11}P_{21}}=0.916$
+
+```{r echo=FALSE, out.width="80%"}
+PLS <- two.b.pls(y,x, iter=999, print.progress = FALSE)
+summary(PLS)
+plot(PLS)
+```
+
+Again, head shape and body shape appear to be correlated, but we still require a formal test of this summary measure!
+
+# Evaluating Multivariate Associations
+
+We now have two potential test measures of multivariate correlation
+
+$$\small{RV}=\frac{tr(\mathbf{S}_{12}\mathbf{S}_{21})}{\sqrt{tr(\mathbf{S}_{11}\mathbf{S}_{11})tr(\mathbf{S}_{22}\mathbf{S}_{22})}}$$
+
+$$\small{r}_{PLS}={cor}_{P_{11}P_{21}}$$
+
+Two questions emerge:
+
+# Evaluating Multivariate Associations
+
+We now have two potential test measures of multivariate correlation
+
+$$\small{RV}=\frac{tr(\mathbf{S}_{12}\mathbf{S}_{21})}{\sqrt{tr(\mathbf{S}_{11}\mathbf{S}_{11})tr(\mathbf{S}_{22}\mathbf{S}_{22})}}$$
+
+$$\small{r}_{PLS}={cor}_{P_{11}P_{21}}$$
+
+Two questions emerge:
+
+1: How do we assess significance of the test measures? 
+
+2: Is one approach preferable over the other?
+
+# Evaluating Multivariate Associations
+
+We now have two potential test measures of multivariate correlation
+
+$$\small{RV}=\frac{tr(\mathbf{S}_{12}\mathbf{S}_{21})}{\sqrt{tr(\mathbf{S}_{11}\mathbf{S}_{11})tr(\mathbf{S}_{22}\mathbf{S}_{22})}}$$
+
+$$\small{r}_{PLS}={cor}_{P_{11}P_{21}}$$
+
+Two questions emerge:
+
+1: How do we assess significance of the test measures? 
+
+2: Is one approach preferable over the other?
+
+We will use permutation methods (RRPP) for assessing significance
+
+# Permutation Tests for Multivariate Association
+
+Test statistics: 
+
+$\small\hat\rho=\sqrt{RV}$ and $\small\hat\rho={r}_{PLS}$
+
+H~0~: $\small\rho=0$ 
+
+H~1~: $\small\rho>0$ 
+
+# Permutation Tests for Multivariate Association
+
+Test statistics: 
+
+$\small\hat\rho=\sqrt{RV}$ and $\small\hat\rho={r}_{PLS}$
+
+H~0~: $\small\rho=0$ 
+
+H~1~: $\small\rho>0$ 
+
+RRPP Approach: 
+
+1: Represent $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$ as deviations from mean (H~0~)
+
+2: Estimate $\small\hat\rho=\sqrt{RV}_{obs}$ and $\small\hat\rho={r}_{PLS_{obs}}$
+
+3: Permute rows of $\small\mathbf{Y}_{2}$, obtain $\small\hat\rho=\sqrt{RV}_{rand}$ and $\small\hat\rho={r}_{PLS_{rand}}$
+
+4: Repeat many times to generate sampling distribution
+
+# Permutation Tests for RV and r~PLS~: Example
+
+Test statistics: 
+
+$\small\hat\rho=\sqrt{RV}$ and $\small\hat\rho={r}_{PLS}$
+
+H~0~: $\small\rho=0$ 
+
+H~1~: $\small\rho>0$ 
+
+```{r echo=FALSE, out.width="80%"}
+ind <- geomorph:::perm.index(nrow(x), iter=999, seed=NULL)
+y.rand <-lapply(1:1000, function(j) as.matrix(y[ind[[j]],]))
+pls.rand<-unlist(lapply(1:1000, function(j) geomorph:::pls(x=x,y=y.rand[[j]])))
+S12 <- lapply(1:1000, function(j) crossprod(x,y.rand[[j]])/(dim(x)[1] - 1)) 
+RV.rand <- sqrt(unlist(lapply(1:1000, function(j) sum(colSums(S12[[j]]^2))/sqrt(sum(S11^2)*sum(S22^2))) ))
+```
+
+```{r echo = FALSE, out.width = "50%"}
+par (mfcol=c(1,2))
+hist(RV.rand, main="RV Distribution",xlim=c(0,1))
+segments(RV.rand[1], 0, RV.rand[1], 100,lwd=2) 
+hist(pls.rand, main="PLS Distribution",xlim=c(0,1))
+segments(pls.rand[1], 0, pls.rand[1], 100,lwd=2)  
+```
+
+For the pupfish dataset, both are significant at p = 0.001
+
+# Permutation Tests for RV and r~PLS~: Example
+
+Test statistics: 
+
+$\small\hat\rho=\sqrt{RV}$ and $\small\hat\rho={r}_{PLS}$
+
+H~0~: $\small\rho=0$ 
+
+H~1~: $\small\rho>0$ 
+
+Compare permutation distributions with one another (minus observed in this case)
+
+```{r eval=TRUE,out.width="70%"}
+plot(RV.rand[-1], pls.rand[-1], xlim=c(0,.65), ylim=c(0,.65), xlab="sqrt(RV)", ylab="r-pls")
+abline(a=0,b=1, col="red",lwd=2)
+```
+
+All things considered, *r~PLS~* performs better. 
+
+# PLS: Another example
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/10.covariation/PlethExample1.png")  
+```
+
+# PLS: Another example
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/10.covariation/PlethExample1.png")  
+```
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/10.covariation/PlethExample2.png")  
+```
+
+# Matrix Association Methods: Complications
+
+Because $\small\mathbf{RV}$ has a finite range of $\small{0}\rightarrow{1}$, with 0 representing no covariation between blocks, it may seem intuitive to qualitatively compare $\small\mathbf{RV}$ values across datasets
+
+**THIS TEMPTATION SHOULD BE AVOIDED!**
+
+# Matrix Association Methods: Complications
+
+Because $\small\mathbf{RV}$ has a finite range of $\small{0}\rightarrow{1}$, with 0 representing no covariation between blocks, it may seem intuitive to qualitatively compare $\small\mathbf{RV}$ values across datasets
+
+**THIS TEMPTATION SHOULD BE AVOIDED!**
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/10.covariation/RV-WithN-P.png")  
+```
+
+With random MVN data, $\small\mathbf{RV}$ varies with both *n* and *p*!  
+
+Straight-up comparisons of $\small\mathbf{RV}$ are not useful
+
+# Comparing Association Patterns Across Data Sets
+
+Similar patterns are found with ${r}_{PLS}$:
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/10.covariation/PLS-WithN-P.png")  
+```
+
+# Comparing Association Patterns Across Data Sets
+
+Similar patterns are found with ${r}_{PLS}$:
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/10.covariation/PLS-WithN-P.png")  
+```
+
+However, conversion to effect sizes eliminates trends with *n* and *p*, allowing meaningful comparisons
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/10.covariation/Z-PLS-WithN-P.png")  
+```
+
+where: $\small\mathbf{Z}=\frac{r_{PLS_{obs}}-\mu_{r_{PLS_{rand}}}}{\sigma_{r_{PLS_{rand}}}}$
+
+# Comparing Association Patterns Across Data Sets
+
+Similar patterns are found with ${r}_{PLS}$:
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/10.covariation/PLS-WithN-P.png")  
+```
+
+However, conversion to effect sizes eliminates trends with *n* and *p*, allowing meaningful comparisons
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/10.covariation/Z-PLS-WithN-P.png")  
+```
+
+where: $\small\mathbf{Z}=\frac{r_{PLS_{obs}}-\mu_{r_{PLS_{rand}}}}{\sigma_{r_{PLS_{rand}}}}$
+
+Effect sizes then compared as: $\small\mathbf{Z}_{12}=\frac{\vert{(r_{PLS1}-\mu_{r_{PLS1}})-(r_{PLS2}-\mu_{r_{PLS2}})}\vert}{\sqrt{\sigma^2_{r_{PLS1}}+\sigma^2_{r_{PLS2}}}}$
+
+######Adams and Collyer. 2016 *Evolution*.
+
+# Comparing Association Patterns Across Data Sets
+
+Similar patterns are found with ${r}_{PLS}$:
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/10.covariation/PLS-WithN-P.png")  
+```
+
+However, conversion to effect sizes eliminates trends with *n* and *p*, allowing meaningful comparisons
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/10.covariation/Z-PLS-WithN-P.png")  
+```
+
+where: $\small\mathbf{Z}=\frac{r_{PLS_{obs}}-\mu_{r_{PLS_{rand}}}}{\sigma_{r_{PLS_{rand}}}}$
+
+Effect sizes then compared as: $\small\mathbf{Z}_{12}=\frac{\vert{(r_{PLS1}-\mu_{r_{PLS1}})-(r_{PLS2}-\mu_{r_{PLS2}})}\vert}{\sqrt{\sigma^2_{r_{PLS1}}+\sigma^2_{r_{PLS2}}}}$
+
+######Adams and Collyer. 2016 *Evolution*.
+
+#####As we have shown previously, statistical evaluation of effect sizes is paramount to proper permutational approaches to multivariate statistics!
+
+######  DCA and MLC assert that effect sizes from RRPP represent *the* path forward for recalcitrant problems in high-dimensional data analysis
+
+# Comparing Association Patterns: Example
+
+*Morphological Integration* describes the covariation among sets of variables. Such patterns are often disrupted in organisms living in non-pristine habitats.
+
+Mediterranean wall lizards (*Podarcis*) live in both rural and urban areas. The question then, is whether patterns of association in cranial morphology differ between habitats, and between juvenile and adult individuals. 
+
+```{r, echo = FALSE, out.width="70%"}
+include_graphics("LectureData/10.covariation/ComparePLS.png")  
+```
+
+Levels of covariation (integration) are *NOT* different across habitats, but are lower in juveniles as compared to adults. 
+
+# Multivariate Association: Summary
+
+Various approaches to multivariate association
+
+- Mantel Tests: associate distance matrices
+	  - High type I error, low power, and bias
+
+- RV: strength of association
+	  - $\small{RV}_{Null}$ varies with N & p
+
+- PLS: maximum covariation between sets of variables
+	  - Can use Z-score transform to compare across datasets
+
+- Other methods exist (e.g., canonical correlation: CCorA)
+
+**PLS is most general and with fewest mathematical constraints**
+
+# Canonical Ordination Methods
+
+Considers association of two matrices: $\small\mathbf{X}$ & $\small\mathbf{Y}$
+
+Provides visualization (ordination) from `Y~X` (differing from PCA/PCoA in this manner)
+
+# Canonical Ordination Methods
+
+Considers association of two matrices: $\small\mathbf{X}$ & $\small\mathbf{Y}$
+
+Provides visualization (ordination) from `Y~X` (differing from PCA/PCoA in this manner)
+
+Recall univariate multiple regression: $\small{Y}=\beta_{0}+\beta_{1}X_{1}+\beta_{2}X_{2}+\dots+\epsilon$
+
+Here, predicted values $\small\mathbf{\hat{Y}}$ represent best *Ordination* of $\small\mathbf{Y}$ along the regression 
+
+This regression maximizes the $\small{R}^2$ between $\small\mathbf{Y}$ & $\small\mathbf{\hat{Y}}$, and represents the optimal least squares relationship
+
+# Canonical Ordination Methods
+
+Considers association of two matrices: $\small\mathbf{X}$ & $\small\mathbf{Y}$
+
+Provides visualization (ordination) from `Y~X` (differing from PCA/PCoA in this manner)
+
+Recall univariate multiple regression: $\small{Y}=\beta_{0}+\beta_{1}X_{1}+\beta_{2}X_{2}+\dots+\epsilon$
+
+Here, predicted values $\small\mathbf{\hat{Y}}$ represent best *Ordination* of $\small\mathbf{Y}$ along the regression 
+
+This regression maximizes the $\small{R}^2$ between $\small\mathbf{Y}$ & $\small\mathbf{\hat{Y}}$, and represents the optimal least squares relationship
+
+Canonical analyses share this property for multivariate $\small\mathbf{Y}$, and generate ordinations of $\small\mathbf{Y}$ **constrained** by the maximal LS relationship to $\small\mathbf{X}$
+
+They can be considered 'regression-based' methods for describing covariation between $\small\mathbf{X}$ & $\small\mathbf{Y}$:  $\small\mathbf{S}_{XY}$
+
+Several canonical ordination methods exist, including: Canonical Variates Analysis (CVA) / Discriminant Analysis (DA); Redundancy Analysis (RDA); Canonical Correspondence Analysis (CCA)
+
+# Canonical Variates Analysis (CVA)
+
+- Ordination that maximally discriminates among known groups (g)
+
+- Variation expressed as ratio of between-group variation ($\small\mathbf{A}$) relative to within-group variation ($\small\mathbf{V}$): $\small\mathbf{V}^{-1}\mathbf{A}$
+- CVA accompished via decomposition: $\small\mathbf{V}^{-1}\mathbf{A}=\mathbf{C\Lambda{C}^T}$
+- Normalized canonical axes then found as: $\small\mathbf{C}^*=\mathbf{C(C^TVC)}^{-1/2}$
+- Scores are then found through projection: $\small\mathbf{Y}_{score}=\mathbf{(Y-\overline{Y})C^{*}}$
+- CVA suggests which groups differ on which variables. **Within-group variation in CVA plot is circular**
+
+####METHOD COMMONLY MISUSED BY BIOLOGISTS
+
+######Historical note: Fisher developed 2-group Discriminant Analysis (DA) in 1936; Rao (1948; 1952) generalized it to CVA for > 2 groups
+
+# Canonical Variates Analysis: What it Does
+
+CVA rotates and shears data space to a spaces of normalized canonical axes (group variation will be circular)
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/10.covariation/CVA-Legendre.png")  
+```
+
+# Classification with CVA
+
+Classify objects (known or unknown) to groups (*VERY* useful)
+
+Obtain Mahalanobis distance from objects to group means: $\small\mathbf{D}_{Mahal}=\mathbf{(Y-\overline{Y})^TV^{-1}(Y-\overline{Y})}$
+
+Assign objects to group to which it is closest (his weights distance by variation in each dimension) 
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/10.covariation/Dmahal.png")  
+```
+
+Determine % misclassification
+
+
+######Note: ideally classification rates estimated from second dataset (cross-validation)
+
+#CVA: Example
+
+Pupfish (simplified data)
+
+```{r, echo = FALSE, out.width="30%"}
+include_graphics("LectureData/10.covariation/PupfishMeas.png")  
+```
+
+Left: Actual data (PCA). Right: CVA plot (distortion of actual dataspace)
+
+```{r, echo = FALSE, out.width="80%"}
+mydata<-read.csv("LectureData/10.covariation/Lab-10.Pupfish.csv",header=T)
+species<-as.factor(mydata[,1]); sex<-as.factor(mydata[,2])
+SL<-(mydata[,3]); Y<-as.matrix(mydata[,-(1:3)])	
+Group<-as.factor(paste(species,sex))  
+
+Y<-prcomp(Y)$x	
+ col.gp<-rep("green",nrow(Y));   col.gp[which(species== 'FW')]<-"red"
+ shape.gp<-rep(21,nrow(Y));   shape.gp[which(sex== 'M')]<-22
+
+library(MASS)
+lda.pupfish<-lda(Y,Group)
+cva.pupfish<-predict(lda.pupfish,Y)
+cv.scores<-cva.pupfish$x
+
+par (mfcol=c(1,2))
+ plot(Y,pch=shape.gp,bg=col.gp,asp=1,cex=1.5)
+plot(cv.scores,pch=shape.gp,bg=col.gp,asp=1,cex=1.5)
+
+```
+
+# CVA: Comments
+
+- Ordination provides plot of Y that maximally separates a priori  groups
+- This is NOT a representation of actual space (that is found via PCA/PCoA)
+- Plot distorts actual relationships and accentuates group differences (groups appear more distinct than they are) 
+- Distances and directions distorted in CVA space
+
+```{r, echo = FALSE, out.width="50%"}
+include_graphics("LectureData/10.covariation/CVA-Kling.png")  
+```
+
+- CVA should NOT be used as a description/representation of variation in multivariate space
+
+# CVA: Further Issues
+
+CV Axes not orthogonal in the original dataspace
+
+And linear discrimination ONLY forms linear plane IFF within-group covariances identical  (shown as ‘equal probability classification lines below)
+
+```{r, echo = FALSE, out.width="80%"}
+include_graphics("LectureData/10.covariation/CVA-MittBook.png")  
+```
+
+# CVA: Misleading Inference
+
+Increasing number of variables enhances PERCEIVED group differences, even when groups are perfectly overlapping!
+
+```{r, echo = FALSE, out.width="80%"}
+data.rand<-matrix(rnorm(150*150),ncol=150)
+groups <- gl(3,50)
+col.gp.r<-rep("black",nrow(data.rand)); col.gp.r[which(groups== '2')]<-"red"; col.gp.r[which(groups== '3')]<-"green"
+
+par (mfcol=c(2,2))
+plot(data.rand,pch=21,bg=col.gp.r,asp=1,cex=1.5, xlab="Orig")
+plot(predict(lda(data.rand[,1:50],groups))$x,pch=21,bg=col.gp.r,asp=1,cex=1.5, xlab="P=50")
+plot(predict(lda(data.rand[,1:4],groups))$x,pch=21,bg=col.gp.r,asp=1,cex=1.5, xlab="P=4")
+options(warn=-1)
+plot(predict(lda(data.rand[,1:150],groups))$x,pch=21,bg=col.gp.r,asp=1,cex=1.5, xlab="P=150")
+options(warn=0)
+```
+
+# CVA: Conclusions
+
+- CVA ordination (devoid of PCA) is not useful
+    - Distorts distances and directions in data space
+    - Misrepresents within-group covariation and group distances
+    - Perceived group differences increase with additional variables (even for           
+      identical groups)
+- CVA classification can be useful
+- For plot of data space: use PCA/PCoA
+
+# Redundancy Analysis (RDA)
+
+- Direct extension of multiple regression for multivariate $\small\mathbf{Y}$
+	  - Redundancy synonymous with ‘explained variance’ 
+- RDA is a constrained ordination of $\small\mathbf{Y}$ such that ordination vectors are linear combinations of $\small\mathbf{Y}$ and linear combinations of $\small\mathbf{X}$
+- RDA is an eigenanalysis of VCV from $\small\hat{\mathbf{Y}}$ of the multivariate multiple regression
+
+$$\small\mathbf{S}_{\hat{\mathbf{Y}}^T\hat{\mathbf{Y}}}=\frac{1}{N-1}{\hat{\mathbf{Y}}^T\hat{\mathbf{Y}}}$$
+
+$$\small\mathbf{S}_{\hat{\mathbf{Y}}^T\hat{\mathbf{Y}}}=\mathbf{C\Lambda{C}^T}$$
+
+- Thus, RDA preserves Euclidean distances of objects in space of predicted 
+     values   $\small\hat{\mathbf{Y}}$  (appropriate for continuous $\small\mathbf{Y}$ variables)
+
+- RDA provides ordination of $\small\mathbf{Y}$ as maximally described by $\small\mathbf{X}$. Thus, one can think of the RDA ordination as being 'standardized' for the regression `Y~X`
+
+######Note: Canonical correspondence analysis (CCA) is conceptually the same, but designed for frequency data.  
+
+# RDA: Example
+
+Several RDA ordinations of pupfish: 
+
+- PCA
+- RDA of: `Y~size+species+sex+species:sex` (Common slope MANCOVA)
+- RDA of: `Y~size*species*sex`(Separate slopes MANCOVA)
+- RDA of: `Y~species*sex` (Factorial MANOVA)
+
+```{r, echo = FALSE, out.width="80%"}
+mydata<-read.csv("LectureData/10.covariation/Lab-10.Pupfish.csv",header=T)
+species<-as.factor(mydata[,1]); sex<-as.factor(mydata[,2])
+SL<-(mydata[,3]); Y<-as.matrix(mydata[,-(1:3)])	
+Group<-as.factor(paste(species,sex))  
+Y<-prcomp(Y)$x	
+ col.gp<-rep("green",nrow(Y));   col.gp[which(species== 'FW')]<-"red"
+ shape.gp<-rep(21,nrow(Y));   shape.gp[which(sex== 'M')]<-22
+rdf <- rrpp.data.frame(Y=Y, SL=SL, sex=sex, species=species)
+ 
+pupfish.rda<-rda(Y~SL+species+sex+species:sex)
+rda.scores<-predict(pupfish.rda) 
+par (mfcol=c(2,2))
+plot(Y,pch=shape.gp,bg=col.gp,asp=1,cex=1.5)
+plot(predict(rda(Y~SL*species*sex)),pch=shape.gp,
+     bg=col.gp,asp=1,cex=1.5,xlab="RDA 1", ylab="RDA 2")
+plot(rda.scores,pch=shape.gp,bg=col.gp,asp=1,cex=1.5,xlab="RDA 1", ylab="RDA 2")
+plot(predict(rda(Y~species*sex)),pch=shape.gp,
+     bg=col.gp,asp=1,cex=1.5,xlab="RDA 1", ylab="RDA 2")
+```
+
+Plots are quite different depending on model!
+
+# RDA:  Which model to use?
+
+RDA should serve as a visual guide to interpret patterns, *RELATIVE* to a particular model. Decision should thus be based on evaluating the models first (not just plotting the RDA ordination). 
+
+For the pupfish data, evaluate full MANCOVA, then visualize from reduced model: 
+
+```{r, echo = FALSE, out.width="80%"}
+anova(lm.rrpp(Y~SL*species*sex, data=rdf, print.progress = FALSE))$table
+plot(predict(rda(Y~SL+species*sex+SL:species)),pch=shape.gp,
+     bg=col.gp,asp=1,cex=1.5,xlab="RDA 1", ylab="RDA 2")
+```
+
+# RDA Ordination: Comments
+
+Visualizing variation in residuals from a linear model is quite useful
+
+But easy to mis-interpret (whittingly or unwhittingly).  If the wrong model `Y~X` is used, interpreting patterns in RDA ordination not helpful
+
+Always consider RDA ordination in the context of visualizing patterns in original dataspace via PCA/PCoA
+
+PCA provides visualization of 'raw' dataspace, RDA provides visualization of predicted values from a model (both are useful if done correctly).
+

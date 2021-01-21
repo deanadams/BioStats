@@ -1,0 +1,791 @@
+---
+title: "06: Multivariate Data Spaces and Linear Models"
+subtitle: 
+author: "Dean Adams, Iowa State University"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE, echo = TRUE, tidy = TRUE}
+library(knitr)
+library(RRPP)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Last Time:
+
+<style type="text/css">
+td {  /* Table  */
+  font-size: 20px;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+pre { /* Code block - determines code spacing between lines */
+    font-size: 12px;
+}
+</style>
+
+GLM is the fitting of models
+    - Fit null model (e.g., $\small{H}_{0}$ = `Y ~ 1`) and then more complicated models
+    - Assess fit of different models via SS (i.e,. LRT, $\small{F}$-ratios, etc.)
+
+ANOVA and regression are derived from the same linear model, with the key differences being what type of variable is found in the explanatory variable matrix $\small\mathbf{X}$ (i.e., categorical or continous factors)
+
+Parameters of the linear model may be found using matrix algebra: 
+
+$$\small\hat{\mathbf{\beta }}=\left ( \mathbf{X}^{T} \mathbf{X}\right )^{-1}\left ( \mathbf{X}^{T} \mathbf{Y}\right )$$
+
+Question:  What about multivariate $\small\mathbf{Y}$?
+
+# Univariate Versus Multivariate Data
+
+- Univariate statistics: Assess variation in single Y (obtain scalar result)
+
+```{r, echo = FALSE,  fig.height=3, fig.width = 4, fig.align='center'}
+y <- rnorm(200,mean = 15)
+par(mar = c(4, 4, 0, 4))
+hist(y,main=NULL,xlab="Body Size")
+```
+
+- Multivariate statistics: Assess variation in multiple Y simultaneously
+
+```{r, echo = FALSE, out.width="40%", fig.align='center'}
+include_graphics("LectureData/01.Intro/MultivData.png")  
+```
+
+- Multivariate methods are mathematical generalizations of univariate **(ACTUALLY, univariate methods are special cases of multivariate!)**
+
+# Why Jump to Multivariate?
+
+- A series of univariate analyses does not always capture biological signal
+
+```{r echo=FALSE, out.width="50%", fig.align='center'}
+gp<-factor(c(1,1,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,3))
+Y<-matrix(c(2, 5, 3.5, 6, 4, 7.5, 5, 7, 5.5, 8, 6, 8, 3.3, 4.3, 4.2, 4, 4.5, 6, 6, 7, 7.3, 6.3, 8, 7, 5, 4.5, 6, 5, 4, 4.5, 7, 5.5, 7.5, 5, 8.3, 5.5, 9, 8),ncol=2,byrow=TRUE)
+plot(Y,pch=21, cex=3,bg=gp, xlim=c(0,10),ylim=c(3,9), asp=1)
+```
+
+```{r echo=TRUE}
+anova(lm(Y[,1]~gp))
+anova(lm(Y[,2]~gp))
+summary(manova(Y~gp))
+```
+
+###### Here, all of the signal is in the trait covariation, which is missed by univariate analsyes of $\small\mathbf{Y}_{1}$ and $\small\mathbf{Y}_{2}$!
+
+# Challenges With Multivariate Data
+
+Three main challenges with multivariate data
+
+1: Describing variation in it
+
+2: Visualizing trends in multivariate spaces
+
+3: Ensuring that the dataspace corresponds to statistical analytics we wish to use 
+
+To address these we must first back up and discuss data spaces in general
+
+# Vectors are Points in Space
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/06.multivariate.LM/points/Slide2.png")  
+```
+
+# Vectors are Points in Space (Cont.)
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/06.multivariate.LM/points/Slide3.png")  
+```
+
+# Vectors are Points in Space (Cont.)
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/06.multivariate.LM/points/Slide4.png")  
+```
+
+# Vectors are Points in Space (Cont.)
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/06.multivariate.LM/points/Slide5.png")  
+```
+
+# Vectors are Points in Space (Cont.)
+```{r, echo = FALSE, out.width="100%"}
+include_graphics("LectureData/06.multivariate.LM/points/Slide6.png")  
+```
+
+# Data Spaces
+
+- What we've just done is take data and draw a *data space*. Data spaces result from us taking sets of measured variables and plotting the values we observe in our data. 
+
+- Each measured variable represents a *dimension* of our dataspace. If we measure a single variable, our data 'live' in the one-dimensional space of the number line.  Statistical analyses of **univariate data** are concerned with patterns of dispersion along the number line. 
+
+# Data Spaces
+
+- What we've just done is take data and draw a *data space*. Data spaces result from us taking sets of measured variables and plotting the values we observe in our data. 
+
+- Each measured variable represents a *dimension* of our dataspace. If we measure a single variable, our data 'live' in the one-dimensional space of the number line.  Statistical analyses of **univariate data** are concerned with patterns of dispersion along the number line. 
+
+- If we measure multiple variables, our dataspace is of a higher dimension. Typically we refer to *p*-dimensions for the *p* measured variables. For example, if we measure length, width, and height on 30 plant specimens then each plant is represented by a point in a three-dimensional dataspace. 
+
+- Note that while  our data take on finite values, the axes of the dataspace span the entire set of possible values for all variables (dimensions) that could hypothetically exist.  Depending on our variables, some regions of the dataspace may be inaccessible empirically (e.g., that combination of values is an impossible object), yet it would exist as a region of the dataspace. 
+
+- As we will soon see, different data types generate data spaces with different properties. Despite our natural inclination to plot things as such, 
+**not all dataspaces are Euclidean!!!**
+
+# Data Tables and Data Spaces
+
+- The preceding visual example emphasizes several critical points: 
+
+  1: Data are dots in space
+  
+  2: There are relationships between dots in a dataspace that are worth exploring.
+  
+- Let's examine these a bit more closely, recalling what we just learned about matrix algebra operations. 
+- Say we have measured two variables, $\small{y}_{1}$ and $\small{y}_{2}$. Let's combined them into a matrix containing two columns: 
+
+$$\small\mathbf{Y}=\begin{bmatrix}
+2 & 1 \\
+1  & 3  \\
+\vdots & \vdots \\ 
+y_{n1} & y_{n2}
+\end{bmatrix}$$ 
+
+- This matrix represents *n* specimens, and each has values for 2 variables
+
+# Data Tables and Data Spaces
+
+- Let's plot the first two rows to visualize the data:
+
+```{r echo=FALSE, out.width="80%", fig.align='center' }
+y<-matrix(c(2,1,1,3),ncol=2, byrow=T)
+plot(NA, xlim=c(0,5), ylim=c(0,5), xlab="y1", ylab="y2", lwd=3)
+ points(y,pch=21,cex=2,bg=c("black","red"))
+```
+
+# Data Tables and Data Spaces
+
+- We can also think of the data as vectors emmanating from the origin:
+
+```{r echo=FALSE, out.width="80%", fig.align='center' }
+plot(NA, xlim=c(0,5), ylim=c(0,5), xlab="y1", ylab="y2", lwd=3)
+ points(y,pch=21,cex=2,bg=c("black","red"))
+ arrows(0,0, y[1,1],y[1,2],lwd=4,col="black")
+  arrows(0,0, y[2,1],y[2,2],lwd=4,col="red")
+```
+
+# Data Tables and Data Spaces
+
+- We can also think of the data as vectors emanating from the origin:
+
+```{r echo=FALSE, out.width="80%", fig.align='center' }
+plot(NA, xlim=c(0,5), ylim=c(0,5), xlab="y1", ylab="y2", lwd=3)
+ points(y,pch=21,cex=2,bg=c("black","red"))
+ arrows(0,0, y[1,1],y[1,2],lwd=4,col="black")
+  arrows(0,0, y[2,1],y[2,2],lwd=4,col="red")
+```
+
+Note that for continuous data, all three representations: data as a matrix, data as points in a space, or data as vectors in a space are all equivalent.
+
+# Matrix Operations: Geometric Interpretations
+
+- Matrix algebra has a direct connection to geometry.
+
+- Imagine the following (SIMPLE!) operation:
+
+$$\small\mathbf{y}_{1}+\mathbf{y}_{2}=\begin{bmatrix}
+ 2 & 1\end{bmatrix} +\begin{bmatrix}
+ 1 & 3\end{bmatrix} $$
+ 
+# Matrix Operations: Geometric Interpretations
+
+- Matrix algebra has a direct connection to geometry.
+
+- Imagine the following (SIMPLE!) operation:
+
+$$\small\mathbf{y}_{1}+\mathbf{y}_{2}=\begin{bmatrix}
+ 2 & 1\end{bmatrix} +\begin{bmatrix}
+ 1 & 3\end{bmatrix} $$
+ 
+ $$\small\mathbf{y}_{1}+\mathbf{y}_{2}=\begin{bmatrix}
+ 3 & 4\end{bmatrix} $$
+
+- This is matrix addition, which we disussed in the last lecture
+
+# Matrix Operations: Geometric Interpretations
+
+- Now let's visualize this geometrically:
+
+```{r echo=FALSE, out.width="60%", fig.align='center' }
+plot(NA, xlim=c(0,5), ylim=c(0,5), xlab="y1", ylab="y2", lwd=3)
+ points(y,pch=21,cex=2,bg=c("black","red"))
+ arrows(0,0, y[1,1],y[1,2],lwd=4,col="black")
+  arrows(0,0, y[2,1],y[2,2],lwd=4,col="red")
+  arrows(0,0, 3,4,lwd=4,col="green")
+  arrows(2,1,3,4,lwd=1,col="blue")
+```
+
+By shifting the red vector to the end of the black vector, the new end point is the geometric result of matrix addition!
+
+# Matrix Operations: Geometric Interpretations
+
+- The previous example is admittedly simple, but it serves to demonstrate an important point: that algebra and geometry are 'duals' of one another.
+
+- In fact, because of the relationship between algebra and geometry, the properties of vectors in geometric spaces and their corresponding matrix operations holds *regardless* of data dimensionality. 
+
+- For single values, algebraic operations correspond to movements along the number line. For 2D vectors, it is movement in the 2-dimensional data space. For higher-dimensional data, the algebra holds, as do the geometric interpretations of those operations.
+
+# Matrix Operations: Geometric Interpretations
+
+- The previous example is admitedly simple, but it serves to demonstrate an important point: that algebra and geometry are 'duals' of one another.
+
+- In fact, because of the relationship between algebra and geometry, the properties of vectors in geometric spaces and their corresponding matrix operations holds *regardless* of data dimensionality. 
+
+- For single values, algebraic operations correspond to movements along the number line. For 2D vectors, it is movement in the 2-dimensional data space. For higher-dimensional data, the algebra holds, as do the geometric interpretations of those operations.
+
+- In other words, *EVERY* algebraic operation has a geometric interpretation. One is free (and in fact encouraged) to think of the geometric consequences of matrix algebra. One's head may itch from this exercise, but it will provide wisdom!
+
+- Perhaps one more example will illustrate the point...
+
+# Matrix Operations & Geometry: Example 
+
+Say we have data ($\small\mathbf{Y}$) which is a $\small{n}\times{2}$ matrix. We wish to obtain deviations from the mean. Using a null model vector of ones ($\small\mathbf{X}_{0}$) we perform: 
+
+$$\small\mathbf{Y}_{c}=\mathbf{Y}-\mathbf{X}_0 \left( \mathbf{X}_0^T\mathbf{X}_0 \right)^{-1}\mathbf{X}_0^T\mathbf{Y}$$
+
+# Matrix Operations & Geometry: Example 
+
+Say we have data ($\small\mathbf{Y}$) which is a $\small{n}\times{2}$ matrix. We wish to obtain deviations from the mean. Using a null model vector of ones ($\small\mathbf{X}_{0}$) we perform: 
+
+$$\small\mathbf{Y}_{c}=\mathbf{Y}-\mathbf{X}_0 \left( \mathbf{X}_0^T\mathbf{X}_0 \right)^{-1}\mathbf{X}_0^T\mathbf{Y}$$ 
+
+
+Now plot it! Note that geometrically, the matrix algebra above results in *mean centering* the data!
+
+```{r echo=FALSE, out.width="60%", fig.align='center' }
+bumpus<-read.csv("lectureData/02.Resampling/bumpus.csv",header=T)
+Y<-cbind(bumpus$TL,bumpus$AE)
+x<-matrix(rep(1,nrow(Y)))
+H<-x%*%(solve(t(x)%*%x)%*%t(x))
+Y.hat<-H%*%Y
+Y.c<-Y-Y.hat
+par(mfcol = c(1, 2))
+plot(Y, pch=21, bg="red", xlab="Total Length", ylab="Alar Extent")
+plot(Y.c, pch=21, bg="red", xlab="Total Length-centered", ylab="Alar Extent-centered")
+```
+
+# The Geometry of Data Spaces: Intuition
+
+- What does our intuition tell us about how data points related to one another in dataspaces? Consider the plot below and the four points in that plot:
+
+```{r echo=FALSE, out.width="60%", fig.align='center' }
+y<-matrix(c(2,1,1.5,2, -4, -4, 0,2),ncol=2, byrow=T)
+plot(NA, xlim=c(-5,5), ylim=c(-5,5), xlab="y1", ylab="y2", lwd=3)
+abline(h = 0, untf = FALSE, lty=2 )
+abline(v = 0, untf = FALSE, lty=2 )
+points(y,pch=21,cex=2,bg=c("black","red", "green", "blue"))
+```
+
+- Points that are close together (black and red) are more similar in their values than points that are far apart (black and green)
+
+# The Geometry of Data Spaces: Intuition
+
+- What does our intuition tell us about how data points related to one another in dataspaces? Consider the plot below and the four points in that plot:
+
+```{r echo=FALSE, out.width="60%", fig.align='center' }
+y<-matrix(c(2,1,1.5,2, -4, -4, 0,2),ncol=2, byrow=T)
+plot(NA, xlim=c(-5,5), ylim=c(-5,5), xlab="y1", ylab="y2", lwd=3)
+abline(h = 0, untf = FALSE, lty=2 )
+abline(v = 0, untf = FALSE, lty=2 )
+arrows(x0=y[1,1],y0=y[1,2],x1=y[2,1],y1=y[2,2], lwd=2, col="red")
+arrows(x0=y[1,1],y0=y[1,2],x1=y[3,1],y1=y[3,2], lwd=2, col="green")
+arrows(x0=y[1,1],y0=y[1,2],x1=y[4,1],y1=y[4,2], lwd=2, col="blue")
+points(y,pch=21,cex=2,bg=c("black","red", "green", "blue"))
+```
+
+- Points that are close together (black and red) are more similar in their values than points that are far apart (black and green)
+
+- Some vectors between dots point in similar directions (red & blue) while others point in different directions (red and green)
+
+# The Geometry of Data Spaces: Intuition
+
+- What does our intuition tell us about how data points related to one another in dataspaces? Consider the plot below and the four points in that plot:
+
+```{r echo=FALSE, out.width="60%", fig.align='center' }
+y<-matrix(c(2,1,1.5,2, -4, -4, 0,2),ncol=2, byrow=T)
+plot(NA, xlim=c(-5,5), ylim=c(-5,5), xlab="y1", ylab="y2", lwd=3)
+abline(h = 0, untf = FALSE, lty=2 )
+abline(v = 0, untf = FALSE, lty=2 )
+arrows(x0=y[1,1],y0=y[1,2],x1=y[2,1],y1=y[2,2], lwd=2, col="red")
+arrows(x0=y[1,1],y0=y[1,2],x1=y[3,1],y1=y[3,2], lwd=2, col="green")
+arrows(x0=y[1,1],y0=y[1,2],x1=y[4,1],y1=y[4,2], lwd=2, col="blue")
+points(y,pch=21,cex=2,bg=c("black","red", "green", "blue"))
+```
+
+- Points that are close together (black and red) are more similar in their values than points that are far apart (black and green)
+
+- Some vectors between dots point in similar directions (red & blue) while others point in different directions (red and green)
+
+- Our intuition suggests that data spaces convey meaningful information about distances and directions. These are properties of **METRIC** dataspaces!
+
+# Metric Spaces
+
+- Metric Spaces are defined by the following mathematical properties
+
+Property | Meaning                    
+:------------------------ | :------------------------------------------------
+$\small{d}_{\mathbf{y}_{1}\mathbf{y}_{2}}\geq0$ | non-negativity
+$\small{d}_{\mathbf{y}_{1}\mathbf{y}_{2}}=0	\Leftrightarrow{\mathbf{y}}_{1}={\mathbf{y}}_{2}$ | identity
+$\small{d}_{\mathbf{y}_{1}\mathbf{y}_{2}}={d}_{\mathbf{y}_{2}\mathbf{y}_{1}}$ | symmetry
+$\small{d}_{\mathbf{y}_{1}\mathbf{y}_{3}}\leq{d}_{\mathbf{y}_{1}\mathbf{y}_{2}}+{d}_{\mathbf{y}_{2}\mathbf{y}_{3}}$ | triangle inequality
+
+```{r, echo = FALSE, out.width="40%", fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/MetricSpacePlot.png")  
+```
+
+- If the above properties hold, the dataspace is metric, and distances and directions can be interpreted following our intuition
+
+# Metric (Euclidean) Spaces
+
+```{r, echo = FALSE, out.width="40%", fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/MetricSpacePlot.png")  
+```
+
+- Euclidean spaces are metric spaces.  Distances and directions have meaning in such spaces, and can be interpreted visually and compared algebraically. In fact, many multivariate analyses essentially evaluate distances and directions among points in metric spaces to evaluate patterns
+
+- Also implied by metric spaces is the notion of axis perpendicularity (axis orthogonality). Without this property, axes are oblique to one another, and algebraic operations can result in unintuitive outcomes 
+
+###### NOTE: most multivariate analyses assume that the data reside in a metric space. As we will see later, this is not always the case!
+
+# Metric Spaces: Distances and Directions
+
+```{r, echo = FALSE, out.width="50%", fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/vectors.png")  
+```
+
+- From data, one can obtain distances and directions in metric spaces. One can also calculate angles between vectors in metric spaces
+
+Vector length = distance = magnitude= 'norm': $\small||\mathbf{y}||=\sqrt{\mathbf{y}^{T}\mathbf{y}}$
+
+Difference in direction between two vectors: $\small\theta=cos^{-1}\left(\frac{\mathbf{y}^{T}_{1}}{||\mathbf{y}_{1}||}\right)\left(\frac{\mathbf{y}^{T}_{2}}{||\mathbf{y}_{2}||}\right)$
+
+
+###### IMPORTANT: vectors in metric spaces have a length (distance) and a direction regardless of dimensionality! $\small||\mathbf{y}||$ & $\small\theta$  are statistical summary measures of vectors that apply for MVN (multivariate normal) data of any dimensionality.
+
+# Geometric Operations: Vector Correlation
+
+- When operating in metric spaces, several operations are quite useful. 
+
+    1: Vector Correlation: For any pair of vectors one can calculate the angle between them, which describes the difference in direction that the vectors display in their orientation. These can then be converted to the correlation between the two vectors. 
+
+$$\small\theta=cos^{-1}\left(\frac{\mathbf{y}^{T}_{1}}{||\mathbf{y}_{1}||}\right)\left(\frac{\mathbf{y}^{T}_{2}}{||\mathbf{y}_{2}||}\right)$$
+
+$$\small{r}_{\mathbf{y}_{1},\mathbf{y}_{2}}=cos\theta$$
+
+###### Side note: Biologists tend to think of correlations as being between variables for sets of specimens, where we have *n* pairs of $\small{y}_{1}$ and $\small{y}_{2}$ values. Transposing the problem we now have 2 vectors of length *n*, and the cosine of the angle between them arrives at this same correlation. In fact, this reminds us that "Correlations are cosines of angles." (a fascinating little paper titled "Thirteen ways of thinking about the correlation coefficient" is quite illuminating!) 
+
+# Geometric Operations: Projection
+
+- Another very useful mathematical operation is projection. 
+
+  - Algebraically, projection is the multiplication of a data vector (or matrix) by some other vector (or matrix). This results in a set of values representing the original objects, but in the new (projected) space based on the projection vector/matrix. Typically, the projection vector or matrix is of Euclidean geometry.
+
+  - Ok, what precisely does that mean?  Let's take the case of a single data point in a two-dimensional space (call it *a*). We wish to project it onto another vector (*b*) in our dataspace. Algebraically, this is accomplished by: $\small\mathbf{a}_{proj}=\mathbf{a}*\mathbf{b}$
+
+```{r, echo = FALSE, out.width="20%",fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/VectorProjection.png")  
+```
+
+- What we see from the example is that the resulting value (for a vector) corresponds to the *length* of *a* in the projected space of *b*.
+
+  - Note 1: Projection of matrices operates identically:  $\small\mathbf{A}_{proj}=\mathbf{A}*\mathbf{B}$
+ 
+  - Note 2: Projection is an exceedingly useful operation in high-dimensional data analysis. For linear models, both fitted values and residuals are found from projection, and visualizations of data in metric spaces are frequently accomplished by projection.
+
+# Geometric Operations: Rotation
+
+- Rotations 'spin' the dataspace in some fashion; typically, via a rigid (orthogonal) rotation. Mathematically, rotation is accomplished as a projection: $\small\mathbf{HY}$: where $\small\mathbf{H}$ is an $n \times n$ projection matrix and $\small\mathbf{Y}$ is the data matrix
+
+- If $\small\mathbf{H}$ is an orthogonal matrix, this is a rigid rotation, and corresponds to an embodiment of our 'intuition' of rotating axes of a data space such that they remain at right angles to one another. 
+
+- With rigid rotations, distances and directions among objects are preserved. Thus, orthogonal rotations *do nothing* to the data in terms of statistical inferences, so long as all dimensions of the dataspace are used in summary estimates. 
+
+Here is some visual examples of orthogonal rotation:
+
+```{r, echo = FALSE, out.width="90%", fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/OrthRot.png")  
+```
+
+# Invariances in Metric Spaces
+
+- If data reside in a metric space, they are invariant ('immune') to certain algebraic operations. This means that the relationships among objects, and the relative distances between them, are the same before and after the algebraic manipulation. This is important, because multivariate analyses are essentially just a series of algebraic manipulations of the data.
+
+- Notably, metric spaces are invariant to *linear transformations*. These include: **translations, scaling, and rotations**. 
+
+# Invariances in Metric Spaces
+
+```{r echo=FALSE, out.width="60%", fig.align='center' }
+Y<-cbind(bumpus$TL,bumpus$AE)
+Y.c<-scale(Y,scale=FALSE, center=TRUE)
+Y.sc<-scale(Y,scale=TRUE, center=FALSE)
+Y.rot<-prcomp(Y)$x
+par(mfcol = c(2, 2))
+plot(Y, pch=21, bg="red", xlab="Total Length", ylab="Alar Extent", main="Original Data")
+plot(Y.c, pch=21, bg="red", xlab="Total Length-centered", ylab="Alar Extent-centered", main="Translated Data")
+plot(Y.sc, pch=21, bg="red", xlab="Total Length-scaled", ylab="Alar Extent-scaled", main="Scaled Data")
+plot(Y.rot, pch=21, bg="red", asp=1, main="Rotated Data")
+```
+
+- Note that in each plot the *RELATIVE* distances between objects remains unchanged. This is **important**, because it means that the patterns in our data have been preserved, and thus any multivariate analysis that is also invariant to linear transformations will be unaffected by these operations. 
+
+  - *Linear Models* are one such family of methods that are invariant to these operations (e.g,. group comparisons using the original data or the rotated data will yield identical outcomes).
+
+# Lack of Invariance is a Problem
+
+- Maintaining metric properties is an incredibly important part of proper analysis of high-dimensional data. 
+
+- However, some multivariate methods do not retain the metric properties of the data. This means that distances and directions between objects in the dataspace *change* or are otherwise distorted during the mathematical operations of that method. **This is rather undesirable (particularlty if one intends to analyze the scores)!** With such methods one cannot reliably interpret patterns in the dataspace because the method has altered them.  
+
+- Other methods violate the invariance properties mentioned above. For instance, methods that summarize patterns axis-by-axis rather than treating the entire high-dimensional dataset at once are typically not rotation-invariant. **This can also be bad** because it means that one can obtain different statistical estimates for the same data in different orientations!  
+
+# Data Spaces from Non-Continuous Data
+
+The above geometric discussion was predicated on the notion that the data were multivariate normal (MVN). In such cases, sets of continuous variables in similar units and scale can be treated as axes of a dataspace, which exhibits *metric* properties. What happens when we don't have such data?
+
+Imagine having columns of presence/absence data:
+
+$$\small\mathbf{Y}=\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 1\\
+0 & 1 & 1\\
+0 & 1 & 0\\
+1 & 0 & 0\\
+\vdots & \vdots \\ 
+1 & 1 & 1
+\end{bmatrix}$$
+
+What does this data space look like? 
+
+# Binary Data
+
+```{r, echo = FALSE, out.width="30%", fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/Hamming.png")  
+include_graphics("LectureData/06.multivariate.LM/HammingTable.png")  
+```
+
+This is the data space for binary data, and is called a 'Hamming' space. Here, differences (distances) between objects traverse the axes of the space. For a pair of objects, these are summarized in the table to the right. The **Hamming Distance** is an appropriate measure for such data, which is simply the number of positions for which two objects differ: $\small\mathbf{D}_{Hamming}=b+c$
+
+Despite being binary data, Hamming distance *is* metric. Thus, distances and directions could in theory be interpreted in Hamming space.
+
+###### NOTE: There are quite a few *other* distance and similarity measures for binary data (Jaccard distance, Dice distance, matching coefficient, etc.).
+
+# Abundance (Count) Data
+
+Many times, ecologists have species abundance data, where rows of $\small\mathbf{Y}$ are sites and columns are species.
+
+A *VERY* common distance measure for this is Bray-Curtis distance: $\small\mathbf{D}_{BC}=\frac{\sum{|y_{1i}-y_{2i}|}}{\sum{y_{1.}}+\sum{y_{2.}}}$. For each pair of sites, this is the sum-difference in species abundance across all species, divided by the mean abundance.  Bray-Curtis distance is **NOT** metric!!
+
+The Chi-square distance is another common measure for such data: $\small\mathbf{D}_{\chi^{2}}=\sqrt{\sum\frac{1}{y_{k}}\left(\frac{y_{ki}}{y_{i}}-\frac{y_{kj}}{y_{j}}\right)}$. 
+
+###### Quite a few *other* distance and similarity measures for abundance data exist.
+
+###### NOTE: We will return to matrices of species abundance data briefly at the end of this lecture.
+
+# Continuous Data
+
+Thus far we have used Euclidean distance as a measure for continuous data
+
+$$\small\mathbf{d}_{Euclid}=\sqrt{\sum\left({y}_{1i}-{y}_{2i}\right)^{2}}=\sqrt{\left(\mathbf{y}_{1}-\mathbf{y}_{2}\right)^{T}\left(\mathbf{y}_{1}-\mathbf{y}_{2}\right)}$$
+
+This is the distance for metric (Euclidean) spaces:
+
+```{r, echo = FALSE, out.width="40%", fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/MetricSpacePlot.png")  
+```
+
+*Many* other distance measures exist for continuous variables (Manhattan distance, Mahalanobis distane, Canberra distance, etc.)
+
+###### NOTE: not all sets of continuous variables create Euclidean data spaces. For example, combining continous variables in different units or scale (e.g., temperature, relative humidity, elevation) results in  distances between objects that are not Euclidean and not interpretable. The reason is that deviations in each variable are not commensurate: thus distances and covariances found by combining them have no meaning. (see Adams and Collyer. 2019. *Ann. Rev. Ecol. Evol. Syst.*)
+
+# Distance Metrics Vs. Measures
+
+Not all distance measures are metrics. Metrics must satisfy: 
+
+Property | Meaning                    
+:------------------------ | :------------------------------------------------
+$\small{d}_{\mathbf{y}_{1}\mathbf{y}_{2}}\geq0$ | non-negativity
+$\small{d}_{\mathbf{y}_{1}\mathbf{y}_{2}}=0	\Leftrightarrow{\mathbf{y}}_{1}={\mathbf{y}}_{2}$ | identity
+$\small{d}_{\mathbf{y}_{1}\mathbf{y}_{2}}={d}_{\mathbf{y}_{2}\mathbf{y}_{1}}$ | symmetry
+$\small{d}_{\mathbf{y}_{1}\mathbf{y}_{3}}\leq{d}_{\mathbf{y}_{1}\mathbf{y}_{2}}+{d}_{\mathbf{y}_{2}\mathbf{y}_{3}}$ | triangle inequality
+
+
+Some distances are Semimetric (pseudometric): Do not satsify the triangle inequality (e.g., Bray-Curtis distance & Sørenson’s similarity)
+
+Other distances are Nonmetric: can have negative distances (e.g.,Kulczynski’s coefficient)
+
+Obviously, interpreting patterns in dataspaces that have non-metric distance measures are quite complicated, and frequently do not match our intuition of distances and directions.
+
+# Danger: Not all Numerical Data are Combinable!
+
+As should be obvious from the preceding discussion, combining different data types is absolute innanity!
+
+Imagine the following ecological measures:  
+
+1: Temperature (centigrade)
+
+2: Relative humidity (percentage)
+
+3: Elevation (meters)
+
+4: Presence/Absence of predators
+
+5: Species abundance of 3 different competitors
+
+**Generating distances between objects, or covariances between variable from such data is GIGO!!!**
+
+  >- Technically, all of these are numbers, but the inherent distance measures for each differs. Also, even within the 'continuous' category, measures 1,2 & 3 are in different units and scale. Thus, deviations among specimens on each axis $\small\left(\mathbf{Y}_{1p}-\mathbf{Y}_{2p}\right)$ are not comparable across the $\small{p}$ variables.
+
+# Combining Incommensurate Data
+
+- One approach that can be used (but is rarely implemented) is the following: 
+
+  - Separate data into common types (continuous data, binary data, etc.)
+  
+  - Perform ordination on each separately, based on the appropriate distance measure/metric
+  
+  - Combine ordination scores (which are all continuous and hopefully represent Euclidean spaces) for overall data matrix
+
+```{r, echo = FALSE, fig.height=5, fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/Pianka.png")  
+```
+
+###### Note: there are still issues to be addressed (e.g., how to weight the scores for each data type if $p_1\neq{p_2}$, etc.)
+
+# Multivariate Linear Models
+
+Armed with this information, let's look at inferences using the (general) linear model:
+
+$$\mathbf{Y}=\mathbf{X}\mathbf{\beta } +\mathbf{E}$$
+
+For multivariate data, $\small\mathbf{Y}$ is a $\small n \times p$ matrix, not a vector. How does this affect our computations?
+
+The answer depends upon which step of the procedure: **parameter estimation** or **model evaluation**.
+
+# Multivariate LM: Parameters and Coefficients
+
+Algebraic computations for estimating model parameters and coefficients are identical to those used for univariate $\small{Y}$ data: 
+
+$\tiny\mathbf{X}_R = \begin{bmatrix} 1\\ 1\\ 1\\ 1\\ 1\\ 1 \end{bmatrix}$  & $\tiny\mathbf{X}_F = \begin{bmatrix} 1 & 0 \\ 1 & 0 \\ 1 & 0 \\ 1 & 1 \\ 1 & 1 \\ 1 & 1 \end{bmatrix}$
+
+Let's compare the fit of the data to both $\small\mathbf{X}_{R}$ and $\small\mathbf{X}_{F}$:
+
+Estimate | $\small\mathbf{X}_{R}$| $\small\mathbf{X}_{F}$
+:------------- | :------------------- | :--------------------------
+Coefficients |  $\tiny\hat{\mathbf{\beta_R}}=\left ( \mathbf{X}_R^{T} \mathbf{X}_R\right )^{-1}\left ( \mathbf{X}_R^{T} \mathbf{Y}\right )$ | $\tiny\hat{\mathbf{\beta_F}}=\left ( \mathbf{X}_F^{T} \mathbf{X}_F\right )^{-1}\left ( \mathbf{X}_F^{T} \mathbf{Y}\right )$ 
+Predicted Values | $\small\hat{\mathbf{Y}}_R=\mathbf{X}_R\hat{\mathbf{\beta}}_R$ | $\small\hat{\mathbf{Y}}_F=\mathbf{X}_F\hat{\mathbf{\beta}}_F$
+Model Residuals | $\small\hat{\mathbf{E}}_R=\mathbf{Y}-\hat{\mathbf{Y}}_R$ | $\small\hat{\mathbf{E}}_F=\mathbf{Y}-\hat{\mathbf{Y}}_F$
+Model Residual Error ($\small{SSE}$) | $\small\mathbf{S}_R=\hat{\mathbf{E}}_R^T\hat{\mathbf{E}}_R$ | $\small\mathbf{S}_F=\hat{\mathbf{E}}_F^T\hat{\mathbf{E}}_F$
+
+Ok, but what about statistical evaluation?  What test statistics can we use?
+
+# Multivariate LM: Test Statistics
+
+With univariate linear models, our test statistic was the ratio of explained to unexplained variance:  $\small{F}=\frac{\sigma^{2}_{M}}{\sigma^{2}_{\epsilon}}$
+
+For multivariate $\small\mathbf{Y}$ data, these would be matrices, implying:
+
+$$\tiny{"F"}=\frac{\begin{bmatrix}
+\sigma^{2}_{M_{11}} & \sigma_{M_{12}} \\
+\sigma_{M_{21}}  & \sigma^{2}_{M_{22}}  
+\end{bmatrix}}
+{\begin{bmatrix}
+\sigma^{2}_{\epsilon_{11}} & \sigma_{\epsilon_{12}} \\
+\sigma_{\epsilon_{21}}  & \sigma^{2}_{\epsilon_{22}}  
+\end{bmatrix}}=\frac{\left(\Delta k\right)^{-1}\small\left(\mathbf{S}_R-\small\mathbf{S}_{F}\right)}{\left(n-k_f-1\right)^{-1}\small\mathbf{S}_{F}}$$
+
+But since one cannot 'divide' matrices, other summary test measures have been derived:
+
+1: Wilks' lambda: $\small\Lambda_{Wilks}=\mathbf{\frac{\begin{vmatrix}S_{F}\end{vmatrix}}{\begin{vmatrix}S_{R}\end{vmatrix}}}$
+
+2: Pillai's trace: $\small\Lambda_{Pillai}=tr(\mathbf{S^{-1}_{F}(S_{R}-S_{F}))}$
+
+- also Hotelling-Lawley trace & Roy's maximal root
+
+These are then converted to approximate $\small{F}$ values with yet additional formulae with additional parametric assumptions. Model significance is then evaluated using $\small{F}$~approx~
+
+# Limitations to Parametric Theory
+
+Parametric multivariate methods 'work', but have limitations. Consider multivariate regression (using $\small{F}_{approx}$). Here are simulation results (type I error and power) as $\small p$ increases:
+
+```{r, echo = FALSE, out.width="70%", fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/Manova-PowerProblem.png")  
+```
+
+Statistical power decreases as $\small p$-dimensions increases, and power eventually hits zero (as $\small p$ approaches $\small n$).
+
+###### The reason is that as $\small p$ approaches $\small n$, calculating the inverse of $\small\mathbf{S}_F$ or $\small\mathbf{S}_R$ becomes harder to accomplish mathematically, because the determinant decreases towards zero (i.e., the matix becomes closer and closer to singular). 
+
+We require an alternative implementation for model evaluation with highly multivariate data!
+
+# High-Dimensional Data: Challenges
+
+When $p>n$, standard parametric approaches are not possible. There are several ways of coping with the complications of high-dimensional data
+
+- Reduce dimensionality: Reduce the number of variables ($p$) in some manner (typically use PCA and retain only a subset of axes for the analysis)
+
+    - Unnecessary and *dangerous!* The signal in the data may not align with the first PC axis  
+
+```{r, echo = FALSE, fig.height=5, fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/PC1Silliness.png")  
+```
+
+- Adjust covariance matrix (via generalized inverse, shrinkage, ridge regularization) so it may be inverted
+
+    - 'Semi-parametric': still uses parametric distributions for significance testing, which can be problematic
+
+- Use robust summary statistics (that don't rely on matrix inverse) and robust significance tests (that do not rely on parametric distributions)
+
+# Robust Summary Statistics
+
+Because of the difficulty with high-dimensional shape data, we require summary test measures that do not suffer the ills found with standard, parametric measures. Several come to mind:
+
+
+
+# From Distances To Summary Statistics
+
+Goodall (1991) and Anderson (2001) independently recognized the link between distances and summary $\small{F}$-statistics. Summary $\small{F}$-ratios are based on sums-of-squares (SS), and distances are found from the square-root of squared differences between objects. Thus, they are ostensibly the same.
+
+```{r, echo = FALSE, out.width="70%", fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/PerMANOVA.png")  
+```
+
+For univariate data, this approach yields *IDENTICAL* $F$-values to standard equations, but provides a generalization of $\small{F}$ (based on matrix traces) for high-dimensional data.
+
+Adams and Collyer extended this paradigm: applying RRPP for model evaluation (which has higher statistical power for factorial models), and deriving permutation-based effect sizes for comparing signal strength across model effects.
+
+###### Goodall (1991); Anderson (2001); Collyer et al (2015); Adams & Collyer (2016; 2018, etc.)
+
+# RRPP and Empirical Null Sampling Distributions
+
+1. Perform RRPP many times.  
+2. Calculate $F$-value in every random permutation (observed case counts as one permutation)
+3. For $N$ permutations, $P = \frac{N(F_{random} \geq F_{obs})}{N}$
+4. Calculate *effect size* as a standard deviate of the observed value in a normalized distribution of random values (helps for comparing effects within and between models); i.e.,
+$$z = \frac{
+\log\left( F\right) - \mu_{\log\left(F\right)}
+} {
+ \sigma_{\log\left(F\right)}
+}$$
+where $\mu_{\log\left(F\right)}$ and $\sigma_{\log\left(F\right)}$ are the expected value and standard deviation from the sampling distribution, respectively (Collyer et al. 2015; Adams and Collyer 2016).
+
+###### Collyer et al. *Heredity.* (2015); Adams & Collyer. *Evolution.* (2016); Adams & Collyer. *Evolution.* (2018)
+
+# RRPP and Power
+
+Interestingly, RRPP 'breaks' Rao's paradox, as power increases as the number of trait dimensions ($\small p$ ) increases.
+
+```{r, echo = FALSE, out.width="70%", fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/RRPPPower.png")  
+```
+
+###### This may seem paradoxical but makes intuitive sense. Since test measures are based on distances among objects, adding trait dimensions can only provide additional information on any pattern between `Y~X` if it is present. And since statistical evaluation is based on this, power increases (NOTE: adding noise dimensions neither increases nor decreases power).
+
+# Multivariate LM: Example
+
+```{r, echo = FALSE, out.width="100%", fig.align='center'}
+include_graphics("LectureData/06.multivariate.LM/pupfish.example.png")  
+```
+
+Note: this is a high-dimensional dataspace ($\small n=54$ & $\small p=112$). Standard parametric methods will fail, as $\small p >> n$. Thus, we will use RRPP approaches to investigate patterns of phenotypic dispersion in this dataset.
+
+# Example 1: ANOVA
+
+MANOVA via RRPP reveals significant phenotypic variation attributable to all model effects. Pairwise comparisons identify significant sexual dimorphism in the Marsh population, but not the Sinkhole population (hence the significant interaction).
+
+```{r echo=TRUE, out.width="80%", fig.align='center' }
+data(Pupfish)
+Pupfish$Group <- interaction(Pupfish$Sex, Pupfish$Pop)
+fit.m <- lm.rrpp(coords ~ Pop * Sex, data = Pupfish, print.progress = FALSE) 
+anova(fit.m)$table
+summary(pairwise(fit.m,groups = Pupfish$Group))
+```
+
+# Example 1: ANOVA (Cont.)
+
+Visualization via a principal components plot of fitted values from the model (we'll discuss PCA in a future lecture). Notice that the statistical results are easily visualized here, despite being highly multivariate data.
+
+```{r echo=FALSE, out.width="80%" , fig.align='center'}
+plot(fit.m, type = "PC", pch=21, bg = Pupfish$Group, cex=2)
+legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
+```
+
+# Example 2: ANCOVA
+
+Incorporating size as a covariate we find that shape covaries with size (i.e., allometry).  Pairwise comparisons reveal that male and female Sinkhole fish differ in their allometry patterns.
+
+```{r echo=TRUE, out.width="80%", fig.align='center' }
+Pupfish$logSize <- log(Pupfish$CS)
+fit.slopes <- lm.rrpp(coords ~ logSize * Pop * Sex, data = Pupfish, print.progress = FALSE)
+anova(fit.slopes)$table
+PWS <- pairwise(fit.slopes, groups = Pupfish$Group, covariate = Pupfish$logSize)
+summary(PWS, test.type = "VC", angle.type = "deg")
+```
+
+# Example 2: ANCOVA (Cont.)
+
+Visualizing multivariate regression is tricky. Several measures summarizing patterns in $\small\mathbf{Y}$ may be used: regression scores (top) and predicted lines (bottom).
+
+###### see: Drake & Klingenberg. 2008; Adams & Nistri. 2010 respectively.
+
+```{r echo=FALSE, out.width="50%"}
+plot(fit.slopes, type = "regression", reg.type = "RegScore", pch=21, bg = Pupfish$Group, predictor = Pupfish$logSize, cex=2)
+legend("topleft", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
+
+plot(fit.slopes, type = "regression", reg.type = "PredLine", pch=21, bg = Pupfish$Group, predictor = Pupfish$logSize, cex=2)
+legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
+```
+
+# Permutational MANOVA & Distance Matrices
+
+Sometimes, one must represent the response $\small\mathbf{Y}$ data as a matrix of object distances. If the distance measure is metric or approximately Euclidean, one may perform ANOVA via RRPP with this as input. 
+
+Here, Principal Coordinates Analysis (PCoA) is used to obtain multivariate continuous coordinates from the distance matrix, which is then subject to permutational MANOVA via RRPP. 
+
+```{r, echo = FALSE, out.height="50%"}
+include_graphics("LectureData/06.multivariate.LM/Manova-Dist.png")  
+```
+
+# Distance Matrix ANOVA: Example
+
+Here we represent the pupfish data by Euclidean distances. Results are identical to before.
+
+```{r echo=TRUE, out.width="80%", fig.align='center' }
+Pupfish$Dist <- dist(Pupfish$coords)
+anova(lm.rrpp(coords ~ Pop * Sex, data = Pupfish, print.progress = FALSE))$table 
+anova(lm.rrpp(Dist ~ Pop * Sex, data = Pupfish, print.progress = FALSE))$table 
+```
+
+# A Comment on Abundance (Count) Data
+
+Matrices of abundance data (species counts) are common in ecology, but are clearly not MVN. There is a large literature on the subject, and several implementations for analysis are possible.  
+
+One school uses matrices of log(abundance+1) or Bray-Curtis distances analyzed using linear models (LM) via permutational MANOVA (e.g., Anderson). 
+
+Another approach is to use generalized linear models (GLM with poisson or other link-function) on each species separately, followed by  evaluating $\small\sum{F}$-ratio found across species (e.g., Wharton). 
+
+There are strengths and weaknesses to both approaches, and both have advantages. GLM can be accommodating to specific data types but LM is more robust to departures from assumptions. **Importantly, it is suggested that residual resampling (i.e., RRPP!) cures a lot of LM/GLM ills.** Future theoretical work on RRPP will investigate this more thoroughly.
+
+A simple example is in the lab tutorial, and those interested shoudl investigate the primary literature, especially:
+
+###### Wharton et al. 2016. *Methods Ecol. Evol.* 
+
+# Linear Models: Conclusions
+
+- Linear models provide flexible tools for evaluating:
+    - Regression/covariation
+    - Group differences
+    - Both
+
+- For multivariate and high-dimensional data (and distance data), permutational MANOVA facilitates evaluation of models via RRPP
+
+- The strength of signal across model effects can be compared using effect sizes (Z-scores) 
+
+- Pairwise comparisons of groups, slopes, or other attributes can also be evaluated using RRPP
+
+

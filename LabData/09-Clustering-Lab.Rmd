@@ -1,0 +1,95 @@
+---
+title: "Clustering Methods"
+author: "Dean Adams (dcadams@iastate.edu)"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+### **Motivation**
+The key to multivariate data analysis is understanding the patterns. Clustering approaches provide another view of the relationships among objects in high-dimensional dataspaces. 
+
+###**SAHN**
+Many clustering approaches are in the SAHN family: Sequential, Algorithmic, Heirarchical, Nested. In R, a single function may be used for these: 
+
+```{r eval=TRUE}
+mole.data<-read.csv("Data/Lab-09.Moles.csv",header=T,row.names=1)
+mole.dist<-as.dist(mole.data)
+
+mole.single<-hclust(mole.dist,method="single")       #Single-link
+mole.complete<-hclust(mole.dist,method="complete")   #Complete-link
+mole.upgma<-hclust(mole.dist,method="average")       #UPGMA = average-link
+mole.upgmc<-hclust(mole.dist,method="centroid")      #UPGMC
+mole.wpgma<-hclust(mole.dist,method="mcquitty")      #WPGMA
+mole.wpgmc<-hclust(mole.dist,method="median")        #WPGMC
+mole.wards<-hclust(mole.dist,method="ward.D")          #Ward's
+```
+
+We can now plot these clusters.
+
+```{r eval=TRUE}
+plot(mole.single, hang=-1,lwd=2)
+plot(as.dendrogram(mole.single),horiz=TRUE,lwd=4,xlim=c(16,-1))  #single-link
+plot(as.dendrogram(mole.complete),horiz=TRUE,lwd=4,xlim=c(16,-1))  #complete-link
+plot(as.dendrogram(mole.upgma),horiz=TRUE,lwd=4,xlim=c(16,-1))  #UPGMA
+plot(as.dendrogram(mole.wpgma),horiz=TRUE,lwd=4,xlim=c(16,-1))  #WPGMA
+plot(as.dendrogram(mole.upgmc),horiz=TRUE,lwd=4,xlim=c(16,-1))  #UPGMC
+plot(as.dendrogram(mole.wpgmc),horiz=TRUE,lwd=4,xlim=c(16,-1))  #WPGMC
+plot(as.dendrogram(mole.wards),horiz=TRUE,lwd=4,xlim=c(16,-1))  #Ward's
+```
+
+###Clustering Vs. Ordination
+
+It is important to recognize that clustering and ordination are complementary. This is seen in plots of actual distances among objects in the dataspace versus those implied by the projected ordination space or the cluster dendogram:
+
+```{r echo = FALSE, eval=TRUE}
+library(geomorph)
+data(plethodon)
+gp<-as.factor(paste(plethodon$species,plethodon$site))
+  PC.scores<-prcomp(two.d.array(gpagen(plethodon$land,print.progress=FALSE)$coords))$x
+pleth.dist<-dist(PC.scores)
+PC12.dist<-dist(PC.scores[,1:2])
+pleth.upgma<-hclust(pleth.dist,method="average") 
+plot(PC.scores, asp=1, pch=21, bg=gp)
+plot(as.dendrogram(pleth.upgma),horiz=TRUE,lwd=4)  #UPGMA
+
+plot(pleth.dist,PC12.dist)
+plot(pleth.dist,cophenetic(pleth.upgma))
+```
+
+###**K-Means Clustering**
+An alternative to methods that generate cluster dendograms is to split the dataset into non-nested clusters. K-means clustering is a useful approach. Note that one must specify *a priori* the number of clusters desired. 
+
+```{r eval=TRUE}
+#K-means
+kclusters2<-kmeans(PC.scores,2)
+kclusters3<-kmeans(PC.scores,3)
+kclusters4<-kmeans(PC.scores,4)
+
+
+plot(PC.scores[,1:2],col=kclusters2$cluster)
+points(kclusters2$centers, col = 1:2, pch = 8, cex=2)
+
+plot(PC.scores[,1:2],col=kclusters3$cluster)
+points(kclusters3$centers, col = 1:3, pch = 8, cex=2)
+
+plot(PC.scores[,1:2],col=kclusters4$cluster)
+points(kclusters4$centers, col = 1:4, pch = 8, cex=2)
+```
+
+To compare how well different numbers of clusters perform, one can compare TESS (total error sums-of-squares).
+
+```{r eval=TRUE}
+TESS<-array(NA,6)
+for (i in 1:6){
+  TESS[i]<-kmeans(PC.scores,i)$tot.withinss
+}
+plot( TESS)  #seems to bottom out at 3 groups
+
+```
+
+The plot shows a leveling off after K=3, implying that 3 clusters is suitable. Examining the ordination plot confirms this. 
+
+```{r eval=TRUE}
+plot(PC.scores[,1:2],col=kclusters3$cluster)
+points(kclusters3$centers, col = 1:3, pch = 8, cex=2)
+```
