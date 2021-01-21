@@ -1,5 +1,5 @@
 ---
-  title: "Welcome to Advanced Biostatistics!"
+  title: "Advanced Biostatistics (EEB 590C)"
   output: html_document
 ---
 
