@@ -2,30 +2,30 @@
   title: "Lectures"
 ---
 
-[01-Introduction and Basic Concepts](https://deanadams.github.io/2019-Glasgow/Lectures/01-IntroHistory.html)
+[01-Introduction and Basic Concepts](https://deanadams.github.io/BioStats/Lectures/01-Intro-Basics.html)
 
-[02-Resampling Methods](https://deanadams.github.io/2019-Glasgow/Lectures/02-Matrix-Algebra.html)
+[02-Resampling Methods](https://deanadams.github.io/BioStats/Lectures/02-Resampling.html)
 
-[03-ANOVA MOdels](https://deanadams.github.io/2019-Glasgow/Lectures/03-Superimposition.html)
+[03-ANOVA Models](https://deanadams.github.io/BioStats/Lectures/03-ANOVA.html)
 
-[04-Regression Models](https://deanadams.github.io/2019-Glasgow/Lectures/04-ShapeVariablesSpaces.html)
+[04-Regression Models](https://deanadams.github.io/BioStats/Lectures/04-Regression.html)
 
-[05-Matrix Algebra and Linear Models](https://deanadams.github.io/2019-Glasgow/Lectures/05-Semilandmarks.html)
+[05-Matrix Algebra and Linear Models](https://deanadams.github.io/BioStats/Lectures/05-Matrix-Algebra-LM.html)
 
-[06-Multivariate Data and the GLM](https://deanadams.github.io/2019-Glasgow/Lectures/06-ShapeCovariation.html)
+[06-Multivariate Data and the GLM](https://deanadams.github.io/BioStats/Lectures/06-Multivariate-LM.html)
 
-[07-Interactions and Patterns of Change](https://deanadams.github.io/2019-Glasgow/Lectures/07-GroupDifferences.html)
+[07-Interactions and Patterns of Change]
 
-[08-Ordination Methods](https://deanadams.github.io/2019-Glasgow/Lectures/08-PTA.html)
+[08-Ordination Methods]
 
-[09-Clustering Methods](https://deanadams.github.io/2019-Glasgow/Lectures/09-Allometry.html)
+[09-Clustering Methods]
 
-[10-Multivariate Association and Canonical Ordination](https://deanadams.github.io/2019-Glasgow/Lectures/10-PhyCompMethods.html)
+[10-Multivariate Association and Canonical Ordination]
 
-[11-Model Comparison](https://deanadams.github.io/2019-Glasgow/Lectures/11-Asymmetry.html)
+[11-Model Comparison]
 
-[12-Phylogenetic Comparative Methods](https://deanadams.github.io/2019-Glasgow/Lectures/12-MissingData.html)
+[12-Phylogenetic Comparative Methods]
 
-[13-Spatial Statistics](https://deanadams.github.io/2019-Glasgow/Lectures/13-IntegrationModularity.html)
+[13-Spatial Statistics]
 
-[14-Meta-Analysis](https://deanadams.github.io/2019-Glasgow/Lectures/14-Disparity.html)
+[14-Meta-Analysis]
