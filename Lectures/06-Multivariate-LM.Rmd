@@ -765,7 +765,7 @@ anova(lm.rrpp(Dist ~ Pop * Sex, data = Pupfish, print.progress = FALSE))$table
 
 Matrices of abundance data (species counts) are common in ecology, but are clearly not MVN. There is a large literature on the subject, and several implementations for analysis are possible.  
 
-One school uses matrices of log(abundance+1) or Bray-Curtis distances analyzed using linear models (LM) via permutational MANOVA (e.g., Anderson). 
+One school uses matrices of $log(abund+1)$ or Bray-Curtis distances analyzed using linear models (LM) via permutational MANOVA (e.g., Anderson). 
 
 Another approach is to use generalized linear models (GLM with poisson or other link-function) on each species separately, followed by  evaluating $\small\sum{F}$-ratio found across species (e.g., Wharton). 
 
