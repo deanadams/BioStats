@@ -532,7 +532,7 @@ include_graphics("LectureData/01.Intro/RoadmapExpanded.png")
 
 - Other variations exist (e.g., for paired data)
 
-- *Note:  2-sample $\small{t}$-test ($\small{n_{1}=n_{2}}$) yields equivalent results to 2-sample ANOVA
+###### Note:  2-sample $\small{t}$-test ($\small{n_{1}=n_{2}}$) yields equivalent results to 2-sample ANOVA
 
 
 
