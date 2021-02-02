@@ -514,7 +514,7 @@ And since $\small\mu_{Y}$ is a constant, permutation distribution will be identi
 
 
 
-# Which to Use?
+# Which Permutation Method Should We Use?
 
 OLS Factorial Model (Adams & Collyer, unpubl.)
 
@@ -541,7 +541,7 @@ include_graphics("lectureData/02.Resampling/Simulations/Figs/OLS.FDist-3.png")
 
 **Full Randomization, Restricted Randomization, and RRPP are all fine (but not full-model residuals)**
 
-# Which to Use?
+# Which Permutation Method Should We Use?
 
 GLS Factorial Model (Adams & Collyer, unpubl.)
 
