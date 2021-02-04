@@ -1,0 +1,43 @@
+---
+  title: "Advanced Biostatistics: HomeWork Activities"
+  output: html_document
+---
+
+#### **Homework 1: Lectures 1-4**		
+
+This assignment is due prior to class in week 6.  You are to self-select and work in groups: 2-3 in a group.  For the assignment below submit one R-script. Annotations via comments are highly encouraged.  The script should run!
+
+Assignment: 
+
+1: Select some form of linear model containing a single dependent variable (continuous) and at least 1 independent variable. Next, simulate two datasets: the first with no relationship between X & Y, and the second with some positive association between X & Y. Perform 100 simulations under each condition.  Run the linear models on all datasets to confirm that on average, the patterns for condition 1 (no relationship) and condition 2 (some relationship) are met. (HINT: this requires determining an appropriate summary measure extracted from the linear model). 
+
+2: Devise a permutation procedure to evaluate the above linear model. Write code for this permutation procedure. Next, devise a SECOND implementation of the same permutation procedure (ie, code the procedure in a different manner).  For a single dataset compare the two implementations for their computational performance. Summarize your findings via comments in the code (e.g., which approach was faster?  Which components of the slower approach could be improved, etc.). 
+
+#### **Homework 2: Lectures 6-10**	
+
+This assignment is due prior to class in week 12.  You are to self-select and work in groups: 2-3 in a group.  For the assignment below submit one R-script. Annotations via comments are highly encouraged.  The script should run!
+
+Assignment: 
+
+1: Select one of the two datasets (HW2.dat1.csv or HW2.dat2.csv found in the [Data Repository](https://github.com/deanadams/Data)).  Each contains a multivariate dataset and several independent (X) variables.  Using the methods learned in weeks 6-10, examine patterns in the dataset. You may use one or more (or all) of the X-variables, and a variety of methods to describe the patterns.
+
+You must use at least one method from the material learned in: 
+
+Weeks 6-7
+Week 8
+Week 9
+Week 10  
+
+USE COMMENTS IN THE R CODE to describe what the patterns you find represent.
+
+#### **Homework 3**	
+
+This assignment is due prior to the last day class.  You are to self-select and work in groups: 2-3 in a group.  For the assignment below submit one R-script. Annotations via comments are highly encouraged.  The script should run!
+
+##### 
+
+Assignment: 
+
+1: Obtain a dataset. This may be one of your own, a dataset from DRYAD, or some other source.  Identify hypotheses for this dataset and analyze patterns in the data. You may use any methods learned during the semester, but at least one analysis must come from material learned in weeks 11-13.
+
+USE COMMENTS IN THE R CODE to describe what the patterns you find represent.

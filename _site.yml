@@ -13,3 +13,5 @@ navbar:
       href: labs.html
     - text: "Syllabus"
       href: syllabus.html
+    - text: "HomeWork"
+      href: homework.html

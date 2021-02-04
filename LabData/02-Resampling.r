@@ -36,7 +36,7 @@ rnorm(10)		#note that the seed is not held indefinitely in memory)
 	##basic idea: simulate rnorm vectors, & multiply by decomposition of a covariance matrix
 		## covariance matrix specifies correlation structure
 library(mvtnorm) 
-corr.val<-0.7
+corr.val<- -0.9
 a <- rmvnorm(n=500,mean=c(0,0),sigma=matrix(c(1,corr.val,corr.val,1),2,2)) 
 cor(a)
 plot(a)
@@ -69,8 +69,8 @@ sex<-as.factor(bumpus[,2])
 TL<-bumpus.data$TL
 
 #Observed data
-t.test(formula=bumpus.data$TL~sex)	
-plot(sex,bumpus.data$TL,ylab="Total Length")
+t.test(formula=TL~sex)	
+plot(sex,TL,ylab="Total Length")
 t.obs<-t.test(formula=bumpus.data$TL~sex)$statistic[[1]]  #grab t-statistic from frame	
 t.obs
 
