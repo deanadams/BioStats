@@ -163,6 +163,7 @@ $$\tiny{n}\left(\overline{Y}_{1}-\overline{Y}_{2}\right)^{2}=\left({n\left(\over
 
 ```{r echo=TRUE, out.width="70%" }
 x1 <- gl(3,3)
+x1
 model.matrix(~x1) # with intercept
 model.matrix(~x1+0) # without intercept
 ```
@@ -276,7 +277,7 @@ ANOVA multiple $\small{X}$ variables (e.g, species AND sex)
 
 - 2 factor Model: $\small{Y}=\beta_{0}+X_{1}\beta_{1}+X_{2}\beta_{2}+\epsilon$
 
-###### Note: Factors with 3+ groups will have multiple $\small\beta$ per factor.
+###### Note: Factors with 3+ levels will have multiple $\small\beta$ per factor.
 
 - In simplest case (factor `A` and `B`), $\small{SS}_{A}$ & $\small{SS}_{B}$ are independent of one another, and are thus calculated as before: e.g. 
 $$\tiny{SSA}=\sum_{i=1}^{a}{n}_{i}\left({\overline{Y}_{i}-\overline{\overline{Y}}}\right)^{2}$$
@@ -306,7 +307,7 @@ include_graphics("lectureData/03.ANOVA/FactorTable.png")
 
 - `A:B` identifies whether response to `A` is dependent on level of `B` found as: $\small{SS}_{A:B}=\sum_{i=1}^{a}\sum_{j=1}^{b}{n}_{ij}\left(\overline{Y}_{AB}-\overline{Y}_{A_{i}}-\overline{Y}_{B_{j}}+\overline{\overline{Y}}\right)^{2}$
 
-- Significant interaction: main effects not interpretable without clarification (e.g., species 1 larger than species 2 ONLY in wet environments…)
+- Significant interaction: main effects not interpretable without clarification (e.g., species 2 higher growth rate relative to species 1 ONLY in wet environments…)
 
 - Interactions are *VERY* common in biology 
 
@@ -322,7 +323,7 @@ $$\tiny{Y}=\beta_{0}+X_{1}\beta_{1}+X_{2}\beta_{2}+X_{3}\beta_{3}+X_{1:2}\beta_{
 
 - Adding factors also means adding many interactions
 
-- Inclusion of additional factors allows one to 'account for' their variation in the analysis (e.g., evaluate variation in sex while taking species into consideration), *and* allows assessment of interactions between factors, but requires larger $\tiny{N}$
+- Inclusion of additional factors allows one to 'account for' their variation in the analysis (e.g., evaluate variation in sex while taking species into consideration), *and* allows assessment of interactions between factors, but requires larger $\small{N}$
 
 - In general, assess significance of interactions, make decisions regarding whether to pool non-significant interaction $\small{MS}$ with $\small{MSE}$, then interpret main effects whenever possible
 
