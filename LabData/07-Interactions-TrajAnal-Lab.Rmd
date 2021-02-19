@@ -10,13 +10,11 @@ As we discussed in lecture, interactions between main effects in a linear model 
 
 Once a significant interaction has been identified, one must then dig deeper to understand its meaning. Below is an example for a factrial MANOVA.
 
-### **Multivariate Pairwise Comparisons**
+#### **1: Multivariate Pairwise Comparisons**
 As seen in previous weeks, one can perform pairwise comparisons among groups via RRPP. The approach is based on distances between group means. 
 
 ```{r eval=TRUE}
-library(geomorph)
 library(RRPP)
-
 data(Pupfish)
 Pupfish$Group <- interaction(Pupfish$Sex, Pupfish$Pop)
 fit.m <- lm.rrpp(coords ~ Pop * Sex, data = Pupfish, print.progress = FALSE) 
@@ -34,7 +32,7 @@ legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
 Note the major differences between sympatric populations of both species (blue and green), and the overlap between allopetric populations of the same species (black and red). This is the quintessential example of *character displacement*.
 
 
-### **MANCOVA Models: LS-Mean Comparisons**
+#### **1b: MANCOVA Models: LS-Mean Comparisons**
 For MANCOVA models, a covariate is included in the model. Now several comparisons are of interest.  First, one can compare groups (LS-means) while accounting for the covariate. 
 
 ```{r eval=TRUE}
@@ -50,7 +48,7 @@ legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
 
 Note that the distances between pairs of group means are not the same as in the first example, because the covariate has been taken into account in the analysis.
 
-### **MANCOVA Models: Slope Comparisons**
+#### **1c: MANCOVA Models: Slope Comparisons**
 
 Additionally, one can compare the slopes among groups. 
 ```{r eval=TRUE}
@@ -69,7 +67,7 @@ Note that the above provides comparisons allow for the length of the regression 
 
 Together, these procedures provide considerable flexibility in evaluating patterns that comprise significant interaction terms. 
 
-### **Trajectory Analysis**
+#### **2: Trajectory Analysis**
 
 Traditional pairwise comparisons following MANOVA are conducted using the distance between group means, as in our examples above. However, for factorial models, this is rather limiting and does not tell the entire story; the approach might leave some relevant biological signal unexamined.  For instance, consider the model in the example above: `Y~species+site+species:site`. In this case, we know that each species is found in each site. Thus, there is a *linkage* between site and species. To leverage this knowledge, we use **_trajectory analysis_**. 
 
@@ -80,10 +78,17 @@ These trajectories then have higher-order attributes in the multivariate space, 
 Let's show an example for the data above. Here, our trajectories represent the degree of sexual dimorphism in each pupfish population.
 
 ```{r eval=TRUE}
-class(Pupfish) <- "geomorph.data.frame" # Help R and geomorph work with the data
+fit <- lm.rrpp(coords ~ Pop * Sex, data = Pupfish, iter = 999,
+               print.progress = FALSE)
+TA <- trajectory.analysis(fit, groups = Pupfish$Pop, 
+                          traj.pts = Pupfish$Sex, print.progress = FALSE)
 
-TA <- trajectory.analysis(f1 = coords ~ Pop * Sex, data = Pupfish, print.progress = FALSE)
-summary(TA, angle.type = "deg")
+# Magnitude difference (absolute difference between path distances)
+summary(TA, attribute = "MD") 
+
+# Correlations (angles) between trajectories
+summary(TA, attribute = "TC", angle.type = "deg") 
+
 ```
 
 Notice that in this example, there is evidence for differences in trajectory length, as well as trajectory direction. This means that there is greater sexual dimorphism in one population as compared to another, and also in the manner in which sexual dimorphism occurs. 
@@ -91,22 +96,33 @@ Notice that in this example, there is evidence for differences in trajectory len
 Looking at these graphically we see the pattern: 
 
 ```{r eval=TRUE}
-plot(TA)
+TP <- plot(TA, pch = as.numeric(Pupfish$Pop) + 20, bg = as.numeric(Pupfish$Sex),
+           cex = 1, col = "black")
+add.trajectories(TP, traj.pch = c(21, 22), start.bg = 1, end.bg = 2)
+legend("topright", levels(Pupfish$Pop), pch =  c(21, 22), pt.bg = 1)
 ```
 
-#### **Multiple Trajectories & Multiple Levels**
+#### **2a: Multiple Trajectories & Multiple Levels**
 The approach works unaltered for more complicated datasets.
 
 ```{r eval=TRUE}
 data(motionpaths)
-gdf <- geomorph.data.frame(trajectories = motionpaths$trajectories,
-                           groups = motionpaths$groups)
-TA <- trajectory.analysis(f1 = trajectories ~ groups, 
-                          traj.pts = 5, data=gdf,print.progress=FALSE)
-summary(TA)
+fit <- lm.rrpp(trajectories ~ groups, data = motionpaths, iter = 999,
+               print.progress = FALSE)
+TA <- trajectory.analysis(fit, groups = motionpaths$groups, traj.pts = 5,
+                          print.progress = FALSE)
+
+# Magnitude difference (absolute difference between path distances)
+summary(TA, attribute = "MD") 
+
+# Correlations (angles) between trajectories
+summary(TA, attribute = "TC", angle.type = "deg") 
+
+# Shape differences between trajectories 
+summary(TA, attribute = "SD") 
+
+TP <- plot(TA, pch = 21, bg = as.numeric(motionpaths$groups),
+           cex = 0.7, col = "gray")
+add.trajectories(TP, traj.pch = 21, traj.bg = 1:4)
 ```
 
-```{r eval=TRUE}
-
-plot(TA)
-```

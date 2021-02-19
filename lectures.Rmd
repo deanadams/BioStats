@@ -15,7 +15,7 @@
 
 [06-Multivariate Data and the GLM](https://deanadams.github.io/BioStats/Lectures/06-Multivariate-LM.html)
 
-[07-Interactions and Patterns of Change]
+[07-Interactions and Patterns of Change](https://deanadams.github.io/BioStats/Lectures/07-Interactions-TrajAnal.html)
 
 [08-Ordination Methods]
 

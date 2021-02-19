@@ -1,6 +1,5 @@
 #####  Interaction Term exploration: Trajectory Analysis	
-  #Packages: geomorph, RRPP
-library(geomorph)
+  #Packages: RRPP
 library(RRPP)
 
 ##Interaction terms and sub-components
@@ -14,7 +13,7 @@ summary(pairwise(fit.m,groups = Pupfish$Group))
 plot(fit.m, type = "PC", pch=21, bg = Pupfish$Group, cex=2)
 legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
 
-#Pairwise comparisons while accounting for a covariate
+#Pairwise group comparisons while accounting for a covariate
 Pupfish$logSize <- log(Pupfish$CS)
 fit.slopes <- lm.rrpp(coords ~ logSize * Pop * Sex, data = Pupfish, print.progress = FALSE)
 anova(fit.slopes)$table
@@ -38,19 +37,39 @@ legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
 
 ##### Trajectory Analysis
 #1: Estimate trajectories from LS means in factorial mode
-class(Pupfish) <- "geomorph.data.frame" # Help R and geomorph work with the data
+fit <- lm.rrpp(coords ~ Pop * Sex, data = Pupfish, iter = 999)
+TA <- trajectory.analysis(fit, groups = Pupfish$Pop, 
+                          traj.pts = Pupfish$Sex, print.progress = FALSE)
 
-TA <- trajectory.analysis(f1 = coords ~ Pop * Sex, data = Pupfish, print.progress = TRUE)
-summary(TA, angle.type = "deg")
-plot(TA)
+# Magnitude difference (absolute difference between path distances)
+summary(TA, attribute = "MD") 
+
+# Correlations (angles) between trajectories
+summary(TA, attribute = "TC", angle.type = "deg") 
+
+# Plot results
+TP <- plot(TA, pch = as.numeric(Pupfish$Pop) + 20, bg = as.numeric(Pupfish$Sex),
+           cex = 1, col = "black")
+add.trajectories(TP, traj.pch = c(21, 22), start.bg = 1, end.bg = 2)
+legend("topright", levels(Pupfish$Pop), pch =  c(21, 22), pt.bg = 1)
+
 
 #2: Compare groups of pre-existing trajectories
 data(motionpaths)
-gdf <- geomorph.data.frame(trajectories = motionpaths$trajectories,
-                           groups = motionpaths$groups)
-TA <- trajectory.analysis(f1 = trajectories ~ groups, 
-                          traj.pts = 5, data=gdf,print.progress=FALSE)
-summary(TA)
-plot(TA)
+fit <- lm.rrpp(trajectories ~ groups, data = motionpaths, iter = 999)
+TA <- trajectory.analysis(fit, groups = motionpaths$groups, traj.pts = 5)
+
+# Magnitude difference (absolute difference between path distances)
+summary(TA, attribute = "MD") 
+
+# Correlations (angles) between trajectories
+summary(TA, attribute = "TC", angle.type = "deg") 
+
+# Shape differences between trajectories 
+summary(TA, attribute = "SD") 
+
+TP <- plot(TA, pch = 21, bg = as.numeric(motionpaths$groups),
+           cex = 0.7, col = "gray")
+add.trajectories(TP, traj.pch = 21, traj.bg = 1:4)
 
 

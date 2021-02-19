@@ -16,7 +16,7 @@ Additionally, biologists do not only use simple analyses. Increasingly, they are
 
 So the question is: how do different implementations of some set of operations compare in terms of computational speed?
 
-### **Example**: Find the mean of a sample
+#### **Example**: Find the mean of a sample
 Finding the mean can be obtained in various ways: `mean()`, `apply()`, or `sum(x)/length(x)`, etc. How do they compare?  We can use the library *microbenchmark* to evaluate.
 
 ```{r eval=TRUE}
@@ -41,7 +41,7 @@ microbenchmark(mean(x),apply(x,2,mean), sum(x)/length(x),mymean(x),colSums(x)/le
 
 Note that the base function `mean()` is *NOT* the fastest,`apply()` was rather slow for this particular task, and my function was the worst! 
 
-### **Why R can be Slow**
+#### **Why R can be Slow**
 So why are some implementations slow and others fast? There are many reasons, but two big ones are: 
 
 1. **_Inefficient Code_**. The code works but is computationally inefficient.  
@@ -49,10 +49,10 @@ So why are some implementations slow and others fast? There are many reasons, bu
 2. **_Computational Overhead_**. The code uses functions that do (or evaluate) many things. 
 For example, base functions are usually quite robust and very general, and are thus incredibly useful. However, they also have considerable data checks to ensure the proper data type is provided,  often calculate, obtain, or pass  many additional components beyond the main values being calculated, and they have many options (print, labels, names, etc.) that must be evaluated at run-time.  The result is that these functions are often slower than more streamlined algorithms designed to do the same thing. 
 
-### **The Challenge**
+#### **The Challenge**
 As an end-user, this generates a trade-off between coding efficiency (how long does it take me to write this?) and computational efficiency (how long does it take to run?).  Improving the latter comes at the expense of the former. The trick: improving the speed of one's code where it matters most (ie, find the slowest parts of code and speeding them up).
 
-### **Speeding up R: Finding the Slow Bits**
+#### **Speeding up R: Finding the Slow Bits**
 There are several ways to find the slow portions of your code. Both `microbenchmark` and `system.time` can be used creatively to identify choke points. See H. Wickham's *Advanced R* book; especially *Optimizing code*: http://adv-r.had.co.nz/Profiling.html.
 One approach I'll illustrate here is using the *aprof* library. 
 
@@ -129,7 +129,7 @@ Here we can see which lines of the function consume the most time.  With this, w
 
 Now we will discuss some general principles for speeding up R code.
 
-###**1: Pre-allocate Memory**
+#### **1: Pre-allocate Memory**
 Don't grow objects within loops or functions. Instead, pre-allocate them and fill the values in as they are calculated.
 
 ```{r eval=TRUE}
@@ -146,7 +146,7 @@ microbenchmark(SS<-array(NA,9999), x<-newSS(9999),times=10)
 ```
 As we can see, pre-allocating memory can be a huge time savings, particularly for large objects or many iterations.
 
-###**2: Pre-Calculate Components**
+#### **2: Pre-Calculate Components**
 Components used repeatedly in a function can be calculated first, then re-used.
 
 ```{r eval=TRUE}
@@ -176,7 +176,7 @@ microbenchmark(all.calc(x,y),hat.calc(x,y),times=10)
 ```
 Pre-calculating components can be a huge time savings; particularly if parts of calculations are repeated in numerous places within some function.
 
-###**3: Use Lower-Level R Functions and Algebra**
+#### **3: Use Lower-Level R Functions and Algebra**
 Base R-functions are robust, but can be slow. Instead, use lower-level functions, or other algebraic formulations for accomplishing the same task.
 
 ```{r eval=FALSE}
@@ -255,9 +255,9 @@ microbenchmark(
 ```
 This exercise demonstrates that care must be taken when writing functions. Knowing the size of the input objects can make a difference in which implementation is preferable. Also, when writing general functions for yourself and others (e.g., to go in an R-package), one can consider first performing a check of the RxC of input matrices, then shunting the analysis to the appropriate pipeline for speed efficiency. 
 
-###**4: Vectorize When Possible**
-####Or: **'Don't speak R with a C accent'.**
-When writing a function, one often thinks in terms of an algorithm: "Do this, then do that, etc." For iterative tasks these algorithms take the form of loops. Loops are very useful in programming and are straightforward to understand. However, one must remember that in R, the primary data type is a vector, and many R functions are 'vectorized'. This means that they perform a given  operation over the set of elements in the vector automatically. Basically, these functions already contain a loop which has been programmed in a lower-level compiled computer languages (e.g., C).  This means that vectorized R functions are often faster than performing the same task using a for-loop.  
+#### **4: Vectorize When Possible**
+###### Or: **'Don't speak R with a C accent'.**
+When writing a function, one often thinks in terms of an algorithm: "Do this, then do that, etc." For iterative tasks these algorithms take the form of loops. Loops are very useful in programming and are straightforward to understand. However, one must remember that in R, the primary data type is a vector, and many R functions are 'vectorized'. This means that they perform a given  operation over the set of elements in the vector automatically. Basically, these functions already contain a loop which has been programmed in a lower-level compiled computer languages (e.g., C).  This means that vectorized R functions are often faster than performing the same task using a for-loop.  **NOTE: the `apply` family: `apply`, `sapply`, `lapply`, `tapply`, `mapply`, `Map`, etc. are designed precisily to speed up these sorts of 'looping' tasks. USE THEM!!**  
 
 Looping in R is especially inefficient when indexing rows and columns in an array or matrix. Let's see an example:  
 
@@ -280,7 +280,7 @@ microbenchmark(fn1(x),apply(x,2,mean),colMeans(x),times=10)
 Notice that the loop is ~100 times slower than `apply`. Additionally, note that `colMeans` is even more efficient: about ~20X faster than `apply` and ~2000X times faster than the loop. Both `apply` and `colMeans` use internal vectorized coding, but for this particular task, `colMeans` is far superior. 
 NOTE: Be aware that not all loops in R are slow. If the loop does not call indexed elements or uses vectorization within the loop, it may be as fast as a vectorized function for that same task.  But as the example above illustrates, calling indexed elements within loops is certainly very slow!
 
-###**5: When More Speed is Needed**
+#### **5: When More Speed is Needed**
 If the above tips still do not result in sufficient speed gains, there are additional options. 
 
 1. Parallelization. One can use parallel processing within R to distribute the job to multiple processors. This is particularly useful for permutation, bootstrap and Monte Carlo procedures where the iterations can be divided and then recombined. The package *parallel* provides some tools.
@@ -289,7 +289,7 @@ If the above tips still do not result in sufficient speed gains, there are addit
 
 3. Incorporate C or Fortran code. One can also write code in lower-level languages such as C and Fortran and call these from within one's R script. In fact, the lowest levels of R are written in these languages. Using `.C` and `.Call`  allow one to interface directly with code written in C. So long as the code is written efficiently, this will provide the best improvement in computational performance. Note however, that considerably greater programming skill is required to wite C and Fortran code (and to interface with it properly), so this option is generally not recommended for the novice user. 
 
-###**Using What We've Learned**
+#### **Using What We've Learned**
 Let's revisit our original PLS function: 
 ```{r eval=FALSE}
 #Peform multivariate correlation assessed via permutation

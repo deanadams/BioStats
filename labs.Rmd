@@ -19,7 +19,10 @@
 
 [06-Multivariate Data and the GLM](https://deanadams.github.io/BioStats/LabData/06-LM-Multivariate-Lab.html) | [Week 6 R-script](https://deanadams.github.io/BioStats/LabData/06-LM-multivariate.r)
 
-[07-Interactions and Patterns of Change]
+[07-Interactions and Patterns of Change](https://deanadams.github.io/BioStats/LabData/07-Interactions-TrajAnal-Lab.html) | [Week 7 R-script](https://deanadams.github.io/BioStats/LabData/07-Interactions-TrajAnal.r)
+
+[07-Speeding up R](https://deanadams.github.io/BioStats/LabData/07-RCodeSpeedy-Lab.html) | [Week 7 Speeding Up R-script](https://deanadams.github.io/BioStats/LabData/07-CompEfficiency.r) | [PLS.fast](https://deanadams.github.io/BioStats/LabData/07-pls.fast.r) | [PLS.slow](https://deanadams.github.io/BioStats/LabData/07-pls.slow.r)
+
 
 [08-Ordination Methods]
 
