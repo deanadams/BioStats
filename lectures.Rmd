@@ -19,7 +19,7 @@
 
 [08-Ordination Methods](https://deanadams.github.io/BioStats/Lectures/08-Ordination.html)
 
-[09-Clustering Methods]
+[09-Clustering Methods](https://deanadams.github.io/BioStats/Lectures/09-Clustering.html)
 
 [10-Multivariate Association and Canonical Ordination]
 

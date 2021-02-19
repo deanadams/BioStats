@@ -26,7 +26,8 @@
 
 [08-Ordination Methods](https://deanadams.github.io/BioStats/LabData/08-Ordination-Lab.html) | [Week 8 R-script](https://deanadams.github.io/BioStats/LabData/08-Ordination.r)
 
-[09-Clustering Methods]
+[09-Clustering Methods](https://deanadams.github.io/BioStats/LabData/09-Clustering-Lab.html) | [Week 9 R-script](https://deanadams.github.io/BioStats/LabData/09-Clustering.r)
+
 
 [10-Multivariate Association and Canonical Ordination]
 
