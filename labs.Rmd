@@ -24,7 +24,7 @@
 [07-Speeding up R](https://deanadams.github.io/BioStats/LabData/07-RCodeSpeedy-Lab.html) | [Week 7 Speeding Up R-script](https://deanadams.github.io/BioStats/LabData/07-CompEfficiency.r) | [PLS.fast](https://deanadams.github.io/BioStats/LabData/07-pls.fast.r) | [PLS.slow](https://deanadams.github.io/BioStats/LabData/07-pls.slow.r)
 
 
-[08-Ordination Methods]
+[08-Ordination Methods](https://deanadams.github.io/BioStats/LabData/08-Ordination-Lab.html) | [Week 8 R-script](https://deanadams.github.io/BioStats/LabData/08-Ordination.r)
 
 [09-Clustering Methods]
 

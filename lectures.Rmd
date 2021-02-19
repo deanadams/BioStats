@@ -17,7 +17,7 @@
 
 [07-Interactions and Patterns of Change](https://deanadams.github.io/BioStats/Lectures/07-Interactions-TrajAnal.html)
 
-[08-Ordination Methods]
+[08-Ordination Methods](https://deanadams.github.io/BioStats/Lectures/08-Ordination.html)
 
 [09-Clustering Methods]
 

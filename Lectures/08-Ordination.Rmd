@@ -15,6 +15,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Exploratory Multivariate Methods
 
+<style type="text/css">
+td {  /* Table  */
+  font-size: 20px;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+pre { /* Code block - determines code spacing between lines */
+    font-size: 12px;
+}
+</style>
+
 - Data are points in multivariate space
 - Human perception does not work very well in >3 dimensions
 - Ordination and clustering methods are useful for: 
@@ -32,9 +44,11 @@ include_graphics("lectureData/08.ordination/OrdinationIntro.png")
 
 - One option is to plot pairs of variables and perform some mental gymnastics to stitch these together:
 
-```{r echo=FALSE, out.width="60%" }
+```{r echo=FALSE, out.width="60%", fig.align='center'}
 bumpus<-read.csv("lectureData/02.Resampling/bumpus.csv",header=T)
 Y<-bumpus[,5:12]
+Y <- scale(Y, scale = FALSE) #center data
+gp.bumpus <- as.factor(bumpus$sex)
 pairs(Y)
 ```
 
@@ -71,7 +85,7 @@ pairs(Y)
 
 - This is what PCA does:
 
-```{r echo=FALSE, out.width="80%" }
+```{r echo=FALSE, out.width="80%", fig.align='center' }
 Y.2<-cbind(bumpus$TL,bumpus$AE)
 par(mfcol = c(1, 2))
 plot(Y.2, pch=21, bg="red", xlab="Total Length", ylab="Alar Extent")
@@ -81,7 +95,7 @@ plot(Y.2, pch=21, bg="red", xlab="Total Length", ylab="Alar Extent")
 
 - This is what PCA does:
 
-```{r echo=FALSE, out.width="80%" }
+```{r echo=FALSE, out.width="80%", fig.align='center' }
 Y.2<-cbind(bumpus$TL,bumpus$AE)
 Y.pc<-prcomp(Y.2)$x
 par(mfcol = c(1, 2))
@@ -124,7 +138,7 @@ PC scores are found as:
 
 $$\small\mathbf{P} = \mathbf{VD}$$
 
-######NOTE: eigenanalysis of the *inner product* $\small\mathbf{Y}^{T}_c\mathbf{Y}_c$ yields $\small\mathbf{U}$, while eigenanalysis of the *outer product* $\small\mathbf{Y}_c\mathbf{Y}^{T}_c$ yields $\small\mathbf{V}$
+###### NOTE: eigenanalysis of the *inner product* $\small\mathbf{Y}^{T}_c\mathbf{Y}_c$ yields $\small\mathbf{U}$, while eigenanalysis of the *outer product* $\small\mathbf{Y}_c\mathbf{Y}^{T}_c$ yields $\small\mathbf{V}$
 
 # Side Comment: Matrix Decompositions
 
@@ -214,7 +228,7 @@ Note we have 3 variables, but only 2 dimensions of data
 
 If a variable varies much more than others, it dominates the PCA
 
-######(“more” is relative: 0 - 100cms is numerically “more” than 0 - 1m)
+###### (“more” is relative: 0 - 100cms is numerically “more” than 0 - 1m)
 
 Particularly relevant when variables are measured in different units
 
@@ -222,21 +236,19 @@ Standardizing data often alleviates this problem
 	- a) center and scale Y (subtract the mean and divide by standard deviation)
 	- b) use the correlation matrix
 
-######NOTE: a) and b) are equivalent, i.e. `cov(Y.std)` = `cor(Y)`
+###### NOTE: a) and b) are equivalent, i.e. `cov(Y.std)` = `cor(Y)`
 
 # PCA: Example
 
 Returning to the bumpus data, we have 8 linear measurements from 136 birds. Thus, $\small\mathbf{Y}_{c}$ is a $\small{136}\times{8}$ dimensional matrix. A PCA of these data is below:
 
-```{r echo=FALSE, out.width="80%" }
-Y.pc<-prcomp(Y)$x
-gp.col<-rep("red",nrow(Y.pc))
-gp.col[which(bumpus$sex=="m")]<-"blue"
-plot(Y.pc, asp=1,pch=21, bg=gp.col, cex=1.5,xlab="PC1", ylab="PC2")
-pc.bird<-prcomp(Y)
-p.var<-pc.bird$sdev^2/sum(pc.bird$sdev^2)
-p.var
-pc.bird$rotation[,1]
+```{r echo=FALSE, out.width="60%", fig.align='center' }
+pca.bumpus<-prcomp(Y) 
+PC.scores<-pca.bumpus$x
+plot(PC.scores,xlab="PC I", ylab="PC II",asp=1,pch=21,bg=gp.bumpus,cex = 1.5)
+legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
+pca.bumpus$sdev^2 / sum(pca.bumpus$sdev^2)
+pca.bumpus$rotation[,1]
 ```
 
 Males and females are colored blue and red respectively. PC1 describes 82% of the variation and  PC2 describes 11%. First PC is explained largely by AE and TL
@@ -244,7 +256,7 @@ Males and females are colored blue and red respectively. PC1 describes 82% of th
 # PCA Example (Cont.)
 
 Shepard's plot of distances:
-```{r echo=FALSE, out.width="80%" }
+```{r echo=FALSE, out.width="60%", fig.align='center' }
 plot(dist(Y),dist(Y.pc[,1:2]))
 ```
 
@@ -270,37 +282,29 @@ Very useful for summarizing the results of hypothesis-testing approaches applied
 - Look for sets of vectors with small angles, and clusters of points
 - Can use to identify variables with high association with objects
 
-```{r echo=FALSE, out.width="80%" }
+```{r echo=FALSE, out.width="60%", fig.align='center' }
 biplot(prcomp(Y))
 ```
 
 # Using Distances: PCoA: Principal Coordinates Analysis
 
-Let's do something different. We know that a set of linear measurements of the same units and scale represent multivariate normal (MVN) data. Thus, for the Bumpus data, each bird is a point in an 8-dimensional metric space. The distance measure of that space is Euclidean distance. So let's do the following:
-
-1: Obtain $\small\mathbf{D}_{Euclidean}$ for the Bumpus data. $\small\mathbf{D}_{E}$  is a $\small{136}\times{136}$ dimensional distance matrix.
-
-2: Mean-center this matrix, so the set of distances are at the origin:  $\small\mathbf{G}=\left(\mathbf{I}-\frac{1}{n}\mathbf{11}^{T}\right)\left(-\frac{1}{2}\mathbf{D}_{E}^{2}\right)\left(\mathbf{I}-\frac{1}{n}\mathbf{11}^{T}\right)$
-
-3: Perform an Eigen-analysis of this matrix: $\small\mathbf{G}=\mathbf{E\Lambda{E}}^{T}$
-
-What happens?
+- Let's do something different. We know that a set of linear measurements of the same units and scale represent multivariate normal (MVN) data. Thus, for the Bumpus data, each bird is a point in an 8-dimensional metric space. The distance measure of that space is Euclidean distance. So let's do the following:
+  - 1: Obtain $\small\mathbf{D}_{Euclidean}$ for the Bumpus data. $\small\mathbf{D}_{E}$  is a $\small{136}\times{136}$ dimensional distance matrix.
+  - 2: Mean-center this matrix, so the set of distances are at the origin:  $\small\mathbf{G}=\left(\mathbf{I}-\frac{1}{n}\mathbf{11}^{T}\right)\left(-\frac{1}{2}\mathbf{D}_{E}^{2}\right)\left(\mathbf{I}-\frac{1}{n}\mathbf{11}^{T}\right)$
+  - 3: Perform an Eigen-analysis of this matrix: $\small\mathbf{G}=\mathbf{E\Lambda{E}}^{T}$
 
 # Using Distances: PCoA: Principal Coordinates Analysis
 
-Let's do something different. We know that a set of linear measurements of the same units and scale represent multivariate normal (MVN) data. Thus, for the Bumpus data, each bird is a point in an 8-dimensional metric space. The distance measure of that space is Euclidean distance. So let's do the following:
-
-1: Obtain $\small\mathbf{D}_{Euclidean}$ for the Bumpus data. $\small\mathbf{D}_{E}$  is a $\small{136}\times{136}$ dimensional distance matrix.
-
-2: Mean-center this matrix, so the set of distances are at the origin:  $\small\mathbf{G}=\left(\mathbf{I}-\frac{1}{n}\mathbf{11}^{T}\right)\left(-\frac{1}{2}\mathbf{D}_{E}^{2}\right)\left(\mathbf{I}-\frac{1}{n}\mathbf{11}^{T}\right)$
-
-3: Perform an Eigen-analysis of this matrix: $\small\mathbf{G}=\mathbf{E\Lambda{E}}^{T}$
-
-What happens?
-
-```{r echo=FALSE, out.width="70%" }
+- Let's do something different. We know that a set of linear measurements of the same units and scale represent multivariate normal (MVN) data. Thus, for the Bumpus data, each bird is a point in an 8-dimensional metric space. The distance measure of that space is Euclidean distance. So let's do the following:
+  - 1: Obtain $\small\mathbf{D}_{Euclidean}$ for the Bumpus data. $\small\mathbf{D}_{E}$  is a $\small{136}\times{136}$ dimensional distance matrix.
+  - 2: Mean-center this matrix, so the set of distances are at the origin:  $\small\mathbf{G}=\left(\mathbf{I}-\frac{1}{n}\mathbf{11}^{T}\right)\left(-\frac{1}{2}\mathbf{D}_{E}^{2}\right)\left(\mathbf{I}-\frac{1}{n}\mathbf{11}^{T}\right)$
+  - 3: Perform an Eigen-analysis of this matrix: $\small\mathbf{G}=\mathbf{E\Lambda{E}}^{T}$
+  
+```{r echo=FALSE, out.width="50%", fig.align='center' }
+par(mar=c(4,4,0,4))
 PCoA<-cmdscale(dist(Y))   
-plot(PCoA,pch=21,bg=gp.col,cex=1.5,asp=1)
+plot(-1*PCoA[,1],PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
+legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 ```
 
 Wait, what???
@@ -309,10 +313,12 @@ Wait, what???
 
 It seems that, apart from an axis reflection (which means nothing), PCA and this distance-based method (PCoA) yielded identical results
 
-```{r echo=FALSE, out.width="100%" }
+```{r echo=FALSE, out.width="50%", fig.align='center' }
 par(mfcol = c(1, 2))
-plot(Y.pc, asp=1,pch=21, bg=gp.col, cex=1.5,xlab="PC1", ylab="PC2")
-plot(PCoA,pch=21,bg=gp.col,cex=1.5,asp=1)
+plot(Y.pc, asp=1,pch=21, bg=gp.bumpus, cex=1.5,xlab="PC1", ylab="PC2")
+legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
+plot(-1*PCoA[,1],PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
+legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 ```
 
 What in the WORLD is going on???
@@ -321,33 +327,30 @@ What in the WORLD is going on???
 
 For metric spaces, PCoA provides an identical ordination to PCA (PCoA is sometimes called **Metric Multidimensional Scaling**).  This is most interesting, as PCA is based on the $\small{p}\times{p}$ trait covariance matrix, while PCoA is based on the $\small{n}\times{n}$ specimen distance matrix.  Yet the relationships amongst objects in the two plots are absolutely identical!
 
-```{r echo=FALSE, out.width="50%" }
+```{r echo=FALSE, out.width="50%", fig.align='center' }
 par(mfcol = c(1, 2))
-plot(Y.pc, asp=1,pch=21, bg=gp.col, cex=1.5,xlab="PC1", ylab="PC2")
-plot(PCoA,pch=21,bg=gp.col,cex=1.5,asp=1)
+plot(Y.pc, asp=1,pch=21, bg=gp.bumpus, cex=1.5,xlab="PC1", ylab="PC2")
+legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
+plot(-1*PCoA[,1],PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
+legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 ```
 
 # Principal Coordinates Analysis (PCoA)
 
-For metric spaces, PCoA provides an identical ordination to PCA (PCoA is sometimes called **Metric Multidimensional Scaling**).  This is most interesting, as PCA is based on the $\small{p}\times{p}$ trait covariance matrix, while PCoA is based on the $\small{n}\times{n}$ specimen distance matrix.  Yet the relationships amongst objects in the two plots are absolutely identical!
-
-```{r echo=FALSE, out.width="50%" }
+```{r echo=FALSE, out.width="50%", fig.align='center' }
 par(mfcol = c(1, 2))
-plot(Y.pc, asp=1,pch=21, bg=gp.col, cex=1.5,xlab="PC1", ylab="PC2")
-plot(PCoA,pch=21,bg=gp.col,cex=1.5,asp=1)
+plot(Y.pc, asp=1,pch=21, bg=gp.bumpus, cex=1.5,xlab="PC1", ylab="PC2")
+legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
+plot(-1*PCoA[,1],PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
+legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 ```
 
-What we are seeing here is the beauty of metric spaces. As shown by Gower (1966), the variation and relationships amongst objects in Euclidean (and in fact, metric) spaces can be represented either by $\small\hat{\mathbf\Sigma}_{p\times{p}}$ or $\small\mathbf{D}_{n\times{n}}$.
-
-The reason is that, for *METRIC* spaces, calculating $\small\hat{\mathbf\Sigma}_{p\times{p}}$ and $\small\mathbf{D}_{n\times{n}}$ is accomplished from the same data, using inner-products and outer-products.
-
-That is, the inner-product: $\small\mathbf{Y}_{c}^{T}\mathbf{Y}_{c}$ leads us to $\small\hat{\mathbf\Sigma}_{p\times{p}}$, while the outer-product$\small\mathbf{Y}_{c}\mathbf{Y}_{c}^{T}$ leads us to $\small\mathbf{D}_{n\times{n}}$ 
-
-######Statistical side-notes: $tr(\small\hat{\mathbf{\Sigma}}) = tr(\small\hat{\mathbf{D}})$.  Also, the number of PCoA dimensions with variation > 0% may be fewer than $\small{n}$ (and based on the number of original variables)
-
-Note however, that if one had some other distance measure, a visualization via PCoA is possible.
-
-###### NOTE: Can yield negative eigenvalues (if distances are semi-metric or nonmetric)
+- What we are seeing here is the beauty of metric spaces. As shown by Gower (1966), the variation and relationships amongst objects in Euclidean (and in fact, metric) spaces can be represented either by $\small\hat{\mathbf\Sigma}_{p\times{p}}$ or $\small\mathbf{D}_{n\times{n}}$.
+  - The reason is that, for *METRIC* spaces, calculating $\small\hat{\mathbf\Sigma}_{p\times{p}}$ and $\small\mathbf{D}_{n\times{n}}$ is accomplished from the same data, using inner-products and outer-products.
+  - That is, the inner-product: $\small\mathbf{Y}_{c}^{T}\mathbf{Y}_{c}$ leads us to $\small\hat{\mathbf\Sigma}_{p\times{p}}$, while the outer-product$\small\mathbf{Y}_{c}\mathbf{Y}_{c}^{T}$ leads us to $\small\mathbf{D}_{n\times{n}}$ 
+    - ###### Statistical side-note: $tr(\small\hat{\mathbf{\Sigma}}) = tr(\small\hat{\mathbf{D}})$. Also, the number of PCoA dimensions with variation > 0% may be fewer than $\small{n}$ (and based on the number of original variables)
+  - If one had some other distance measure, a visualization via PCoA is possible.   
+    - ###### This can yield negative eigenvalues (if distances are semi-metric or nonmetric)
 
 # NMDS: Nonmetric Multidimensional Scaling
 
@@ -379,10 +382,12 @@ $$\small{stress} =\sqrt{\sum(D_{fitted}-\hat{D}_{fitted})^2/ \sum{(D_{fitted})^2
 Y.nmds <- metaMDS(dist(Y), autotransform=FALSE, k=2)
 ```
 
-```{r echo=FALSE, out.width="70%" }
+```{r echo=FALSE, out.width="70%", fig.align='center' }
 par(mfcol = c(1, 2))
-plot(Y.pc, asp=1,pch=21, bg=gp.col, cex=1.5,xlab="PC1", ylab="PC2")
-plot(Y.nmds$points, asp=1,pch=21, bg=gp.col, cex=1.5,xlab="NMDS1", ylab="NMDS2")
+plot(Y.pc, asp=1,pch=21, bg=gp.bumpus, cex=1.5,xlab="PC1", ylab="PC2")
+legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
+plot(Y.nmds$points, asp=1,pch=21, bg=gp.bumpus, cex=1.5,xlab="NMDS1", ylab="NMDS2")
+legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 par(mfcol = c(1,1))
 ```
 
@@ -399,13 +404,13 @@ Pretty similar, but *NOT* identical.
 	  - Results dependent on starting configuration (‘guess’)
 	  - Does not preserve distances among objects (though that is not the objective). Instead, it minimizes the monotonic relationship of Dfit vs. Dobs
 
-```{r echo=FALSE, results = 'hide', out.width="70%" }
+```{r echo=FALSE, results = 'hide', out.width="50%" }
 data(dune)  #from vegan
 dune.dist<-vegdist(dune)  #default = Bray-Curtis distance
 dune.nmds <- metaMDS(dune.dist, autotransform=FALSE, k=2)
 ```
 	  
-```{r echo=FALSE, out.width="100%" }
+```{r echo=FALSE, out.width="50%", fig.align='center' }
 par(mfcol = c(1,2))
 plot(dist(Y.pc),dist(Y.nmds$points), xlab='D.obs', ylab='D.plot', asp=1)
 plot(dune.dist, dist(scores(dune.nmds, display='sites'), method='eucl'), xlab='B-C Dist', ylab='D.plot',asp=1)
@@ -447,7 +452,7 @@ columns: plant species
 
 values: cover class (standardized estimate of density)
 
-```{r, echo = FALSE,out.width="80%"}
+```{r, echo = FALSE,out.width="50%", fig.align='center'}
 dune.cca<-cca(dune)  #from vegan
 plot(dune.cca)
 ```
@@ -460,7 +465,7 @@ This may create problems, e.g. the “arch effect” (aka the “horseshoe” ef
 
 The $\small{2}^{nd}$ axis is an arched function of the 1st axis (common in ecological data, e.g. species counts in sites along an environmental gradient)
 
-```{r, echo = FALSE,out.width="80%"}
+```{r, echo = FALSE,out.width="50%"}
 include_graphics("lectureData/08.ordination/horseshoe.png")  
 ```
 
@@ -474,11 +479,11 @@ Two common approaches:
 - DCA by polynomials
     - Additional constraint imposed in CA algorithm, such that DC2 is orthogonal to DC1 (linear), and also polynomials of DC1 (square, cubic, quartic, etc.)
 
-```{r, echo = FALSE,out.width="80%"}
+```{r, echo = FALSE,out.width="50%", fig.align='center'}
 include_graphics("lectureData/08.ordination/DCA.png")  
 ```
 
-#DCA: Comments
+# DCA: Comments
 
 - Approaches are arbitrary (how to choose segments? What order polynomial to use?)
 - DC2 now completely meaningless (proximities of objects on DC2 cannot be interpreted)
@@ -487,9 +492,9 @@ include_graphics("lectureData/08.ordination/DCA.png")
 
 - Detrending should absolutely be avoided!
 
-######For detailed critique see Wartenberg, Ferson, and Rohlf, 1987. Am. Nat. 129:434-448.
+###### For detailed critique see Wartenberg, Ferson, and Rohlf, 1987. Am. Nat. 129:434-448.
 
-#Ordination: Conclusions
+# Ordination: Conclusions
 
 - Ordination approaches very useful for visualizing patterns in high-dimensional data
 
