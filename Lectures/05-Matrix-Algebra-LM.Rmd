@@ -97,7 +97,7 @@ Vector multiplication is both multiplication and summation of scalars. Before pe
 
 Visually this is seen with the following example: $\small{\mathbf{a}^T}\times{\mathbf{b}}$ 
 
-$\tiny\begin{bmatrix} a_{1} & a_{2} & \dots a_{n} \end{bmatrix} \times \begin{bmatrix}  b_{1} \\  b_{2} \\  \dots \\ b_{n}  \end{bmatrix} = a_{1}b_{1}+a_{2}b_{2}+\dots+a_{n}b_{n}=\sum{ab}$ 
+$\small\begin{bmatrix} a_{1} & a_{2} & \dots a_{n} \end{bmatrix} \times \begin{bmatrix}  b_{1} \\  b_{2} \\  \dots \\ b_{n}  \end{bmatrix} = a_{1}b_{1}+a_{2}b_{2}+\dots+a_{n}b_{n}=\sum{ab}$ 
 
   - Here, $\small{\mathbf{a}^T}$ is a $\small{1 \times n}$ vector, and $\small{\mathbf{b}}$ is a $\small{n \times 1}$ vector
 
