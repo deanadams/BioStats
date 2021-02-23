@@ -545,7 +545,7 @@ Here, the 'hat' matrix $\small\mathbf{H}$ is an $\small n\times n$ projection ma
 
 Thus, residuals of the model are found as: 
 
-$$\small\mathbf{E} = \mathbf{Y} - \hat{\mathbf{Y}}=\mathbf{Y} - \mathbf{H}'\mathbf{Y} =\left(\mathbf{I}-\mathbf{H}'\right)\mathbf{Y}$$
+$$\small\mathbf{E} = \mathbf{Y} - \hat{\mathbf{Y}}=\mathbf{Y} - \mathbf{H}\mathbf{Y} =\left(\mathbf{I}-\mathbf{H}\right)\mathbf{Y}$$
 
 # A Comparison of Models
 
