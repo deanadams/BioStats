@@ -440,7 +440,7 @@ plot(Y.rot, pch=21, bg="red", asp=1, main="Rotated Data")
 
 - Maintaining metric properties is an incredibly important part of proper analysis of high-dimensional data. 
 
-- However, some multivariate methods do not retain the metric properties of the data. This means that distances and directions between objects in the dataspace *change* or are otherwise distorted during the mathematical operations of that method. **This is rather undesirable (particularlty if one intends to analyze the scores)!** With such methods one cannot reliably interpret patterns in the dataspace because the method has altered them.  
+- However, some multivariate methods do not retain the metric properties of the data. This means that the relative distances and directions between objects in the dataspace *change* or are otherwise distorted during the mathematical operations of that method. **This is rather undesirable (particularly if one intends to analyze the scores)!** With such methods one cannot reliably interpret patterns in the dataspace because the method has altered them.  
 
 - Other methods violate the invariance properties mentioned above. For instance, methods that summarize patterns axis-by-axis rather than treating the entire high-dimensional dataset at once are typically not rotation-invariant. **This can also be bad** because it means that one can obtain different statistical estimates for the same data in different orientations!  
 
@@ -769,7 +769,7 @@ Another approach is to use generalized linear models (GLM with poisson or other 
 
 There are strengths and weaknesses to both approaches, and both have advantages. GLM can be accommodating to specific data types but LM is more robust to departures from assumptions. **Importantly, it is suggested that residual resampling (i.e., RRPP!) cures a lot of LM/GLM ills.** Future theoretical work on RRPP will investigate this more thoroughly.
 
-A simple example is in the lab tutorial, and those interested shoudl investigate the primary literature, especially:
+A simple example is in the lab tutorial, and those interested should investigate the primary literature, especially:
 
 ###### Wharton et al. 2016. *Methods Ecol. Evol.* 
 
