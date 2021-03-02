@@ -499,7 +499,7 @@ This is the distance for metric (Euclidean) spaces:
 include_graphics("LectureData/06.multivariate.LM/MetricSpacePlot.png")  
 ```
 
-*Many* other distance measures exist for continuous variables (Manhattan distance, Mahalanobis distane, Canberra distance, etc.)
+*Many* other distance measures exist for continuous variables (Manhattan distance, Mahalanobis distance, Canberra distance, etc.)
 
 ###### NOTE: not all sets of continuous variables create Euclidean data spaces. For example, combining continous variables in different units or scale (e.g., temperature, relative humidity, elevation) results in  distances between objects that are not Euclidean and not interpretable. The reason is that deviations in each variable are not commensurate: thus distances and covariances found by combining them have no meaning. (see Adams and Collyer. 2019. *Ann. Rev. Ecol. Evol. Syst.*)
 
@@ -551,7 +551,7 @@ Imagine the following ecological measures:
   
   - Combine ordination scores (which are all continuous and hopefully represent Euclidean spaces) for overall data matrix
 
-```{r, echo = FALSE, fig.height=5, fig.align='center'}
+```{r, echo = FALSE, out.width="50%", fig.align='center'}
 include_graphics("LectureData/06.multivariate.LM/Pianka.png")  
 ```
 
@@ -635,11 +635,9 @@ When $p>n$, standard parametric approaches are not possible. There are several w
 include_graphics("LectureData/06.multivariate.LM/PC1Silliness.png")  
 ```
 
-- Adjust covariance matrix (via generalized inverse, shrinkage, ridge regularization) so it may be inverted
+>- Adjust covariance matrix -- via generalized inverse, shrinkage, ridge regularization -- so it may be inverted (this is 'Semi-parametric': still uses parametric distributions for significance testing, which can be problematic)
 
-    - 'Semi-parametric': still uses parametric distributions for significance testing, which can be problematic
-
-- Use robust summary statistics (that don't rely on matrix inverse) and robust significance tests (that do not rely on parametric distributions)
+>- Use robust summary statistics (that don't rely on matrix inverse) and robust significance tests (that do not rely on parametric distributions)
 
 # Robust Summary Statistics
 
