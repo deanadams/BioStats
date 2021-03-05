@@ -21,9 +21,8 @@ mydat <- rrpp.data.frame(Y=Y,sex=sex,surv=surv,TotalLength=TotalLength,SexBySurv
 cor(bumpus.data)
 pairs(bumpus.data)
 var(bumpus.data)
-vcv.bumpus
 var(scale(bumpus.data))
-dist(bumpus.data)
+as.matrix(dist(bumpus.data))
 
 #__________________________________________________________________________#
 #single factor MANOVA
@@ -40,7 +39,7 @@ plot(model.rrpp, type = "PC", pch=21, bg = sex)  #PC PLOT!
 legend("topright", levels(sex), pch = 21, pt.bg = 1:4)
 
 ##When parametric methods break down
-Ynew <- matrix(rnorm(10000), nrow=100) #100 x 100 matrix: N=p
+Ynew <- matrix(rnorm(100000), nrow=100) #100 x 100 matrix: N=p
 gp <- gl(2,50)
 summary(manova(lm(Ynew~gp)))  #parametric algebra cannot be completed
 anova(lm.rrpp(Ynew~gp,print.progress = FALSE))  #NO problem with RRPP!
