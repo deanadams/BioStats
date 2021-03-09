@@ -156,7 +156,7 @@ This is based on vector attributes, which embody aspects of interaction terms.
 
 In fact, RRPP used in this manner is explicitly a test of **interaction term** attributes (think of the RRPP procedure we utilized: `Y~A+B+A:B` versus `Y~A+B`).
 
-In fact, if the interaction term from the manova is not significant, this implies that there is no context-dependent pattern in the data: understanding the main effects in the model is sufficient.
+If the interaction term from the manova is not significant, this implies that there is no context-dependent pattern in the data: understanding the main effects in the model is sufficient.
 
 Note also, that standard pairwise comparisons 'leave some information on the table' that vector analysis evaluates. Pairwise comparisons are at best tests of magnitude between two groups. They do *NOT* evaluate differences in distances between pairs of groups, nor directional differences. **Only trajectory/vector analysis accomplishes this!**
 
