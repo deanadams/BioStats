@@ -60,7 +60,7 @@ plot(fit.slopes, type = "regression", reg.type = "RegScore", pch=21, bg = Pupfis
 legend("topleft", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
 
 plot(fit.slopes, type = "regression", reg.type = "PredLine", pch=21, bg = Pupfish$Group, predictor = Pupfish$logSize, cex=2)
-legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
+legend("topleft", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
 ```
 
 Note that the above provides comparisons allow for the length of the regression vector, as well as a test of the angular direction of the regressions in the multivariate trait space. 

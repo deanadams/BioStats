@@ -32,7 +32,7 @@ plot(fit.slopes, type = "regression", reg.type = "RegScore", pch=21, bg = Pupfis
 legend("topleft", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
 
 plot(fit.slopes, type = "regression", reg.type = "PredLine", pch=21, bg = Pupfish$Group, predictor = Pupfish$logSize, cex=2)
-legend("topright", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
+legend("topleft", levels(Pupfish$Group), pch = 21, pt.bg = 1:4)
 
 
 ##### Trajectory Analysis
