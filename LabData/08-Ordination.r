@@ -48,7 +48,7 @@ biplot(pca.bumpus)
 # 	PCoA
 bumpus.dist<-dist(Y)
 PCoA<-cmdscale(bumpus.dist)   #from vegan
-plot(PCoA,pch=21,bg=gp.bumpus,cex=1.5,asp=1)
+plot(-1*PCoA[,1], PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
 legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 #############################
 #	NMDS
