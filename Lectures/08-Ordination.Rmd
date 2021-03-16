@@ -230,11 +230,10 @@ If a variable varies much more than others, it dominates the PCA
 
 ###### (“more” is relative: 0 - 100cms is numerically “more” than 0 - 1m)
 
-Particularly relevant when variables are measured in different units
-
-Standardizing data often alleviates this problem
-	- a) center and scale Y (subtract the mean and divide by standard deviation)
-	- b) use the correlation matrix
+- Particularly relevant when variables are measured in different units
+- Standardizing data often alleviates this problem
+  - Center and scale Y (subtract the mean and divide by standard deviation)
+  - Use the correlation matrix
 
 ###### NOTE: a) and b) are equivalent, i.e. `cov(Y.std)` = `cor(Y)`
 
@@ -303,7 +302,7 @@ biplot(prcomp(Y))
 ```{r echo=FALSE, out.width="50%", fig.align='center' }
 par(mar=c(4,4,0,4))
 PCoA<-cmdscale(dist(Y))   
-plot(-1*PCoA[,1],PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
+plot(-1*PCoA[,1],-1*PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
 legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 ```
 
@@ -317,7 +316,7 @@ It seems that, apart from an axis reflection (which means nothing), PCA and this
 par(mfcol = c(1, 2))
 plot(Y.pc, asp=1,pch=21, bg=gp.bumpus, cex=1.5,xlab="PC1", ylab="PC2")
 legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
-plot(-1*PCoA[,1],PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
+plot(-1*PCoA[,1],-1*PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
 legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 ```
 
@@ -331,7 +330,7 @@ For metric spaces, PCoA provides an identical ordination to PCA (PCoA is sometim
 par(mfcol = c(1, 2))
 plot(Y.pc, asp=1,pch=21, bg=gp.bumpus, cex=1.5,xlab="PC1", ylab="PC2")
 legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
-plot(-1*PCoA[,1],PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
+plot(-1*PCoA[,1],-1*PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
 legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 ```
 
@@ -341,7 +340,7 @@ legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 par(mfcol = c(1, 2))
 plot(Y.pc, asp=1,pch=21, bg=gp.bumpus, cex=1.5,xlab="PC1", ylab="PC2")
 legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
-plot(-1*PCoA[,1],PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
+plot(-1*PCoA[,1],-1*PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
 legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 ```
 
@@ -397,12 +396,12 @@ Pretty similar, but *NOT* identical.
 
 - NMDS seems arbitrary, but works rather well
 - Positives:
-	  - Generally yields fewer dimensions than PCA,PCoA
-	  - Does not require full distance matrix (missing values ok)
+  - Generally yields fewer dimensions than PCA,PCoA
+  - Does not require full distance matrix (missing values ok)
 - Negatives:
-	  - Arbitrary optimization
-	  - Results dependent on starting configuration (‘guess’)
-	  - Does not preserve distances among objects (though that is not the objective). Instead, it minimizes the monotonic relationship of Dfit vs. Dobs
+  - Arbitrary optimization
+  - Results dependent on starting configuration (‘guess’)
+  - Does not preserve distances among objects (though that is not the objective). Instead, it minimizes the monotonic relationship of Dfit vs. Dobs
 
 ```{r echo=FALSE, results = 'hide', out.width="50%" }
 data(dune)  #from vegan
