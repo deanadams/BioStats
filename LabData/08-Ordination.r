@@ -1,5 +1,5 @@
 ###Some Ordination Methods
-      #Packages: geomorph [for data], vegan, MASS
+      #Packages: RRPP [for data], vegan, MASS
 
 ########################
 #	PCA: Principal Components Analysis
