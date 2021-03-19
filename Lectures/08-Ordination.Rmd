@@ -238,7 +238,7 @@ If a variable varies much more than others, it dominates the PCA
 
 # PCA: Example
 
-Returning to the bumpus data, we have 8 linear measurements from 136 birds. Thus, $\small\mathbf{Y}_{c}$ is a $\small{136}\times{8}$ dimensional matrix. A PCA of these data is below:
+Returning to the Bumpus data, we have 8 linear measurements from 136 birds. Thus, $\small\mathbf{Y}_{c}$ is a $\small{136}\times{8}$ dimensional matrix. A PCA of these data is below:
 
 ```{r echo=FALSE, out.width="60%", fig.align='center' }
 pca.bumpus<-prcomp(Y) 
@@ -324,7 +324,7 @@ What in the WORLD is going on???
 
 # Principal Coordinates Analysis (PCoA)
 
-For metric spaces, PCoA provides an identical ordination to PCA (PCoA is sometimes called **Metric Multidimensional Scaling**).  This is most interesting, as PCA is based on the $\small{p}\times{p}$ trait covariance matrix, while PCoA is based on the $\small{n}\times{n}$ specimen distance matrix.  Yet the relationships amongst objects in the two plots are absolutely identical!
+For metric spaces, PCoA provides an identical ordination to PCA (PCoA is sometimes called **Metric Multidimensional Scaling**).  This is most interesting, as PCA is based on the $\small{p}\times{p}$ trait covariance matrix, while PCoA is based on the $\small{n}\times{n}$ specimen distance matrix.  Yet the relationships among objects in the two plots are absolutely identical!
 
 ```{r echo=FALSE, out.width="50%", fig.align='center' }
 par(mfcol = c(1, 2))
@@ -344,7 +344,7 @@ plot(-1*PCoA[,1],PCoA[,2],pch=21,bg=gp.bumpus,cex=1.5,asp=1)
 legend("topright", levels(gp.bumpus), pch = 21,pt.bg=1:2)
 ```
 
-- What we are seeing here is the beauty of metric spaces. As shown by Gower (1966), the variation and relationships amongst objects in Euclidean (and in fact, metric) spaces can be represented either by $\small\hat{\mathbf\Sigma}_{p\times{p}}$ or $\small\mathbf{D}_{n\times{n}}$.
+- What we are seeing here is the beauty of metric spaces. As shown by Gower (1966), the variation and relationships among objects in Euclidean (and in fact, metric) spaces can be represented either by $\small\hat{\mathbf\Sigma}_{p\times{p}}$ or $\small\mathbf{D}_{n\times{n}}$.
   - The reason is that, for *METRIC* spaces, calculating $\small\hat{\mathbf\Sigma}_{p\times{p}}$ and $\small\mathbf{D}_{n\times{n}}$ is accomplished from the same data, using inner-products and outer-products.
   - That is, the inner-product: $\small\mathbf{Y}_{c}^{T}\mathbf{Y}_{c}$ leads us to $\small\hat{\mathbf\Sigma}_{p\times{p}}$, while the outer-product$\small\mathbf{Y}_{c}\mathbf{Y}_{c}^{T}$ leads us to $\small\mathbf{D}_{n\times{n}}$ 
     - ###### Statistical side-note: $tr(\small\hat{\mathbf{\Sigma}}) = tr(\small\hat{\mathbf{D}})$. Also, the number of PCoA dimensions with variation > 0% may be fewer than $\small{n}$ (and based on the number of original variables)

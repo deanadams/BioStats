@@ -8,7 +8,9 @@ output: html_document
 ### **Motivation**
 Today we discuss methods of multivariate association, as well as canonical ordination techniques.  Multivariate association methods are generalizations of bivariate correlation, but where Y1 and Y2 are matrices. There are several general approaches.
 
-###**Mantel tests**
+#### **1: Multivariate Association Methods**
+
+#### **1a: Mantel tests**
 Mantel tests evaluate the association between distance matrices. The procedure is straightforward: obtain the appropriate distance matrix for each multivariate dataset, and calculate the pairwise Mantel coefficient from them. This may be accomplished in the R-package `vegan`.
 
 First we'll load some data and libraries:
@@ -38,7 +40,7 @@ mantel.partial(dist(Y1),dist(Y2),dist(pupfish$CS))  #3-way Mantel
 
 As discussed in class, Mantel tests are straightforward and easy to use. However, they tend to have elevated type I error rates, low power, and can display significant bias (see references in lecture). Thus, alternative multivariate association methods are preferred. 
 
-###**The RV Coefficient**
+#### **1b: The RV Coefficient**
 One alternative is the RV coefficient, which characterizes the strength of association between two sets of continuous variables. The measure ranges from 0 to 1, with higher values indicative of a greater degree of covariation between the two datasets. The function below calculates the RV coefficient and assesses its significance using permutation, where rows of one dataset are permuted relative to the other. 
 
 ```{r eval=TRUE}
@@ -61,7 +63,7 @@ RV(Y1,Y2)
 sqrt(RV(Y1,Y2)$RV)  #closer to a correlation
 ```
 
-###**2-Block Partial Least Squares (PLS)**
+#### **1c: Two-Block Partial Least Squares (PLS)**
 Another option is partial least squares, which characterizes the maximal covariation between two sets of variables. This is found from a singular-value decomposition (SVD) of the cross-covariance matrix: S12. As above significance using permutation, where rows of one dataset are permuted relative to the other. 
 
 ```{r eval=TRUE}
@@ -70,10 +72,10 @@ summary(pls.res)
 plot(pls.res)
 ```
 
-###**Canonical Ordination Methods**
+#### **2: Canonical Ordination Methods**
 Canonical ordinations are ordinations that take into account some linear model (Y~X). Thus, they do not generate ordinations of the actual dataspace, but rather provide a representation of that space under the model being examined. Visually, they are often very appealing; however it must be remembered that these represent a distorted (or stylized) view of the dataspace! Thus, they should never be used in place of PCA or PCoA.
 
-###**Canonical Variates Analysis**
+#### **2a: Canonical Variates Analysis**
 CVA (equivalent to Discriminant Analysis), provides an ordination of between-group variation relative to within-group variation. The plot maximally separates groups relative to within-group variability. When plotted properly, within-group scatter should be approximately circular, as this is standardized during the analysis. 
 
 Here is a simple example with 4 groups. First, the actual dataspace is displayed (using PCA) followed by the CVA representation. 
@@ -100,7 +102,7 @@ cv.scores<-cva.pupfish$x
 plot(cv.scores,pch=shape.gp,bg=col.gp,asp=1,cex=1.5)
 ```
 
-####**CVA: Caveats**
+#### **CVA: Caveats**
 A major caveat with CVA is that both distances and directions in the CVA space do not represent the actual distances in the multivariate dataspace, because variation has been re-represented in a relative form (between relative to within).  Thus, groups are generally more separated in CVA plots than they are in the actual datspace. Also, it can be the case that some groups are displayed further from one another, while others closer than they are (see example in lecture). 
 
 ```{r eval=TRUE}
@@ -127,7 +129,7 @@ plot(data.rand,pch=21,bg=col.gp.r,asp=1,cex=1.5)
 plot(predict(lda(data.rand[,1:150],groups))$x,pch=21,bg=col.gp.r,asp=1,cex=1.5)
 ```
 
-###**Redundancy Analysis**
+#### **2b: Redundancy Analysis**
 RDA provides an ordination of predicted values from a linear model. Again it is a stylized representation of the actual multivariate dataspace.
 
 ```{r eval=TRUE}
@@ -137,7 +139,7 @@ rda.scores<-predict(pupfish.rda)
 plot(rda.scores,pch=shape.gp,bg=col.gp,asp=1,cex=1.5,xlab="RDA 1", ylab="RDA 2")
 ```
 
-####**Redundancy Analysis: Caveats**
+#### **Redundancy Analysis: Caveats**
 A major caveat with RDA is if an incorrect model utilized, the resulting ordination is misleading. For the data above, it turns out there is a significant SL:species interaction. This is easily seen in the PC space and MANOVA, so now run the RDA with this interaction:
 
 ```{r eval=TRUE}

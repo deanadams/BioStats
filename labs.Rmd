@@ -29,7 +29,7 @@
 [09-Clustering Methods](https://deanadams.github.io/BioStats/LabData/09-Clustering-Lab.html) | [Week 9 R-script](https://deanadams.github.io/BioStats/LabData/09-Clustering.r)
 
 
-[10-Multivariate Association and Canonical Ordination]
+[10-Multivariate Association and Canonical Ordination](https://deanadams.github.io/BioStats/LabData/10-MultAssoc-CanonOrd-Lab.html) | [Week 10 R-script](https://deanadams.github.io/BioStats/LabData/10-MultAssoc-CanonOrdin.r)
 
 [11-Model Comparison]
 
