@@ -42,7 +42,7 @@ Y.mancova<-lm(Y~svl + sex*region, model=T,x=T)
 Y.full<-lm(Y~svl*sex*region, model=T,x=T)
 ```
 
-###**1: Likelihood Ratio Tests**
+#### **1: Likelihood Ratio Tests**
 LRT are useful for comparing nested models. This approach is familiar: we have used this throughout the semester when examining linear models which, by definition compare null and alternative models.  Such comparisons may be implmenented using 'anova'.  
 
 Now let's compare some models. First, we will run a factorial model, which (with type I SS) is a series of sequential LRT tests.
@@ -72,7 +72,7 @@ anova(Y.mancova,Y.svl.reg)
   
 ```
 
-###**2: Information Criteria: AIC**
+####  **2: Information Criteria: AIC**
 A second useful way of comparing models is using AIC (or related) values. These methods weight the logL of the data given the model by the number of parameters in the model; emphasizing the best description of the data with the fewest parameters. For the univariate models above: 
 
 ```{r eval=TRUE}
@@ -85,7 +85,7 @@ aic.summary  #smallest AIC is preferred model
 
 Here, hs.svl.reg (hs~svl+region) is found to be the best model. Models within 2 (or 4) of this (ie, deltaAIC < 2 or 4) are considered reasonably close models to the best model.
 
-###Model Averaging
+#### **2a: Model Averaging (ILLUSTRATION ONLY)**
 In cases where multiple candidate models are within 2 (or 4) AIC units, model averaging can be considered. This is found by obtaining AIC weights for each model, and averaging the weighted parameters across candidate models to obtain a weighted model.  
 
 ```{r eval=TRUE}
@@ -132,6 +132,8 @@ anova(hs.svl.reg,hs.svl.by.reg)
 
 Obviously, the LRT demonstrates the second effect should not be in the model, thus, despite its 'slose' AIC, model averaging should not be used. 
 
+#### **2b: Multivariate AIC**
+
 One can do multivarite AIC, but it requires a special function (the AIC function in R is univariate only):
 
 ```{r eval=TRUE}
@@ -164,7 +166,7 @@ rbind(maic.svl,maic.sex,maic.reg,maic.svl.reg,maic.svl.by.reg,maic.svl.sex,
   
 ```
 
-###**3: Cross-Validation**
+#### **3: Cross-Validation**
 Model selection can identify the best model, but it still may be a poor descriptor of the data patterns. Cross-validation can assess this.  Here, one fits the model with part of the data, and then obtains predicted values (and residuals) for the remaining portion. The variation in the residuals is a measure of model fit. Iterating this process for multiple models informs on which provides a better description of the patterns in the data. 
 
 Here is some data:

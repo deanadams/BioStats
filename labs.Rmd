@@ -31,7 +31,7 @@
 
 [10-Multivariate Association and Canonical Ordination](https://deanadams.github.io/BioStats/LabData/10-MultAssoc-CanonOrd-Lab.html) | [Week 10 R-script](https://deanadams.github.io/BioStats/LabData/10-MultAssoc-CanonOrdin.r)
 
-[11-Model Comparison]
+[11-Model Comparison](https://deanadams.github.io/BioStats/LabData/11-ModelComparison-Lab.html) | [Week 11 R-script](https://deanadams.github.io/BioStats/LabData/11-ModelComparison.r)
 
 [12-Phylogenetic Comparative Methods]
 

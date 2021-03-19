@@ -23,7 +23,7 @@
 
 [10-Multivariate Association and Canonical Ordination](https://deanadams.github.io/BioStats/Lectures/10-Covariation-CanonOrd.html)
 
-[11-Model Comparison]
+[11-Model Comparison](https://deanadams.github.io/BioStats/Lectures/11-ModelComparison.html)
 
 [12-Phylogenetic Comparative Methods]
 

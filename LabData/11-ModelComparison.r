@@ -45,7 +45,7 @@ anova(Y.mancova,Y.svl.reg)  #NOTE: sex not an improvement of model
 aic.summary<-AIC(hs.svl,hs.sex,hs.reg,hs.svl.reg,hs.svl.by.reg,hs.svl.sex,hs.svl.by.sex,
 hs.ancova,hs.full)
 
-aic.summary  #smallest AIC is preferred model
+aic.summary  #smallest AIC is prefered model
 
 #Model Averaging
 c1<-exp(-.5*0)

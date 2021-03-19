@@ -18,6 +18,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Model Comparison
 
+<style type="text/css">
+td {  /* Table  */
+  font-size: 20px;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+pre { /* Code block - determines code spacing between lines */
+    font-size: 12px;
+}
+</style>
+
 - Often, (especially in observational studies) it is unknown what ‘explanatory’ variables are important sources of variation.
 
 - How do we compare models and 'select' the optimal one?
@@ -36,7 +48,7 @@ knitr::opts_chunk$set(echo = TRUE)
     - Reduction of explained information relative to the model “size”
     - Potential loss of statistical power (i.e., eventually model df > error df)
 
-```{r, echo = FALSE,out.width="40%"}
+```{r, echo = FALSE,out.width="40%", fig.align='center' }
 include_graphics("lectureData/11.model.comparison/RsqPlot.png")  
 ```
 
@@ -49,7 +61,7 @@ include_graphics("lectureData/11.model.comparison/RsqPlot.png")
     - Information Theoretic approaches: ranking of models based on parsimony criteria
     - Cross-validation procedures: measure robustness of a specific model
 
-```{r, echo = FALSE,out.width="40%"}
+```{r, echo = FALSE,out.width="40%", fig.align='center' }
 include_graphics("lectureData/11.model.comparison/B-ABook.png")  
 ```
 
@@ -180,7 +192,7 @@ First, recall that: $\small\mathbf{\hat{\Sigma}} = \frac{\left(\mathbf{Y} -\math
 
 >- REGARDLESS of the data in $\small\mathbf{Y}$:   $\small\frac{1}{2}tr{\left(\mathbf{Y}-\mathbf{X\beta}\right)^{T}\mathbf{\hat{\Sigma}}^{-1}\left(\mathbf{Y}-\mathbf{X\beta}\right)}=\frac{np}{2}$ 
 
->- #####This result holds for the general GLS models as well.
+>- ###### This result holds for the general GLS models as well.
 
 # Revisiting the logL Components
 
@@ -287,7 +299,7 @@ $$\small{LRT}={2}\log\left(\frac{\mathcal{L}_f}{\mathcal{L}_r}\right) = nlog\lef
 
 - The null hypothesis of an LRT is that the additional parameters in the full model offer no improvement over the simpler set of parameters in the reduced model.  A significant LRT (rejection of the null hypothesis) implies that significantly more variation of the dependent variable was described by the additional parameters of the full model.  Therefore, the full model is considered a significant improvement over the reduced model.
 
-#LRT: Example
+# LRT: Example
 
 - Patterns of phenotypic variation in the heads of *LIVE* rattlesnakes quantified
 
@@ -296,7 +308,7 @@ $$\small{LRT}={2}\log\left(\frac{\mathcal{L}_f}{\mathcal{L}_r}\right) = nlog\lef
     - Region hypothesis: head variation associated with regional differences
     - Sex hypothesis: head variation associated with sexual dimorphism 
 
-```{r, echo = FALSE,out.width="80%"}
+```{r, echo = FALSE,out.width="60%", fig.align='center' }
 include_graphics("lectureData/11.model.comparison/Snake.png")  
 ```
 
@@ -411,7 +423,7 @@ Really? What about this equation implies models must be nested?
     - $\small{Q}_{obs}$ significant when both are null (neither model preferred)
     - $\small{Q}_{obs}$ not significant when both are null (no discrimination between models)
 
-######See Lewis et al. 2011. Methods Ecol. Evol. 
+###### See Lewis et al. 2011. Methods Ecol. Evol. 
 
 # Information Theory Criteria
 
@@ -431,7 +443,7 @@ Instead, best model is chosen when difference between models is $\small\Delta_{A
 
 Goal of model comparison is to select the model that explains the most information with the fewest parameters
 
-```{r, echo = FALSE,out.width="80%"}
+```{r, echo = FALSE,out.width="70%", fig.align='center' }
 include_graphics("lectureData/11.model.comparison/Parsimony.png")  
 ```
 
@@ -441,7 +453,7 @@ The most commonly used criterion to score and compare candidate models is:
 
 $$\small\mathrm{AIC} = -2\mathcal{L} + 2K$$
 
-where $\mathcal{L}$ is the model likelihood, and $\small{2K}$ is the *parameter penalty*, which is usually presented as $K=k+1$ (the number of model coefficients: $\small{k}$=rank of the design matrix, and $\small{1}$ for the residual model variance $\small\sigma^2$).
+where $\mathcal{L}$ is the model likelihood, and $\small{2K}$ is the *parameter penalty*, which is usually presented as $K=k+1$ (the number of model coefficients: $\small{k}$ = rank of the design matrix, and $\small{1}$ for the residual model variance $\small\sigma^2$).
 
 # Akaike Information Criterion (AIC)
 
@@ -449,7 +461,7 @@ The most commonly used criterion to score and compare candidate models is:
 
 $$\small\mathrm{AIC} = -2\mathcal{L} + 2K$$
 
-where $\mathcal{L}$ is the model likelihood, and $\small{2K}$ is the *parameter penalty*, which is usually presented as $K=k+1$ (the number of model coefficients: $\small{k}$=rank of the design matrix, and $\small{1}$ for the residual model variance $\small\sigma^2$).
+where $\mathcal{L}$ is the model likelihood, and $\small{2K}$ is the *parameter penalty*, which is usually presented as $K=k+1$ (the number of model coefficients: $\small{k}$ = rank of the design matrix, and $\small{1}$ for the residual model variance $\small\sigma^2$).
 
 Actually, this is the *univariate* version of AIC.  The general **multivariate** form is (Bedrick and Tsai 1994): 
 
@@ -459,11 +471,11 @@ where the number of parameters for the matrix of coefficients for multivariate d
 
 # AIC Dissected
 
-```{r, echo = FALSE,out.width="100%"}
+```{r, echo = FALSE,out.width="60%", fig.align='center' }
 include_graphics("lectureData/11.model.comparison/AICDissected.png")  
 ```
 
-#AIC Modifications
+# AIC Modifications
 
 AIC is essentially the likelihood of the model ($\mathcal{L}$) plus a parameter penalty for model complexity.  The quantification of this parameter penalty is arbitrary, and various have been proposed:
 
@@ -477,7 +489,7 @@ $\small\mathrm{BIC} = -2\mathcal{L} + 2K\log{(n)}$  Bayesian AIC
 
 And there are many, many others (see Burnham and Anderson. 2002)
 
-#AIC: Example
+# AIC: Example
 
 - Revisit the snake data (patterns of phenotypic variation in rattlesnake heads)
 
@@ -688,7 +700,7 @@ AIC.mdl.avg<-LLik+pen
 c(AIC(hs.svl.reg), AIC(hs.svl.by.reg), AIC.mdl.avg )
 ```
 
-Here the averaged model attains a **WORSE** AIC than the models from which it was averaged! This makes not sense, as the point of model averaging is to arrive at a *Better* model than those in the candidate set!
+Here the averaged model attains a **WORSE** AIC than the models from which it was averaged! This makes no sense, as the point of model averaging is to arrive at a *Better* model than those in the candidate set!
 
 # Model Averaging: Example (Cont.)
 
@@ -713,7 +725,7 @@ AIC.mdl.avg<-LLik+pen
 c(AIC(hs.svl.reg), AIC(hs.svl.by.reg), AIC.mdl.avg )
 ```
 
-Here the averaged model attains a **WORSE** AIC than the models from which it was averaged! This makes not sense, as the point of model averaging is to arrive at a *Better* model than those in the candidate set!
+Here the averaged model attains a **WORSE** AIC than the models from which it was averaged! This makes no sense, as the point of model averaging is to arrive at a *Better* model than those in the candidate set!
 
 Finally, for this particular example (of 2 nested models), we know the preferred model. It is actually the simpler model:
 
@@ -722,9 +734,9 @@ anova(hs.svl.by.reg)
   
 ```
 
-##### Don't forget basic statistical logic. Here, the more complex model containing the `SVL:Region` interaction was not a significant improvement in fit over the main effects model. Thus, the interaction term should *not* be included!  
+###### Don't forget basic statistical logic. Here, the more complex model containing the `SVL:Region` interaction was not a significant improvement in fit over the main effects model. Thus, the interaction term should *not* be included!  
 
-#####Exclusive reliance on AIC-based philosophy (and its extensions to model averaging) can cloud one's judgement and get one into trouble! Thinking is always encouraged in statistical endeavors!
+###### Exclusive reliance on AIC-based philosophy (and its extensions to model averaging) can cloud one's judgement and get one into trouble! Thinking is always encouraged in statistical endeavors!
 
 # AIC: A Comment on Multivariate Data
 
@@ -773,7 +785,7 @@ Model averaging – proceed with extreme caution **IF AT ALL**
 
 Here is some data: 
 
-```{r echo=FALSE, eval=TRUE}
+```{r echo=FALSE, eval=TRUE, fig.align='center' }
 x<-seq(1:10)
 y<-c(2,2,3,4,4,7,7,7,8,8)
 plot(x,y)
@@ -781,6 +793,7 @@ anova(lm(y~x))
 ```
 
 # Cross-Validation (Cont.)
+
 - We will fit two models:
 
 $$\tiny{Y}=\beta_0+\beta_1X$$
@@ -794,7 +807,8 @@ $$\tiny{Y}=\beta_0$$
     - Describe the cross-validation criterion as the sum of squared residuals (SS)
     - Repeat 1000 times
     
-    # Cross-Validation (Cont.)
+# Cross-Validation (Cont.)
+
 - We will fit two models:
 
 $$\tiny{Y}=\beta_0+\beta_1X$$
@@ -808,7 +822,7 @@ $$\tiny{Y}=\beta_0$$
     - Describe the cross-validation criterion as the sum of squared residuals (SS)
     - Repeat 1000 times
 
-```{r echo=FALSE, eval=TRUE}
+```{r echo=FALSE, eval=TRUE, fig.align='center' }
 iter=1000
 rep<-lapply(1:iter, function(j) sample(seq(1:10),5))
 diff<-lapply(1:iter, function(j) setdiff(seq(1:10),rep[[j]]))
