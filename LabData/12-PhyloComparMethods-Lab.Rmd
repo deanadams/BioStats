@@ -36,12 +36,11 @@ axisPhylo(1)
      Y<-apply(Y,2,as.numeric);row.names(Y)<-row.names(plethdata)
      TL = Y[,1]
      Y.sz<-Y/size
-gdf <- geomorph.data.frame(Y=Y, Y.sz=Y.sz, TL = TL, size=size,gp=gp,phy = plethtree) 
+gdf <- rrpp.data.frame(Y=Y, Y.sz=Y.sz, TL = TL, size=size,gp=gp) 
 gdf$Cov <- vcv.phylo(plethtree)
-class(gdf) <- "rrpp.data.frame"
 ```
 
-###**1: Phylogenetic regression/anova**
+#### **1: Phylogenetic regression/anova**
 
 One may perform models of the form Y~X while accounting for the phylogeny. This is accomplished using generalized least squares (GLS), which is can be implemented as a weighted regression. There are several ways to accomplish this in R, but first let's examine a non-phylogenetic analysis
 
@@ -57,7 +56,8 @@ summary(gls(TL~size, data=data.frame(TL=TL,size=size)))
 Now let's take phylogeny into consideration:
 ```{r eval=TRUE}
   #using GLS
-bm.gls<-gls(TL~size, correlation=corBrownian(phy=plethtree), data=data.frame(TL=TL,size=size))
+df <- data.frame(TL=TL,size=size, species = names(TL), gp=gp)
+bm.gls<-gls(TL~size, correlation=corBrownian(phy=plethtree, form = ~species), data= df)
 summary(bm.gls)  #Here the correlation structure of the phylogeny is used
 anova(bm.gls)
 
@@ -79,7 +79,7 @@ The approach is also appropriate for anova-models, and for multivariate data (us
 ```{r eval=TRUE}
   #Phylogenetic anova
 anova(lm.rrpp(TL ~ gp, Cov = gdf$Cov, data = gdf, iter = 999, print.progress = FALSE) )
-anova(gls(TL~gp, correlation=corBrownian(phy=plethtree), data=data.frame(TL=TL,gp=gp)))  
+anova(gls(TL~gp, correlation=corBrownian(phy=plethtree, form = ~species), data= df))  #same
 
   #multivariate phy-anova/regression (even when p>N)
 PGLS.reg<-lm.rrpp(Y ~ size, Cov = gdf$Cov, data = gdf, iter = 999, print.progress = FALSE) 
@@ -90,7 +90,7 @@ PGLS.aov<-lm.rrpp(Y ~ gp, Cov = gdf$Cov, data = gdf, iter = 999, print.progress 
 anova(PGLS.aov)  
 ```
 
-###**2: Phylogenetic PLS (partial least squares)**
+#### **2: Phylogenetic PLS (partial least squares)**
 
 One may also account for phylogeny when performing PLS, the multivariate association between two data matrices. 
 
@@ -100,17 +100,31 @@ summary(PLS.Y)
 plot(PLS.Y)
 ```
 
-###**3: Phylogenetic Ordination**
+#### **3: Phylogenetic Ordination**
 
-A PCA with the phylogeny superimposed is a phylomorphospace. There are numerous functions for accomplishing this (e.g., in phytools): one we will illustrate is in geomorph (note that the ancestral states could be part of the output if anc.states = TRUE: 
+A PCA with the phylogeny superimposed is a phylomorphospace. There are numerous functions for accomplishing this (e.g., in phytools): one we will illustrate is in geomorph. This function, `gmprcomp`, allows one to implement a phylomorphospace approach, a phylogenetic-PCA, or PACA (phylogenetically-aligned component analysis):
 
 ```{r eval=TRUE}
-plotGMPhyloMorphoSpace(phy = plethtree,A = arrayspecs(Y.sz,p=1,k=6), ancStates = FALSE, tip.labels = FALSE) 
+rownames(Y.sz) <- 1:nrow(Y.sz)
+plethtree2 <- plethtree; plethtree2$tip.label <- rownames(Y.sz)
+PCA.w.phylo <- gm.prcomp(Y.sz, phy = plethtree2) #: phylomorphospace
+phylo.PCA <- gm.prcomp(Y.sz, phy = plethtree2, GLS = TRUE) #phylo-PCA
+PaCA.gls <- gm.prcomp(Y.sz, phy = plethtree2, 
+                      align.to.phy = TRUE, GLS = TRUE) # PACA
+
+par(mfrow=c(2,2))
+plot(PCA.w.phylo, phylo = TRUE, main = "PCA.w.phylo", 
+     phylo.par = list(node.labels = FALSE))
+plot(phylo.PCA, phylo = TRUE, main = "phylo PCA",
+     phylo.par = list(node.labels = FALSE))
+plot(PaCA.gls, phylo = TRUE, main = "PaCA",
+     phylo.par = list(node.labels = FALSE))
+par(mfrow=c(1,1))
 
 ```
 
 
-###**4: Phylogenetic Signal**
+#### **4: Phylogenetic Signal**
 
 Phylogenetic signal is the degree to which closely related species display similar trait values. In R this may be implemented in picante, phytools, and geomorph. Multivariate phylogenetic signal is found in geomorph. Here we illustrate this in both packages. 
 
@@ -124,7 +138,7 @@ summary(PS.shape)
 plot(PS.shape)
 ```
 
-###**5: Comparing Phylogenetic Evolutionary Rates**
+#### **5: Comparing Phylogenetic Evolutionary Rates**
 
 Comparing the rate of phenotypic evolution is sometimes of interest. Typically, there are two approaches: comparing rates among clades (e.g., does body size evolve faster in island taxa versus continental species?), and comparing rates among traits (e.g., does size evolve faster than shape?). The general approach is to fit the data to the phylogeny under a model with a single evolutionary rate for all taxa, and compare this fit to a model with multiple rates for groups of taxa (BM1 vs. BMM).  This may be implemented in several packages: 
 
@@ -141,7 +155,7 @@ summary(EMR) #Limb traits evolve faster than head traits
 plot(EMR)
 ```
 
-###**6: Comparing Evolutionary Models (Evolutionary 'Modes')**
+#### **6: Comparing Evolutionary Models (Evolutionary 'Modes')**
 
 The previous section allowed a comparison to BM1 and BMM evolutionary models. However, there is a much broader class of models that could be considered, including Ornstein-Uhlenbeck models, early-burst models, etc. OU models can have one or more optima (OU1, OUM), and more complicated models can be envisioned. 
 

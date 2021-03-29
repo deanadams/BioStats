@@ -23,9 +23,8 @@ Y<-plethdata[,c(3:8)]
 Y<-apply(Y,2,as.numeric);row.names(Y)<-row.names(plethdata)
 TL <- Y[,1]
 Y.sz<-Y/size
-gdf <- geomorph.data.frame(Y=Y, Y.sz=Y.sz, TL = TL, size=size,gp=gp,phy = plethtree) 
+gdf <- rrpp.data.frame(Y=Y, Y.sz=Y.sz, TL = TL, size=size,gp=gp) 
 gdf$Cov <- vcv.phylo(plethtree)
-class(gdf) <- "rrpp.data.frame"
 
 ###################
 ### Analyses
@@ -38,7 +37,8 @@ summary(gls(TL~size, data=data.frame(TL=TL,size=size)))
 
 # 1: PhylogeneticRegression (PGLS)
    #using GLS
-bm.gls<-gls(TL~size, correlation=corBrownian(phy=plethtree), data=data.frame(TL=TL,size=size))
+df <- data.frame(TL=TL,size=size, species = names(TL), gp=gp)
+bm.gls<-gls(TL~size, correlation=corBrownian(phy=plethtree, form = ~species), data= df)
 summary(bm.gls)  #Here the correlation structure of the phylogeny is used
 anova(bm.gls)
 
@@ -51,13 +51,13 @@ pgls.res$LM$gls.coefficients
 picTL<-pic(TL, plethtree)
 picSz<-pic(size, plethtree)
 cor.test(picTL, picSz)
-summary(lm(picTL~picSz - 1)) #Contrasts run through origin: see Garland et al. 1992
+summary(lm(picTL~picSz + 0)) #Contrasts run through origin: see Garland et al. 1992
 plot(picTL~picSz)
-abline(lm(picTL~picSz - 1))
+abline(lm(picTL~picSz + 0))
 
-   #Phylogenetic anova
+#Phylogenetic anova
 anova(lm.rrpp(TL ~ gp, Cov = gdf$Cov, data = gdf, iter = 999, print.progress = FALSE) )
-anova(gls(TL~gp, correlation=corBrownian(phy=plethtree), data=data.frame(TL=TL,gp=gp)))  #same
+anova(gls(TL~gp, correlation=corBrownian(phy=plethtree, form = ~species), data= df))  #same
 
 
   #multivariate phy-anova/regression (even when p>N)
@@ -74,10 +74,26 @@ summary(PLS.Y)
 plot(PLS.Y)
 
 # 3: Phylogenetic ordination
-plotGMPhyloMorphoSpace(phy = plethtree,A = arrayspecs(Y.sz,p=1,k=6), ancStates = FALSE, tip.labels = FALSE) 
+  #Note: copied tree w/ simplified names for ease of visualization
+   #one should retain the original names in one's dataset!
+rownames(Y.sz) <- 1:nrow(Y.sz)
+plethtree2 <- plethtree; plethtree2$tip.label <- rownames(Y.sz)
+PCA.w.phylo <- gm.prcomp(Y.sz, phy = plethtree2) #: phylomorphospace
+phylo.PCA <- gm.prcomp(Y.sz, phy = plethtree2, GLS = TRUE) #phylo-PCA
+PaCA.gls <- gm.prcomp(Y.sz, phy = plethtree2, 
+                      align.to.phy = TRUE, GLS = TRUE) # PACA
 
-plotGMPhyloMorphoSpace(phy = plethtree,A = arrayspecs(Y.sz,p=1,k=6),ancStates = FALSE, tip.labels = FALSE, zaxis = "time") 
+par(mfrow=c(2,2))
+plot(PCA.w.phylo, phylo = TRUE, main = "PCA.w.phylo", 
+     phylo.par = list(node.labels = FALSE))
+plot(phylo.PCA, phylo = TRUE, main = "phylo PCA",
+     phylo.par = list(node.labels = FALSE))
+plot(PaCA.gls, phylo = TRUE, main = "PaCA",
+     phylo.par = list(node.labels = FALSE))
+par(mfrow=c(1,1))
 
+
+############
 # 4: Phylogenetic signal
 phylosig(plethtree, TL, method="K", test=T, nsim=1000)  #phytools
 physignal(gdf$TL,plethtree, print.progress = FALSE)   #geomorph
