@@ -41,11 +41,12 @@ plot(as.dendrogram(mole.wards),horiz=TRUE,lwd=4,xlim=c(16,-1), main="Ward's")  #
 
 It is important to recognize that clustering and ordination are complementary. This is seen in plots of actual distances among objects in the dataspace versus those implied by the projected ordination space or the cluster dendogram:
 
-```{r echo = FALSE, eval=TRUE}
+```{r echo = TRUE, eval=TRUE}
 library(geomorph)
 data(plethodon)
 gp<-as.factor(paste(plethodon$species,plethodon$site))
-  PC.scores<-prcomp(two.d.array(gpagen(plethodon$land,print.progress=FALSE)$coords))$x
+shape <- two.d.array(gpagen(plethodon$land, print.progress = FALSE)$coords) #data prep
+  PC.scores<-prcomp(shape)$x
 pleth.dist<-dist(PC.scores)
 PC12.dist<-dist(PC.scores[,1:2])
 pleth.upgma<-hclust(pleth.dist,method="average") 
