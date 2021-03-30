@@ -100,7 +100,7 @@ $$\small{cor}_{y_{1},y_{2}}=r_{1,2}=\frac{1}{n-1}
 
 $$\small{r}_{1,2}=\frac{1}{n-1}\sum_{i=1}^{n}\frac{\left(y_{i1}-\bar{y_1}\right)}{\sqrt{\frac{SS_{y_1}}{n-1}}}\frac{\left(y_{i2}-\bar{y_2}\right)}{\sqrt{\frac{SS_{y_2}}{n-1}}}=$$
 
-$$\small{r}_{1,2}=\frac{SC_{y_1y_2}}{\sqrt{SS_{y_1}SS_{y_1}}}=\frac{\sigma_{y_1y_2}}{\sqrt{\sigma^{2}_{y_1}\sigma^{2}_{y_2}}}=\frac{\sigma_{y_1y_2}}{\sigma_{y_1}\sigma_{y_2}}$$
+$$\small{r}_{1,2}=\frac{SC_{y_1y_2}}{\sqrt{SS_{y_1}SS_{y_2}}}=\frac{\sigma_{y_1y_2}}{\sqrt{\sigma^{2}_{y_1}\sigma^{2}_{y_2}}}=\frac{\sigma_{y_1y_2}}{\sigma_{y_1}\sigma_{y_2}}$$
 
 # Variable Covariation: Example
 
