@@ -55,8 +55,12 @@ species<-as.factor(mydata[,1]); sex<-as.factor(mydata[,2])
 SL<-(mydata[,3]); Y<-as.matrix(mydata[,-(1:3)])	
 Group<-as.factor(paste(species,sex))  
 
+Y.orig <- Y
 
 Y<-prcomp(Y)$x	
+plot(dist(Y),dist(Y.orig))
+
+
 rdf <- rrpp.data.frame(Y=Y, SL=SL, sex=sex, species=species)
  col.gp<-rep("green",nrow(Y));   col.gp[which(species== 'FW')]<-"red"
  shape.gp<-rep(21,nrow(Y));   shape.gp[which(sex== 'M')]<-22
