@@ -33,7 +33,7 @@
 
 [11-Model Comparison](https://deanadams.github.io/BioStats/LabData/11-ModelComparison-Lab.html) | [Week 11 R-script](https://deanadams.github.io/BioStats/LabData/11-ModelComparison.r)
 
-[12-Phylogenetic Comparative Methods]
+[12-Phylogenetic Comparative Methods](https://deanadams.github.io/BioStats/LabData/12-PhyloComparMethods-Lab.html) | [Week 12 R-script](https://deanadams.github.io/BioStats/LabData/12-PhylogeneticComparativeMethods.r)
 
 [13-Spatial Statistics]
 

@@ -25,7 +25,7 @@
 
 [11-Model Comparison](https://deanadams.github.io/BioStats/Lectures/11-ModelComparison.html)
 
-[12-Phylogenetic Comparative Methods]
+[12-Phylogenetic Comparative Methods](https://deanadams.github.io/BioStats/Lectures/12-PhyCompMethods.html)
 
 [13-Spatial Statistics]
 
