@@ -7,6 +7,7 @@ library(geiger) # Many evolutionary analyses
 library(phytools) 
 library(geomorph) #contains some multivariate PCMs
 library(RRPP)
+library(MCMCglmm)
 
 ## Read data, phylogeny, and match the two
 tree.best<-read.nexus("Data/PlethodontidTree.nex") #Maximum Credible Tree
@@ -54,6 +55,16 @@ cor.test(picTL, picSz)
 summary(lm(picTL~picSz + 0)) #Contrasts run through origin: see Garland et al. 1992
 plot(picTL~picSz)
 abline(lm(picTL~picSz + 0))
+
+## using phylogenetic linear mixed models (similar)
+inv.phylo<-inverseA(plethtree,nodes="TIPS",scale=TRUE)  #NOTE: this is invC + other stuff
+prior<-list(G=list(G1=list(V=1,nu=0.02)),R=list(V=1,nu=0.02))
+model_simple<-MCMCglmm(TL~size,random=~species,
+                       family="gaussian",ginverse=list(species=inv.phylo$Ainv),
+                       prior=prior,data=df,nitt=100000,burnin=1000,thin=500)
+##similar
+summary(model_simple)
+
 
 #Phylogenetic anova
 anova(lm.rrpp(TL ~ gp, Cov = gdf$Cov, data = gdf, iter = 999, print.progress = FALSE) )

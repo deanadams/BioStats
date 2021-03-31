@@ -7,10 +7,28 @@ output: slidy_presentation
 
 ```{r setup, include=FALSE, echo = TRUE, tidy = TRUE}
 library(knitr)
+library(RRPP)
+library(ape)
+library(geiger)
+library(nlme)
+library(geomorph)
+library(MCMCglmm)
 opts_chunk$set(echo = TRUE)
 ```
 
 # The Accumulation of Biodiversity
+
+<style type="text/css">
+td {  /* Table  */
+  font-size: 20px;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+pre { /* Code block - determines code spacing between lines */
+    font-size: 12px;
+}
+</style>
 
 Taxonomic Diversity
 
@@ -58,7 +76,7 @@ Trait correlations often used to study coevolution and adaptation
 
 Species values commonly utilized
 
-```{r, echo = FALSE, out.width="50%"}
+```{r, echo = FALSE, out.width="40%"}
 include_graphics(c("lectureData/12.pcm/11-PCM-Metab.png","lectureData/12.pcm/11-PCM-PrimateCoev.png"))
 
 ```
@@ -98,9 +116,13 @@ include_graphics("lectureData/12.pcm/11-PCM-MethodRoad.png")
 * Phylogenetic ordination
 
     + Phylomorphospace
+    
+    + Phylogenetic PCA
+    
+    + Phylogenetically Aligned Component Analysis (PACA)
 
 
-* Exploring and modelling evolutionary processes
+* Exploring and modeling evolutionary processes
 
     + Phylogenetic signal
 
@@ -140,7 +162,7 @@ $\small\mathbf{V}$ is the *phylogenetic covariance matrix*
 
 Describes the amount of evolutionary time species share via common ancestry (and thus how similar they are expected to be)
 
-```{r, echo = FALSE, out.width="80%"}
+```{r, echo = FALSE, out.width="60%"}
 include_graphics("lectureData/12.pcm/11-PCM-PhyCovMat.png")  
 ```
 
@@ -158,7 +180,7 @@ include_graphics("lectureData/12.pcm/ModelTypes.png")
 
 Parameters of model (and model significance) obtained in various ways
 
-######see Adams and Collyer. *Syst. Biol.* (2018); Adams and Collyer. *Ann. Rev. Ecol. Evol. Syst.* (2019)
+###### see Adams and Collyer. *Syst. Biol.* (2018); Adams and Collyer. *Ann. Rev. Ecol. Evol. Syst.* (2019)
 
 # 1: Phylogenetic Regression 
 
@@ -246,8 +268,6 @@ What is the association between Y and X?
 # Phylogenetically Independent Contrasts: Example
 
 ```{r echo = FALSE, eval=TRUE, out.width="30%"}
-library(ape)
-library(geiger)
 n=8
 tree<-compute.brlen(stree(n,type="left"), method=c(7,1,6,1,5,1,4,1,3,1,2,1,1,1))
 X<-c(8,4,7,13,11,9,5,4)
@@ -265,7 +285,7 @@ plot(pic.y~pic.x, asp=1, cex=2, pch=21,bg="black")
 
 What is the association between Y and X?
 
-```{r echo = FALSE, eval=TRUE, out.width="30%"}
+```{r echo = TRUE, eval=TRUE, out.width="30%"}
 anova(lm(pic.y~pic.x + 0))
 coef(lm(pic.y~pic.x+0))
 ```
@@ -301,10 +321,13 @@ include_graphics("lectureData/12.pcm/11-PCM-PICDataFig.png")
 ```
 
 ```{r echo = FALSE, eval=TRUE, out.width="30%"}
-library(nlme)
-bm.gls<-gls(Y~X, correlation=corBrownian(phy=tree), data=data.frame(Y,X))
+df <- data.frame(X=X, Y=Y, species = names(X))
+```
+
+```{r echo = TRUE, eval=TRUE, out.width="30%"}
+bm.gls<-gls(Y~X, correlation=corBrownian(phy=tree,form = ~species), data=df)
 anova(bm.gls)
-coef(bm.gls)  #Here the correlation structure of the phylogeny is used
+coef(bm.gls)  
 ```
 
 Identical results to PICs!
@@ -386,17 +409,39 @@ Coefficients solved as: $\small\hat{\mathbf{\beta }}=\left ( \mathbf{\tilde{X}}^
 
 ```{r, echo = FALSE, out.width="30%"}
 include_graphics("lectureData/12.pcm/11-PCM-PICDataFig.png")
+df$Cov <- vcv.phylo(tree)
 ```
 
-```{r echo = FALSE, eval=TRUE}
-library(rgl)
-library(geomorph)
-pgls.res<-procD.pgls(Y~X,phy=tree,data=geomorph.data.frame(Y=Y,X=X), print.progress = FALSE) 
-pgls.res$aov.table 
-pgls.res$pgls.coefficients
+```{r echo = TRUE, eval=TRUE}
+pgls.res<-lm.rrpp(Y~X, Cov = df$Cov,data=df, print.progress = FALSE) 
+anova(pgls.res)
+pgls.res$LM$gls.coefficients
 ```
 
 Identical results to PICs & PGLS!
+
+# Phylogenetic Regression Via LMM
+
+One can also use linear mixed models (PGLMM: phylogenetic generalized linear mixed models) to evaluate trait associations
+
+Here the phylogeny is considered a random effect (sense Lynch 1991)
+
+Results from MCMC runs are analogous (though not always identical) to the linear model solutions
+
+```{r, echo = FALSE, out.width="30%"}
+df$taxa <- names(X)
+inv.phylo<-inverseA(tree,nodes="TIPS",scale=TRUE)  #NOTE: this is invC + other stuff
+prior<-list(G=list(G1=list(V=1,nu=0.02)),R=list(V=1,nu=0.02))
+model_simple<-MCMCglmm(Y~X,random=~taxa,
+          family="gaussian",ginverse=list(taxa=inv.phylo$Ainv),
+          prior=prior,data=df,nitt=50000,burnin=1000,thin=500, verbose = FALSE)
+
+```
+
+```{r echo = TRUE, eval=TRUE}
+pgls.res$LM$gls.coefficients
+summary(model_simple)$solutions
+```
 
 # Assessing Significance
 
@@ -493,6 +538,9 @@ plot(plethtree)
 axisPhylo(1)
 include_graphics("lectureData/12.pcm/11-PCM-PlethMeas.png")
 gdf <- geomorph.data.frame(Y=Y, size=size,gp=gp,phy = plethtree)
+```
+
+```{r echo = TRUE, eval=TRUE,out.width="40%"}
 PGLS.reg<-procD.pgls(Y ~ size, phy = phy, data = gdf, iter = 999, print.progress = FALSE)
 PGLS.reg$aov.table
 ```
@@ -505,7 +553,9 @@ Do body dimensions differ by salamander ecotype?
 plot(plethtree)
 axisPhylo(1)
 include_graphics("lectureData/12.pcm/11-PCM-PlethMeas.png")
+```
 
+```{r echo = TRUE, eval=TRUE,out.width="40%"}
 PGLS.reg<-procD.pgls(Y ~ gp, phy = phy, data = gdf, iter = 999, print.progress = FALSE)
 PGLS.reg$aov.table
 ```
@@ -558,8 +608,14 @@ Do head traits correlate with body traits (same data)?
 
 ```{r echo = FALSE, eval=TRUE,out.width="40%"}
 include_graphics("lectureData/12.pcm/11-PCM-PlethMeas.png")
+```
+
+```{r echo = TRUE, eval=TRUE,out.width="40%"}
 PLS.Y <- phylo.integration(A = Y[,2:3], A2 = Y[,c(1,4:6)], phy= plethtree, print.progress = FALSE)
 PLS.Y$r.pls; PLS.Y$P.value
+```
+
+```{r echo = FALSE, eval=TRUE,out.width="40%"}
 plot(PLS.Y)
 ```
 
@@ -577,17 +633,17 @@ Yes
 
 - Ordinations that incorporate phylogenetic relatedness
 
-- Two approaches: 
+1. Phylomorphspace: project phylogeny into PCA space (using ancestral states)
+    - Rotates data to directions of maximal variation 
 
-- Phylogenetic PCA (pPCA): account for phylogeny in PCA computations: 
+2. Phylogenetic PCA (pPCA): account for phylogeny in PCA computations: 
     - SVD of evolutionary rate matrix (the covariance matrix ‘standardized’ by phylogeny):       $\tiny\mathbf{R}=\frac{(\mathbf{Y}-E(\mathbf{Y}))^{T}\mathbf{C}^{-1}(\mathbf{Y}-E(\mathbf{Y}))}{N-1}$
+    - Rotates data such that pPC1 is *independent* of phylogenetic signal
 
-######Produces phylogenetically corrected eigenvectors, Preserves specimen distances, but pPCA scores correlated (see Polly et al. *Hystrix*. 2013)
-
-- Phylomorphspace: project phylogeny into PCA space (using ancestral states)
+3. Phylogenetically-aligned component analysis (PACA)
+    - Rotates data to directions that *maximize* phylogenetic signal (Collyer and Adams 2021)
 
 - Approaches can provide important visual insights into macroevolutionary patterns
-
 
 # Phylo-PCA: Example
 
@@ -603,6 +659,13 @@ include_graphics("lectureData/12.pcm/11-PCM-Phylomorphospace2.png")
 ```
 
 Visual inspection of phylomorphospaces useful for hypothesis generation
+
+# PACA
+
+```{r echo = FALSE, eval=TRUE,out.width="80%"}
+include_graphics("lectureData/12.pcm/Paca.png")
+```
+
 
 # 4: Phylogenetic Signal
 
@@ -661,10 +724,12 @@ Where $\small\mathbf{D}_{\mathbf{Y},E(\mathbf{Y})}$ is the distance from each ob
 
 Do body dimensions in *Plethodon* display phylogenetic signal? 
 
-```{r echo = FALSE, eval=TRUE,out.width="40%"}
+```{r echo = TRUE, eval=TRUE,out.width="40%"}
 PS.shape <- physignal(A=Y,phy=plethtree,iter=999, print.progress = FALSE)
-PS.shape$phy.signal
-PS.shape$pvalue
+PS.shape
+```
+
+```{r echo = FALSE, eval=TRUE,out.width="40%"}
 plot(PS.shape)
 ```
 
