@@ -20,11 +20,11 @@ var<-as.matrix(mydata[,(4)])
 
 ```
 
-###**1: Fixed Effects Meta-Analysis**
+#### **1: Fixed Effects Meta-Analysis**
 
 Here is the simplest meta-analytic model: a fixed effects m-a with no structure (i.e., all studies belong to a single group) 
 
-####*No Structure Fixed Effects M-A*
+#### *No Structure Fixed Effects M-A*
 ```{r eval=TRUE}
 #no structure
 ma.no<-rma.uni(yi=effectd,vi=var,data=mydata,method="FE")
@@ -32,7 +32,7 @@ summary(ma.no)
 forest(ma.no)  #plot of study effect sizes
 ```
 
-####*Categorical Structure Fixed Effects M-A*
+#### *Categorical Structure Fixed Effects M-A*
 
 The next model is equivalent to meta-analytic anova:
 ```{r eval=TRUE}
@@ -45,16 +45,16 @@ ma.cat$b[1]+ma.cat$b[2] #marine
 ma.cat$b[1]+ma.cat$b[3] #terrestrial
 ```
 
-###**2: Random Effects Meta-Analysis**
+#### **2: Random Effects Meta-Analysis**
 
 These models incorporate a random effect to the study variance, much like random effects in a standard anova. 
 
-####*No Structure Random Effects M-A*
+#### *No Structure Random Effects M-A*
 ```{r eval=TRUE}
 rma.uni(yi=effectd,vi=var,data=mydata)
 ```
 
-####*Categorical Structure Random Effects M-A*
+#### *Categorical Structure Random Effects M-A*
 
 This model is equivalent to a random effects m-a anova:
 ```{r eval=TRUE}
@@ -68,7 +68,7 @@ ma.catr$b[1]+ma.catr$b[3] #terrestrial
 
 ```
 
-###**3: Additional Analyses**
+#### **3: Additional Analyses**
 
 As we discussed, there are many additional ways of exploring meta-analytic data: phylogenetic meta-analysis, cumulative meta-analysis, funnel plots, fail safe numbers, etc. Many of these may be found in the 'meta', 'rmeta' and 'metafor' package. Below are several examples. 
 
@@ -82,7 +82,7 @@ fsn(yi=effectd,vi=var,data=mydata,type="Rosenberg")
 ```
 
 
-###**4: Using GLS 'by hand' in RRPP**
+#### **4: Using GLS 'by hand' in RRPP**
 
 Recognizing that meta-analysis is simply a GLS model where the weight matrix is a diagonal matrix containing study weights, one can use `RRPP` to perform the same task:
 

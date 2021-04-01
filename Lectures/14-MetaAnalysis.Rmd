@@ -9,7 +9,7 @@ output: slidy_presentation
 library(knitr)
 library(vegan)
 library(RRPP)
-library("spatstat")
+library(spatstat)
 opts_chunk$set(echo = TRUE)
 ```
 
@@ -25,7 +25,7 @@ opts_chunk$set(echo = TRUE)
 
 - Meta-analysis
 
-######For further information see: Cooper and Hedges (1994). Handbook of Research Synthesis. Hedges and Olkin (2000). Statistical Methods for Meta-Analysis. Rosenberg, Adams, and Gurevitch (2000). MetaWin: Statistical Software for Meta-Analysis. vsn. 2.
+###### For further information see: Cooper and Hedges (1994). Handbook of Research Synthesis. Hedges and Olkin (2000). Statistical Methods for Meta-Analysis. Rosenberg, Adams, and Gurevitch (2000). MetaWin: Statistical Software for Meta-Analysis. vsn. 2.
 
 # Synthesizing Prior Research
 
@@ -141,7 +141,7 @@ $$\small\alpha={1-(1-\alpha^*)^{1/n}}$$
 
 $$\small{P}= -2\sum{log{(p_i)}}$$
 
-######NOTE: see similarity to LRT tests
+###### NOTE: see similarity to LRT tests
 
 - Sum of $\small{Z}$ method (Stouffer et al., 1949): use normal distribution, significant if $\small{Z}< 0.05$ based on summing Z-scores
 
@@ -255,7 +255,7 @@ include_graphics("lectureData/14.meta.analysis/CorrEffects.png")
 
 - For models with structure (categorical, continuous), variables are often called moderator variables (groups, covariate, etc.)
 
-#####NOTE: All models are actually special cases of same model!
+##### NOTE: All models are actually special cases of same model!
 
 # Meta-Analysis: No Structure
 

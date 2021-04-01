@@ -37,4 +37,4 @@
 
 [13-Spatial Statistics](https://deanadams.github.io/BioStats/LabData/13-SpatialStats-Lab.html) | [Week 13 R-script](https://deanadams.github.io/BioStats/LabData/13-SpatialStats.r)
 
-[14-Meta-Analysis]
+[14-Meta-Analysis](https://deanadams.github.io/BioStats/LabData/14-MetaAnalysis-Lab.html) | [Week 14 R-script](https://deanadams.github.io/BioStats/LabData/14-metaanalysis.r)

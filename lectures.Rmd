@@ -29,4 +29,4 @@
 
 [13-Spatial Statistics](https://deanadams.github.io/BioStats/Lectures/13-SpatialStats.html)
 
-[14-Meta-Analysis]
+[14-Meta-Analysis](https://deanadams.github.io/BioStats/Lectures/14-MetaAnalysis.html)
