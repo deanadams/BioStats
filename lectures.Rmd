@@ -27,6 +27,6 @@
 
 [12-Phylogenetic Comparative Methods](https://deanadams.github.io/BioStats/Lectures/12-PhyCompMethods.html)
 
-[13-Spatial Statistics]
+[13-Spatial Statistics](https://deanadams.github.io/BioStats/Lectures/13-SpatialStats.html)
 
 [14-Meta-Analysis]

@@ -11,6 +11,7 @@ library(spatstat)
 library(RRPP)
 library(vegan)
 library(spdep)
+library(gstat)
 ```
 
 ### **Motivation**
@@ -18,7 +19,7 @@ Today we examine methods that concern geographic space. Some assess whether or n
 
 The observant student will note that this description, and the method used, is identical to what is done in phylogenetic comparative methods, where phylogenetic non-independence is accounted for during the analysis of Y~X.
 
-###**1: Point Patterns: Ripley's K**
+#### **1: Point Patterns: Ripley's K**
 
 Our first analysis takes spatial data and examines point patterns for underdispersion or overdispersion:
 
@@ -32,7 +33,7 @@ plot(E) # plot shows that observed are underdispersed at small spatial scales
 ```
 The plot shows that the observed data are underdispersed at small spatial scales. 
 
-###**Spatially Autocorrelated Data**
+#### **Spatially Autocorrelated Data**
 
 Next we examine various patterns of spatial autocorrelation between one or more variables and geographic location. Typically these approaches are used on empirical data, but for this example we will simulate data with spatial autocorrelation. Our data contain a continuous variable and groups (ecotype) simulated across the landscape:
 
@@ -55,7 +56,7 @@ plot(g, pch=21, bg=t, cex=y, asp=1, main="Species diversity proprotional to circ
 Color designates ecological type")
 ```
 
-###**2: Covariation of Data with Geography**
+#### **2: Covariation of Data with Geography**
 
 One pattern that can be quantitatively examined is the extent to which some variable covaries with geography. A Mantel test may be used for this (NOTE: recall the caveats of the Mantel test from week 10!)
 
@@ -64,7 +65,7 @@ mantel(dist(g), dist(y), permutations = 9999)  # Mantel association
 mantel.partial(dist(t), dist(y), dist(g), permutations = 9999)  #3-way Mantel holding group constant
 ```
 
-###**3: Spatial Autocorrelation**
+#### **3: Spatial Autocorrelation**
 
 One may also assess the level of spatial autocorrelation in a variable; that is, the degree to which spatially proximate samples display similar values. 
 
@@ -73,7 +74,25 @@ W<-tri2nb(g) #weights with Delauney tesselation
 moran.test(y,nb2listw(W))   #positive autocorrelation
 ```
 
-###**4: Accounting for Spatial Autocorrelation**
+#### Semivariogram
+
+One can also plot the degree of autocorrelation relative to distance as a semivariogram.
+
+```{r eval=TRUE}
+df <- data.frame(g,y)
+coordinates(df) = ~g
+res <- variogram(y~1,df)
+plot(res, type = "b", main = "Variogram: y") 
+```
+
+Now plot this against a Gaussian decay model:
+
+```{r eval=TRUE}
+VarMdl <- vgm(psill=2, model="Gau", nugget=0.1, range=1)
+plot(res, model=VarMdl) 
+```
+
+#### **4: Accounting for Spatial Autocorrelation**
 
 One may also be interested in determining the relationship between a set of dependent and independent variables while accounting for spatial non-independence. Here the linear model is of the form: Y~X|Geog, where Geog is modeled in the error covariance. As with phylogenetic comparative methods (week 11), this is accomplished using GLM (or more generally GLS). 
 
@@ -84,8 +103,8 @@ ols.fit <- lm(y~t, x=T)  #spatial proximity not considered
 summary(ols.fit)
 anova(ols.fit)
 
-# GLS models with different spatial autocorrelations
-  # Warning!  False convergeneces possible
+# GLS models with different spatial autocorrelation structure
+  # Warning!  False convergences possible
 t <- as.factor(t)
 geo=data.frame(g,t,y)
 
@@ -103,7 +122,9 @@ gls.fit.spher
 gls.fit.lin
 
 # model comparisons
-AIC(gls.fit.exp, gls.fit.gaus,gls.fit.lin) #Careful when y is multivariate, see Model Selection lecture
+AIC(gls.fit.exp, gls.fit.gaus,gls.fit.lin) 
+
+    #Careful when y is multivariate, see Model Selection lecture
    ## Exponential decay of spatial dependence is best model
 # Anova
 anova(gls.fit.exp)

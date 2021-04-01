@@ -7,13 +7,28 @@ output: slidy_presentation
 
 ```{r setup, include=FALSE, echo = TRUE, tidy = TRUE}
 library(knitr)
-library(vegan)
+library(spatstat)	
 library(RRPP)
-library("spatstat")
+library(vegan)
+library(spdep)
+library(gstat)
+
 opts_chunk$set(echo = TRUE)
 ```
 
 # Overview
+
+<style type="text/css">
+td {  /* Table  */
+  font-size: 20px;
+}
+code.r{ /* Code block */
+    font-size: 12px;
+}
+pre { /* Code block - determines code spacing between lines */
+    font-size: 12px;
+}
+</style>
 
 * Point Patterns
 
@@ -423,6 +438,21 @@ include_graphics("lectureData/13.spatstat/JoinCount.png")
 
 ##### Note: Semivariograms are based on unstandardized Geary's c
 
+# Spatial Autocorrelation: Semivariogram
+
+The semivarigram for the simulated data, and with a Gaussian model
+
+```{r echo = FALSE, eval=TRUE, out.width="30%"}
+df <- data.frame(g,y)
+coordinates(df) = ~g
+res <- variogram(y~1,df)
+VarMdl <- vgm(psill=2, model="Gau", nugget=0.1, range=1)
+par(mfrow = c(1,2))
+plot(res, type = "b", main = "Variogram: y") 
+plot(res, model=VarMdl) 
+par(mfrow = c(1,1))
+```
+
 # Spatial Autocorrelation: Example
 
 * Sokal and Thompson (1987) examined distribution and attributes of *Aralia nudicaulis* (an understory plant), including: fecundity, density, canopy cover, and percent female
@@ -528,21 +558,17 @@ Results imply that GLS approach (i.e., a spatially-weighted model) performs quit
 
 # Spatial Statistics: Summary
 
-* Having a spatial context is hugely important to consider in biology
+- Having a spatial context is hugely important to consider in biology
 
-* How are my observations distributed? 
-	
-	  + **Point Pattern Analysis**  
+- How are my observations distributed? 
+  - Point Pattern Analysis  
 
-* Are my data associated with geography?
-	
-	  + **Mantel tests** (and others)
+- Are my data associated with geography?
+  - Mantel tests (and others)
 
-* Are my data spatially autocorrelated?
-	
-	  + **Moran’s I & Geary's c**
+- Are my data spatially autocorrelated?
+  - Moran’s I & Geary's c
 
-* Can I account for spatial autocorrelation in my analysis? 
-	
-	  + **GLS is general and very useful model**
+- Can I account for spatial autocorrelation in my analysis? 
+  - GLS is general and very useful model
 

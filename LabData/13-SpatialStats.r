@@ -5,6 +5,7 @@ library(spatstat)
 library(RRPP)
 library(vegan)
 library(spdep)
+library(gstat)
 
 # Point patterns
 
@@ -17,10 +18,11 @@ plot(E) # plot shows that observed are underdispersed at small spatial scales
 
 
 # Generate Spatially Autocorrelated Data  (one could also read some in!)
+set.seed(2345)
 lat<-runif(50,0,5); long<-runif(50,0,5)
 g<-cbind(lat,long)  #create an XY spatial grid
 y <- sqrt(diag(g%*%t(g))) + rnorm(nrow(g))  #a spatially-autocorrelated variable
-        # Valuee is associated with distance from origin
+        # Value is associated with distance from origin
 t <- sample(rep(c(1,2),length(y)/2))  #2 ecological 'groups' constrained by spatial contingency
 sc <- 0.0   #spatial contingency: 0->1
 for(i in 1:length(y)){
@@ -42,20 +44,30 @@ mantel.partial(dist(t), dist(y), dist(g), permutations = 9999)  #3-way Mantel ho
 W<-tri2nb(g) #weights with Delauney tesselation
 moran.test(y,nb2listw(W))   #positive autocorrelation
 
+#3b: Semivarigram
+df <- data.frame(g,y)
+coordinates(df) = ~g
+res <- variogram(y~1,df)
+plot(res, type = "b", main = "Variogram: y") 
+
+#Plot vs. Gaussian model
+VarMdl <- vgm(psill=2, model="Gau", nugget=0.1, range=1)
+plot(res, model=VarMdl) 
+
 #4: Account for Spatial Non-Independence
 ols.fit <- lm(y~t, x=T)  #spatial proximity not considered
 summary(ols.fit)
 anova(ols.fit)
 
-# GLS models with different spatial autocorrelations
-  # Warning!  False convergeneces possible
+# GLS models with different spatial autocorrelation structure
+  # Warning!  False convergences possible
 t <- as.factor(t)
 geo=data.frame(g,t,y)
 
 gls.fit.exp = gls(y~t, data=geo, correlation=corExp(form=~lat+long)) #exponential
 gls.fit.gaus = gls(y~t, data=geo,  correlation=corGaus(form=~lat+long)) #gaussian
 gls.fit.spher = gls(y~t, data=geo,  correlation=corSpher(form=~lat+long)) #spherical
-gls.fit.lin = gls(y~t, data=geo,  correlation=corLin(form=~lat+long)) #linear
+gls.fit.lin = gls(y~t, data=geo,  correlation=corLin(form=~lat+long))
 
 # look at coeffcients: VERY DIFFERENT when spatial non-independence considered
 ols.fit
@@ -65,7 +77,7 @@ gls.fit.spher
 gls.fit.lin
 
 # model comparisons
-AIC(gls.fit.exp, gls.fit.gaus,gls.fit.lin) #Careful when y is multivariate, see Model Selection lecture
+AIC(gls.fit.exp, gls.fit.gaus, gls.fit.lin) #Careful when y is multivariate, see Model Selection lecture
    ## Exponential decay of spatial dependence is best model
 # Anova
 anova(gls.fit.exp)
@@ -82,7 +94,6 @@ spatCov <- function(x){
   tcrossprod(P)/(ncol(P) - 1)
 }
 
-#example  
 spat.cov<-spatCov(g)
 rdf <- rrpp.data.frame(g=g, y=y,t=t, spat.cov = spat.cov)
 res <- lm.rrpp(y~t,Cov = spat.cov, data = rdf)

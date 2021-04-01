@@ -35,6 +35,6 @@
 
 [12-Phylogenetic Comparative Methods](https://deanadams.github.io/BioStats/LabData/12-PhyloComparMethods-Lab.html) | [Week 12 R-script](https://deanadams.github.io/BioStats/LabData/12-PhylogeneticComparativeMethods.r)
 
-[13-Spatial Statistics]
+[13-Spatial Statistics](https://deanadams.github.io/BioStats/LabData/13-SpatialStats-Lab.html) | [Week 13 R-script](https://deanadams.github.io/BioStats/LabData/13-SpatialStats.r)
 
 [14-Meta-Analysis]
