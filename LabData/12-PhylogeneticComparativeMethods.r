@@ -11,7 +11,15 @@ library(MCMCglmm)
 
 ## Read data, phylogeny, and match the two
 tree.best<-read.nexus("Data/PlethodontidTree.nex") #Maximum Credible Tree
+plot(tree.best)
+tree.best$tip.label
+length(tree.best$tip.label)
 plethdata<-read.csv("Data/meandata-CinGlutOnly.csv",row.names=1, header=TRUE )
+dim(plethdata)
+#Where my species-data fit in the tree (note: sometimes they aren't all on the tree)
+match(rownames(plethdata),tree.best$tip.label)
+match(tree.best$tip.label,rownames(plethdata))
+
 size<-plethdata[,2];names(size)<-row.names(plethdata) 
 gp<-as.factor(plethdata[,1]); names(gp)<-row.names(plethdata)
 # Prune tree to match taxa

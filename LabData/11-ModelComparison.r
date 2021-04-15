@@ -45,7 +45,7 @@ anova(Y.mancova,Y.svl.reg)  #NOTE: sex not an improvement of model
 aic.summary<-AIC(hs.svl,hs.sex,hs.reg,hs.svl.reg,hs.svl.by.reg,hs.svl.sex,hs.svl.by.sex,
 hs.ancova,hs.full)
 
-aic.summary  #smallest AIC is prefered model
+aic.summary  #smallest AIC is preferred model
 
 #Model Averaging
 c1<-exp(-.5*0)
@@ -130,7 +130,7 @@ y<-c(2,2,3,4,4,7,7,7,8,8)
 plot(x,y)
 anova(lm(y~x))
 
-#subsample, fit model, ersiduals for cross-validated data, 
+#subsample, fit model, residuals for cross-validated data, 
   #variance across iterations
 iter=1000
 rep<-lapply(1:iter, function(j) sample(seq(1:10),5))
