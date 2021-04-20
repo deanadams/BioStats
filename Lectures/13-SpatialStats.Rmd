@@ -541,7 +541,7 @@ include_graphics("lectureData/13.spatstat/SAR1.png")
 ```
 
 ```{r, echo = FALSE, out.width="95%"}
-include_graphics("lectureData/13.spatstat/SAR1.png")  
+include_graphics("lectureData/13.spatstat/SAR2.png")  
 ```
 
 ###### see Dormann et al. (2007) Ecography
