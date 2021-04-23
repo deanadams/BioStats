@@ -18,7 +18,7 @@ plot(E) # plot shows that observed are underdispersed at small spatial scales
 
 
 # Generate Spatially Autocorrelated Data  (one could also read some in!)
-set.seed(2345)
+#set.seed(2345)
 lat<-runif(50,0,5); long<-runif(50,0,5)
 g<-cbind(lat,long)  #create an XY spatial grid
 y <- sqrt(diag(g%*%t(g))) + rnorm(nrow(g))  #a spatially-autocorrelated variable
@@ -69,7 +69,7 @@ gls.fit.gaus = gls(y~t, data=geo,  correlation=corGaus(form=~lat+long)) #gaussia
 gls.fit.spher = gls(y~t, data=geo,  correlation=corSpher(form=~lat+long)) #spherical
 gls.fit.lin = gls(y~t, data=geo,  correlation=corLin(form=~lat+long))
 
-# look at coeffcients: VERY DIFFERENT when spatial non-independence considered
+# look at coefficients: VERY DIFFERENT when spatial non-independence considered
 ols.fit
 gls.fit.exp 
 gls.fit.gaus 
