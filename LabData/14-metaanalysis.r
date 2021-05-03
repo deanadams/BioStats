@@ -1,5 +1,7 @@
 ##############Meta-Analysis
-    #Packages: metafor 
+    #Packages: metafor: see also: meta, metabin, metacont
+
+##Doing meta-analysis in R: https://bookdown.org/MathiasHarrer/Doing_Meta_Analysis_in_R/
 
 library(metafor)
 library(RRPP)
@@ -49,7 +51,10 @@ fsn(yi=effectd,vi=var,data=mydata,type="Rosenberg")
 rdf <- rrpp.data.frame(effectd = effectd, habitat=habitat, var.e = diag(as.vector(var)))
 
 anova(lm.rrpp(effectd~1,Cov = rdf$var.e, data = rdf, print.progress = FALSE))
+lm.rrpp(effectd~1,Cov = rdf$var.e, 
+        data = rdf, print.progress = FALSE)$LM$gls.coefficients
 summary(ma.no)  #same SS!
+
 
 res<- lm.rrpp(effectd~habitat,Cov = rdf$var.e, data = rdf, print.progress = FALSE)
 anova(res)
