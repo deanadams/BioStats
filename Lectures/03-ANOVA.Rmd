@@ -15,18 +15,6 @@ opts_chunk$set(echo = TRUE)
 
 # Analysis of Variance (ANOVA)
 
-<style type="text/css">
-td {  /* Table  */
-  font-size: 20px;
-}
-code.r{ /* Code block */
-    font-size: 12px;
-}
-pre { /* Code block - determines code spacing between lines */
-    font-size: 12px;
-}
-</style>
-
 A linear model where the response variable $\small\mathbf{Y}$ is continuous, and $\small\mathbf{X}$ contains one or more categorical factors (predictor variables). This is a comparison of groups 
 
 $$\mathbf{Y}=\mathbf{X}\mathbf{\beta } +\mathbf{E}$$
@@ -225,7 +213,7 @@ tapply(y,gp,mean)
 - Various approaches
     - Dunn-Sidak: $\small\alpha^{'}=1-(1-\alpha)^{1/k}$
     - Bonferroni:$\small\alpha^{'}=\frac{\alpha}{k}$
-    - Sequential Bonferroni: $\small\alpha^{'}=\frac{\alpha}{k}$, but recalculated each time (k=1,2,3. . . ) for ORDERED comparisons
+    - Sequential Bonferroni: $\small\alpha^{'}=\frac{\alpha}{k}$, but recalculated each time ($k=1,2,3...$) for ORDERED comparisons
 
 - Bonferroni considered quite conservative: sequential Bonferroni much less so
 
@@ -233,6 +221,7 @@ tapply(y,gp,mean)
 
 - After a bad winter storm (Feb. 1, 1898), Bumpus retrieved 136 sparrows in Rhode Island (about ½ died)
 - Collected the following measurements on each:
+
 
 ```{r, echo = FALSE,out.width="70%", fig.align='center'}
 include_graphics("lectureData/03.ANOVA/BumpusVars.png")  

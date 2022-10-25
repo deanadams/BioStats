@@ -220,7 +220,7 @@ abline(model1,lwd=2,col="blue")
 
 >- Also, model II regression is strongly biased, because it confounds biological variation and measurement error (see Hansen and Bartoszek 2012)
 
->- #### Conclusion: Model I regression is prefered 
+>- #### Conclusion: Model I regression is preferred 
 
 # Multiple Regression
 
