@@ -518,7 +518,7 @@ $$\small{Gaussian}= \sigma^2e^{(-r/d)^2}$$
 
 $$\small{Spherical}= \sigma^2(1-2/\pi(r/d\sqrt{1-r^2/d^2}+sin^{-1}r/d))$$
 
-where $\small{r}$ describes the expected covariance (correlation) between a pair of subjects, and $\small{d}$ is the distance between them over which this corralation decays. 
+where $\small{r}$ describes the expected covariance (correlation) between a pair of subjects, and $\small{d}$ is the distance between them over which this correlation decays. 
 
 ###### NOTE: There are many other models of spatial dependence! (see Dormann et al. (2007) Ecography.)
 
